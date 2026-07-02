@@ -469,6 +469,38 @@
       transition: width 0.35s ease;
     }
 
+    .domain-bars { display: grid; gap: 7px; }
+
+    .domain-row {
+      display: grid;
+      grid-template-columns: minmax(96px, 150px) 1fr 48px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .domain-row .domain-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.75;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .domain-row .progress-bar { height: 9px; }
+
+    .domain-row .progress-fill { background: var(--bar, #d08c1d); }
+
+    .domain-row .domain-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      opacity: 0.6;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
     .hero-stamp {
       flex: none;
       width: min(280px, 30vw);
@@ -1395,8 +1427,8 @@
               <button class="ghost" id="shuffleAll">Shuffle deck</button>
             </div>
             <div class="progress-wrap">
-              <div class="small" id="progressText">0% mastery</div>
-              <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+              <div class="small" id="progressText">0 mastered</div>
+              <div class="domain-bars" id="domainBars"></div>
             </div>
           </div>
           <div class="hero-stamp" aria-hidden="true">
@@ -1482,7 +1514,7 @@
           </article>
           <aside class="panel side-pad" style="position:static;height:auto">
             <div class="kicker">Deck queue</div>
-            <p class="small">Pick weak areas directly or run the deck cold. Confidence buttons change the mastery meter.</p>
+            <p class="small">Pick weak areas directly or run the deck cold. Confidence buttons move your domain mastery bars.</p>
             <div class="mini-list" id="flashList"></div>
           </aside>
         </div>
@@ -1589,6 +1621,18 @@
       Frontier: "var(--violet)", Governance: "var(--amber)", "Product Sense": "var(--green)",
       Cost: "var(--green)"
     };
+
+    const MASTERY_DOMAINS = [
+      { name: "AI Cybersec", color: "#ef6a4c", topics: ["Security", "AI Cybersec", "Prompt Injection", "Governance"] },
+      { name: "Agents & Tooling", color: "#c25a2a", topics: ["Agents", "Multi-Agent", "MCP", "Memory", "Context Eng", "Output Control"] },
+      { name: "RAG & Grounding", color: "#d08c1d", topics: ["RAG", "Grounding"] },
+      { name: "Evals & Reliability", color: "#8b74d8", topics: ["Evals", "Metrics", "Observability", "Reliability", "Idempotency"] },
+      { name: "Models & Inference", color: "#5d87d8", topics: ["Inference", "Fine-tuning", "Frontier", "Cost"] },
+      { name: "AdvisoryAI Products", color: "#2fa08e", topics: ["ASR", "Evie", "Emma", "Colin", "Atlas"] },
+      { name: "Founder Craft", color: "#3f9c5c", topics: ["Founder Mode", "Architecture", "Launch Plan", "Incident", "Product Sense"] }
+    ];
+    const DOMAIN_OF = {};
+    MASTERY_DOMAINS.forEach(domain => domain.topics.forEach(topic => { DOMAIN_OF[topic] = domain.name; }));
 
     const GRILLS = [
       {
@@ -2911,6 +2955,15 @@
       ["Pragmatic Engineer — a pragmatic guide to evals", "https://newsletter.pragmaticengineer.com/p/evals", "How industry teams wire offline and online evals into shipping."]
     ];
 
+    const ITEM_POOLS = [["g", GRILLS], ["f", FLASH], ["b", BLANKS], ["q", MCQ]];
+    const DOMAIN_ITEMS = {};
+    ITEM_POOLS.forEach(([prefix, pool]) => pool.forEach((item, index) => {
+      const domain = DOMAIN_OF[item.topic];
+      if (!DOMAIN_ITEMS[domain]) DOMAIN_ITEMS[domain] = [];
+      DOMAIN_ITEMS[domain].push(prefix + ":" + index);
+    }));
+    const TOTAL_ITEMS = ITEM_POOLS.reduce((sum, pool) => sum + pool[1].length, 0);
+
     const state = {
       view: "grill",
       grillIndex: 0,
@@ -2929,6 +2982,10 @@
     };
 
     const saved = JSON.parse(localStorage.getItem("aiFieldDeck") || "{}");
+    if (saved.mastered) {
+      // pre-domain saves keyed flash cards by bare index; move them to the f: namespace
+      saved.mastered = Object.fromEntries(Object.entries(saved.mastered).map(([key, value]) => [/^\d+$/.test(key) ? "f:" + key : key, value]));
+    }
     Object.assign(state, saved, { selectedLeft: null, selectedRight: null });
 
     const $ = (id) => document.getElementById(id);
@@ -2949,15 +3006,30 @@
       }));
     }
 
+    function initDomainBars() {
+      $("domainBars").innerHTML = MASTERY_DOMAINS.map(domain => `
+        <div class="domain-row" data-domain="${esc(domain.name)}" title="${esc(domain.topics.join(", "))}" style="--bar:${domain.color}">
+          <span class="domain-label">${esc(domain.name)}</span>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+          <span class="domain-count">0/0</span>
+        </div>
+      `).join("");
+    }
+
     function updateHud() {
       const masteredCount = Object.values(state.mastered).filter(Boolean).length;
-      const pct = Math.round((masteredCount / FLASH.length) * 100);
       $("score").textContent = state.score;
       $("streak").textContent = state.streak;
       $("attempts").textContent = state.attempts;
       $("mastered").textContent = masteredCount;
-      $("progressText").textContent = pct + "% mastery";
-      $("progressFill").style.width = pct + "%";
+      $("progressText").textContent = masteredCount + "/" + TOTAL_ITEMS + " mastered by domain";
+      document.querySelectorAll("#domainBars .domain-row").forEach(row => {
+        const keys = DOMAIN_ITEMS[row.dataset.domain] || [];
+        const done = keys.filter(key => state.mastered[key]).length;
+        const pct = keys.length ? Math.round((done / keys.length) * 100) : 0;
+        row.querySelector(".progress-fill").style.width = pct + "%";
+        row.querySelector(".domain-count").textContent = done + "/" + keys.length;
+      });
       $("grillCount").textContent = GRILLS.length;
       $("flashCount").textContent = FLASH.length;
       $("matchCount").textContent = MATCH.length;
@@ -3058,6 +3130,7 @@
     function scoreRubric() {
       const checked = Array.from(document.querySelectorAll("#rubric input")).filter(input => input.checked).length;
       const strong = checked >= 4;
+      state.mastered["g:" + (state.grillIndex % GRILLS.length)] = strong;
       $("rubricFeedback").textContent = checked + "/5 founder-level signals. " + (strong ? "Good. Now answer the follow-up without looking." : "Patch it: name failure, layer, control, metric, and tradeoff.");
       award(strong ? 8 : 2, strong);
     }
@@ -3149,6 +3222,7 @@
       const item = BLANKS[state.blankIndex % BLANKS.length];
       const guess = normalize($("blankInput").value);
       const correct = item.answer.some(answer => normalize(answer) === guess);
+      state.mastered["b:" + (state.blankIndex % BLANKS.length)] = correct;
       if (correct) {
         $("blankFeedback").textContent = "Correct. Say the full sentence out loud once.";
         award(5, true);
@@ -3176,6 +3250,7 @@
         choice.addEventListener("click", () => {
           const picked = Number(choice.dataset.index);
           const correct = picked === item.answer;
+          state.mastered["q:" + (state.mcqIndex % MCQ.length)] = correct;
           $("mcqChoices").querySelectorAll(".choice").forEach(button => {
             const idx = Number(button.dataset.index);
             button.disabled = true;
@@ -3247,7 +3322,7 @@
     document.querySelectorAll(".confidence").forEach(button => {
       button.addEventListener("click", () => {
         const level = button.dataset.confidence;
-        const key = String(state.flashIndex);
+        const key = "f:" + (state.flashIndex % FLASH.length);
         if (level === "know") {
           state.mastered[key] = true;
           award(4, true);
@@ -3295,6 +3370,7 @@
       setView(views[Math.floor(Math.random() * views.length)]);
     });
 
+    initDomainBars();
     renderGrill();
     renderFlash();
     renderMatch();
