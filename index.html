@@ -3,84 +3,97 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Engineer Field Deck — Production LLM Interview Prep</title>
+  <title>AI Engineer Field Deck - Production LLM Interview Prep</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --desk: #16120c;
-      --desk-2: #1d1710;
-      --paper: #f2ebda;
-      --paper-2: #e9dfc8;
-      --paper-bright: #faf5e8;
-      --ink: #1b1610;
-      --ink-soft: rgba(27, 22, 16, 0.72);
-      --ink-faint: rgba(27, 22, 16, 0.5);
-      --line-ink: rgba(27, 22, 16, 0.32);
-      --line-desk: rgba(var(--desk-ink-rgb), 0.14);
-      --desk-ink: #f2ebda;
-      --desk-ink-bright: #faf5e8;
-      --desk-ink-rgb: 242, 235, 218;
-      --red: #d2452e;
-      --red-bright: #ef6a4c;
-      --red-deep: #8f2417;
-      --teal: #0d7264;
-      --blue: #24559f;
-      --amber: #a5680b;
-      --rust: #ad431f;
-      --green: #2c7345;
-      --violet: #5d44ad;
+      --desk: #0e1013;
+      --desk-2: #13161b;
+      --paper: #171a21;
+      --paper-2: #14181f;
+      --paper-bright: #1c2029;
+      --ink: #e7eaf2;
+      --ink-rgb: 231, 234, 242;
+      --ink-soft: rgba(var(--ink-rgb), 0.72);
+      --ink-faint: rgba(var(--ink-rgb), 0.5);
+      --line-ink: rgba(var(--ink-rgb), 0.16);
+      --line-desk: rgba(var(--desk-ink-rgb), 0.12);
+      --desk-ink: #e2e6ee;
+      --desk-ink-bright: #f5f7fc;
+      --desk-ink-rgb: 226, 230, 238;
+      --accent: #5f7dfb;
+      --accent-bright: #8ea4ff;
+      --accent-deep: #3d55c9;
+      --danger: #e5484d;
+      --teal: #39c7b4;
+      --blue: #6b9eff;
+      --amber: #e3b04f;
+      --rust: #e88a63;
+      --green: #3fbe7e;
+      --violet: #a48dff;
       --radius: 2px;
-      --shadow-panel: 9px 10px 0 rgba(8, 6, 3, 0.55);
-      --shadow-btn: 3px 3px 0 rgba(27, 22, 16, 0.85);
+      --shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 34px rgba(0, 0, 0, 0.4);
+      --shadow-btn: 0 1px 2px rgba(0, 0, 0, 0.45);
       --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+      --display: "Space Grotesk", "Avenir Next", "Segoe UI", system-ui, sans-serif;
       --sans: "Schibsted Grotesk", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
-      --hand: "Caveat", "Bradley Hand", "Comic Sans MS", cursive;
     }
 
-    /* light theme: desk turns to daylight paper, desk ink flips dark */
+    /* light theme: cool porcelain desk, white panels, ink flips dark */
     body.light {
       color-scheme: light;
-      --desk: #eae0c8;
-      --desk-2: #e2d6b9;
-      --desk-ink: #241d13;
-      --desk-ink-bright: #14100a;
-      --desk-ink-rgb: 36, 29, 19;
-      --line-desk: rgba(36, 29, 19, 0.2);
-      --red-bright: #ac3418;
-      --shadow-panel: 9px 10px 0 rgba(36, 29, 19, 0.16);
-    }
-
-    body.light nav button[aria-current="true"] {
-      background: var(--ink);
-      color: var(--paper-bright);
-      border-color: var(--ink);
-    }
-
-    body.light nav button[aria-current="true"] span {
-      border-color: rgba(250, 245, 232, 0.35);
-      color: rgba(250, 245, 232, 0.75);
+      --desk: #eef0f5;
+      --desk-2: #e6e9f0;
+      --paper: #ffffff;
+      --paper-2: #f5f7fa;
+      --paper-bright: #ffffff;
+      --ink: #181b22;
+      --ink-rgb: 24, 27, 34;
+      --ink-soft: rgba(24, 27, 34, 0.74);
+      --ink-faint: rgba(24, 27, 34, 0.52);
+      --line-ink: rgba(24, 27, 34, 0.14);
+      --desk-ink: #20242c;
+      --desk-ink-bright: #0f1116;
+      --desk-ink-rgb: 32, 36, 44;
+      --line-desk: rgba(32, 36, 44, 0.16);
+      --accent: #3a56d4;
+      --accent-bright: #2e46c0;
+      --accent-deep: #24379b;
+      --danger: #d33338;
+      --teal: #0e8474;
+      --blue: #2f5fd0;
+      --amber: #9a6d15;
+      --rust: #c25c33;
+      --green: #1f8a55;
+      --violet: #6a52d8;
+      --shadow-panel: 0 1px 2px rgba(28, 32, 44, 0.08), 0 12px 28px rgba(28, 32, 44, 0.1);
+      --shadow-btn: 0 1px 2px rgba(28, 32, 44, 0.18);
     }
 
     body.light .domain-row .progress-fill {
-      background: color-mix(in srgb, var(--bar, #d08c1d) 70%, var(--ink));
+      background: color-mix(in srgb, var(--bar, #5f7dfb) 72%, var(--ink));
     }
 
     * { box-sizing: border-box; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+    }
 
     html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      border-top: 6px solid var(--red);
+      border-top: 6px solid var(--accent);
       color-scheme: dark;
       color: var(--desk-ink);
       font: 16px/1.55 var(--sans);
       background:
-        radial-gradient(1100px 520px at 10% -8%, rgba(210, 69, 46, 0.08), transparent 62%),
-        radial-gradient(900px 480px at 90% -10%, rgba(165, 104, 11, 0.06), transparent 60%),
+        radial-gradient(1100px 520px at 10% -8%, rgba(95, 125, 251, 0.09), transparent 62%),
+        radial-gradient(900px 480px at 90% -10%, rgba(57, 199, 180, 0.05), transparent 60%),
         linear-gradient(rgba(var(--desk-ink-rgb), 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(var(--desk-ink-rgb), 0.03) 1px, transparent 1px),
         var(--desk);
@@ -100,21 +113,21 @@
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    ::selection { background: var(--red); color: #fff4e7; }
+    ::selection { background: var(--accent); color: #f6f8ff; }
 
     button, input, textarea { font: inherit; }
     button { cursor: pointer; }
     button:disabled { cursor: default; opacity: 0.45; }
 
     :focus-visible {
-      outline: 2px dashed var(--red);
+      outline: 2px dashed var(--accent);
       outline-offset: 3px;
     }
 
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #3c352a; border-radius: 0; }
-    ::-webkit-scrollbar-thumb:hover { background: #4a4234; }
+    ::-webkit-scrollbar-thumb { background: #2b303a; border-radius: 0; }
+    ::-webkit-scrollbar-thumb:hover { background: #3a4150; }
 
     @keyframes rise {
       from { opacity: 0; transform: translateY(16px); }
@@ -186,9 +199,9 @@
       height: 46px;
       display: grid;
       place-items: center;
-      color: #fff4e7;
-      background: var(--red);
-      border: 1px solid var(--red-deep);
+      color: #f6f8ff;
+      background: var(--accent);
+      border: 1px solid var(--accent-deep);
       border-radius: var(--radius);
       font-family: var(--mono);
       font-weight: 700;
@@ -200,7 +213,7 @@
     h1, h2, h3, p { margin: 0; }
 
     .brand h2 {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-weight: 400;
       font-size: 23px;
       line-height: 1.05;
@@ -270,14 +283,14 @@
       background: var(--paper);
       color: var(--ink);
       border-color: var(--paper);
-      box-shadow: inset 3px 0 0 var(--red);
+      box-shadow: inset 3px 0 0 var(--accent);
     }
 
-    nav button[aria-current="true"]::before { color: var(--red); }
+    nav button[aria-current="true"]::before { color: var(--accent); }
 
     nav button[aria-current="true"] span {
-      border-color: rgba(27, 22, 16, 0.3);
-      color: rgba(27, 22, 16, 0.6);
+      border-color: rgba(var(--ink-rgb), 0.3);
+      color: rgba(var(--ink-rgb), 0.6);
     }
 
     .theme-toggle {
@@ -304,7 +317,7 @@
 
     .theme-toggle:hover {
       color: var(--desk-ink);
-      border-color: var(--red);
+      border-color: var(--accent);
     }
 
     .scorebox {
@@ -343,7 +356,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .metric:nth-child(2) b { color: var(--red-bright); }
+    .metric:nth-child(2) b { color: var(--accent-bright); }
 
     .metric span {
       font-family: var(--mono);
@@ -366,11 +379,11 @@
     }
 
     .hero .kicker,
-    .section-head .kicker { color: var(--red-bright); }
+    .section-head .kicker { color: var(--accent-bright); }
 
     .panel .kicker { color: var(--ink-faint); }
 
-    .panel .interviewer .kicker { color: var(--red); }
+    .panel .interviewer .kicker { color: var(--accent); }
 
     /* buttons on the dark desk (hero + section heads) */
     .ghost,
@@ -395,18 +408,18 @@
 
     .ghost:hover {
       color: var(--desk-ink);
-      border-color: var(--red);
+      border-color: var(--accent);
       background: rgba(210, 69, 46, 0.1);
     }
 
     .primary {
-      background: var(--red);
-      border: 1px solid var(--red-deep);
-      color: #fff4e7;
+      background: var(--accent);
+      border: 1px solid var(--accent-deep);
+      color: #f6f8ff;
       box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55);
     }
 
-    .primary:hover { background: #e05237; transform: translate(-1px, -1px); box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.55); }
+    .primary:hover { background: var(--accent-bright); transform: translate(-1px, -1px); box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.55); }
     .primary:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55); }
 
     /* same button classes when they sit on paper */
@@ -414,12 +427,12 @@
       background: var(--paper-bright);
       border: 1px solid var(--line-ink);
       color: var(--ink);
-      box-shadow: 2px 2px 0 rgba(27, 22, 16, 0.35);
+      box-shadow: 2px 2px 0 rgba(var(--ink-rgb), 0.35);
     }
 
     .panel .ghost:hover {
-      border-color: var(--red);
-      color: var(--red);
+      border-color: var(--accent);
+      color: var(--accent);
       background: var(--paper-bright);
     }
 
@@ -429,11 +442,11 @@
       background: var(--ink);
       border-color: var(--ink);
       color: var(--paper-bright);
-      box-shadow: 3px 3px 0 var(--red);
+      box-shadow: 3px 3px 0 var(--accent);
     }
 
-    .panel .primary:hover { background: #2b2418; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--red); }
-    .panel .primary:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--red); }
+    .panel .primary:hover { background: color-mix(in srgb, var(--ink) 88%, var(--paper)); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--accent); }
+    .panel .primary:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--accent); }
     .panel .primary:disabled { box-shadow: none; transform: none; }
 
     /* ---------- hero ---------- */
@@ -453,19 +466,20 @@
     .hero .kicker { animation: rise 0.5s 0.05s both; }
 
     h1 {
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: clamp(46px, 6.4vw, 96px);
-      line-height: 0.93;
-      letter-spacing: -0.01em;
-      max-width: 800px;
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(38px, 5vw, 72px);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      max-width: 920px;
       color: var(--desk-ink-bright);
       animation: rise 0.55s 0.12s both;
     }
 
     h1 em {
-      font-style: italic;
-      color: var(--red-bright);
+      font-style: normal;
+      font-weight: 700;
+      color: var(--accent-bright);
     }
 
     .lede {
@@ -524,7 +538,7 @@
     .progress-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #c25a2a, #d08c1d 55%, #3f9c5c);
+      background: linear-gradient(90deg, var(--accent), var(--accent-bright));
       transition: width 0.35s ease;
     }
 
@@ -550,7 +564,7 @@
 
     .domain-row .progress-bar { height: 9px; }
 
-    .domain-row .progress-fill { background: var(--bar, #d08c1d); }
+    .domain-row .progress-fill { background: var(--bar, #5f7dfb); }
 
     .domain-row .domain-count {
       font-family: var(--mono);
@@ -563,7 +577,7 @@
     .hero-stamp {
       flex: none;
       width: min(280px, 30vw);
-      color: var(--red);
+      color: var(--accent);
       opacity: 0.92;
       animation: stampIn 0.55s 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
     }
@@ -616,14 +630,14 @@
     .section-head .controls { margin-top: 0; }
 
     .section-head h2 {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-weight: 400;
       font-size: clamp(34px, 4vw, 54px);
       line-height: 0.98;
       color: var(--desk-ink);
     }
 
-    .section-head h2::after { content: "."; color: var(--red-bright); }
+    .section-head h2::after { content: "."; color: var(--accent-bright); }
 
     /* ---------- paper panels ---------- */
 
@@ -663,14 +677,13 @@
     .feedback {
       min-height: 58px;
       padding: 12px 14px;
-      border: 1px dashed rgba(27, 22, 16, 0.42);
+      border: 1px dashed rgba(var(--ink-rgb), 0.42);
       border-radius: var(--radius);
       background: transparent;
       color: var(--ink-soft);
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 15.5px;
-      line-height: 1.45;
+      font-family: var(--sans);
+      font-size: 14.5px;
+      line-height: 1.5;
     }
 
     .feedback::before {
@@ -683,7 +696,7 @@
       font-weight: 600;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--accent);
     }
 
     /* ---------- grill room ---------- */
@@ -699,7 +712,7 @@
       padding: clamp(20px, 4vw, 36px);
       display: grid;
       gap: 18px;
-      border-top: 8px solid var(--red);
+      border-top: 8px solid var(--accent);
     }
 
     .timer {
@@ -709,10 +722,10 @@
       min-width: 92px;
       min-height: 44px;
       padding: 8px 16px;
-      border: 1px solid color-mix(in srgb, var(--red) 55%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
       border-radius: var(--radius);
       background: #0f0c08;
-      color: var(--red-bright);
+      color: var(--accent-bright);
       font-family: var(--mono);
       font-size: 22px;
       font-weight: 700;
@@ -724,9 +737,9 @@
     .timer.running { animation: pulseTick 1s steps(2, start) infinite; }
 
     .timer.urgent {
-      background: var(--red);
-      border-color: var(--red);
-      color: #fff3e6;
+      background: var(--danger);
+      border-color: var(--danger);
+      color: #f6f8ff;
       animation: shakeX 0.45s linear infinite;
     }
 
@@ -734,16 +747,16 @@
       display: grid;
       gap: 8px;
       padding: 16px 18px;
-      border: 1px dashed color-mix(in srgb, var(--red) 45%, var(--line-ink));
+      border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--line-ink));
       border-radius: var(--radius);
-      background: color-mix(in srgb, var(--red) 6%, var(--paper-bright));
+      background: color-mix(in srgb, var(--accent) 6%, var(--paper-bright));
     }
 
     .interviewer blockquote {
       margin: 0;
       position: relative;
       padding-left: 36px;
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(24px, 3vw, 36px);
       line-height: 1.08;
       color: var(--ink);
@@ -754,10 +767,10 @@
       position: absolute;
       left: 0;
       top: -4px;
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 58px;
       line-height: 1;
-      color: var(--red);
+      color: var(--accent);
     }
 
     .notes {
@@ -769,19 +782,19 @@
       border-radius: var(--radius);
       background:
         repeating-linear-gradient(transparent, transparent 27px,
-          rgba(27, 22, 16, 0.16) 27px, rgba(27, 22, 16, 0.16) 28px)
+          rgba(var(--ink-rgb), 0.16) 27px, rgba(var(--ink-rgb), 0.16) 28px)
         var(--paper-bright);
       background-attachment: local;
       color: var(--ink);
-      font: 500 20px/28px var(--hand);
+      font: 400 14.5px/28px var(--mono);
     }
 
-    .notes::placeholder { color: rgba(27, 22, 16, 0.42); }
+    .notes::placeholder { color: rgba(var(--ink-rgb), 0.42); }
 
     .notes:focus {
       outline: none;
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 22%, transparent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
     }
 
     .rubric { display: grid; gap: 8px; }
@@ -800,7 +813,7 @@
       transition: border-color 0.15s ease;
     }
 
-    .rubric label:hover { border-color: color-mix(in srgb, var(--red) 55%, var(--line-ink)); }
+    .rubric label:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line-ink)); }
 
     .rubric input {
       appearance: none;
@@ -816,11 +829,11 @@
       transition: background 0.12s ease;
     }
 
-    .rubric input:checked { background: var(--red); border-color: var(--red-deep); }
+    .rubric input:checked { background: var(--accent); border-color: var(--accent-deep); }
 
     .rubric input:checked::after {
       content: "\2713";
-      color: #fff4e7;
+      color: #f6f8ff;
       font-size: 12px;
       font-weight: 700;
       line-height: 1;
@@ -839,9 +852,9 @@
 
     .answer-block {
       padding: 14px 16px;
-      border-left: 3px solid var(--red);
+      border-left: 3px solid var(--accent);
       border-radius: 0 var(--radius) var(--radius) 0;
-      background: color-mix(in srgb, var(--red) 6%, var(--paper-bright));
+      background: color-mix(in srgb, var(--accent) 6%, var(--paper-bright));
     }
 
     .answer-block b {
@@ -852,7 +865,7 @@
       font-weight: 600;
       letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--accent);
     }
 
     .answer-block ul {
@@ -878,7 +891,7 @@
       top: 0.55em;
       width: 6px;
       height: 6px;
-      background: var(--red);
+      background: var(--accent);
     }
 
     .answer-block.trap {
@@ -947,7 +960,7 @@
     }
 
     .question {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(32px, 4.6vw, 58px);
       line-height: 1.02;
       letter-spacing: -0.005em;
@@ -1022,7 +1035,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      box-shadow: 2px 2px 0 rgba(27, 22, 16, 0.35);
+      box-shadow: 2px 2px 0 rgba(var(--ink-rgb), 0.35);
       transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease, border-color 0.15s ease;
     }
 
@@ -1045,7 +1058,7 @@
       padding-right: 4px;
     }
 
-    .mini-list::-webkit-scrollbar-thumb { background: rgba(27, 22, 16, 0.35); }
+    .mini-list::-webkit-scrollbar-thumb { background: rgba(var(--ink-rgb), 0.35); }
 
     .mini-list br { display: none; }
 
@@ -1066,7 +1079,7 @@
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--accent);
       margin-bottom: 4px;
     }
 
@@ -1077,14 +1090,14 @@
       color: var(--ink-soft);
     }
 
-    .mini-list button:hover { border-color: var(--red); }
+    .mini-list button:hover { border-color: var(--accent); }
 
     .mini-list button.active {
       border-color: var(--ink);
       background: var(--ink);
     }
 
-    .mini-list button.active b { color: var(--red-bright); }
+    .mini-list button.active b { color: var(--accent-bright); }
     .mini-list button.active span { color: var(--paper); }
 
     /* ---------- match ---------- */
@@ -1124,12 +1137,12 @@
       color: var(--ink-soft);
     }
 
-    .match-card:hover { border-color: var(--red); }
+    .match-card:hover { border-color: var(--accent); }
 
     .match-card.selected {
-      border-color: var(--red);
-      background: color-mix(in srgb, var(--red) 8%, var(--paper-bright));
-      box-shadow: 3px 3px 0 color-mix(in srgb, var(--red) 60%, transparent);
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 8%, var(--paper-bright));
+      box-shadow: 3px 3px 0 color-mix(in srgb, var(--accent) 60%, transparent);
       transform: translate(-1px, -1px);
     }
 
@@ -1158,7 +1171,7 @@
 
     .match-card.wrong {
       animation: wrong 280ms linear;
-      border-color: var(--red);
+      border-color: var(--accent);
     }
 
     /* ---------- blanks + mcq ---------- */
@@ -1171,7 +1184,7 @@
     }
 
     .stem {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(28px, 4vw, 46px);
       line-height: 1.1;
       color: var(--ink);
@@ -1180,7 +1193,7 @@
     .blank-line {
       display: inline-block;
       min-width: min(240px, 66vw);
-      border-bottom: 3px solid var(--red);
+      border-bottom: 3px solid var(--accent);
       transform: translateY(-2px);
     }
 
@@ -1198,8 +1211,8 @@
 
     .blank-input:focus {
       outline: none;
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 22%, transparent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
     }
 
     .choices {
@@ -1239,14 +1252,14 @@
       font-weight: 700;
     }
 
-    .choice:hover:not(:disabled) { border-color: var(--red); }
+    .choice:hover:not(:disabled) { border-color: var(--accent); }
 
     .choice.correct {
       border-color: var(--green);
       background: color-mix(in srgb, var(--green) 12%, var(--paper-bright));
     }
 
-    .choice.correct::before { border-color: var(--green); background: var(--green); color: var(--paper-bright); }
+    .choice.correct::before { border-color: var(--green); background: var(--green); color: #f6f8ff; }
 
     .choice.correct::after {
       content: "\2713";
@@ -1258,11 +1271,11 @@
     }
 
     .choice.incorrect {
-      border-color: var(--red);
-      background: color-mix(in srgb, var(--red) 9%, var(--paper-bright));
+      border-color: var(--danger);
+      background: color-mix(in srgb, var(--danger) 9%, var(--paper-bright));
     }
 
-    .choice.incorrect::before { border-color: var(--red); background: var(--red); color: var(--paper-bright); }
+    .choice.incorrect::before { border-color: var(--danger); background: var(--danger); color: #f6f8ff; }
 
     .choice.incorrect::after {
       content: "\2717";
@@ -1270,7 +1283,7 @@
       font-family: var(--mono);
       font-size: 17px;
       font-weight: 700;
-      color: var(--red);
+      color: var(--danger);
     }
 
     .choice:disabled { opacity: 1; }
@@ -1306,7 +1319,7 @@
     }
 
     .product h3 {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-weight: 400;
       font-size: 29px;
       line-height: 0.98;
@@ -1352,7 +1365,7 @@
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 700;
-      color: var(--red);
+      color: var(--accent);
     }
 
     .source a {
@@ -1360,13 +1373,13 @@
       font-weight: 700;
       font-size: 15.5px;
       text-decoration: underline;
-      text-decoration-color: color-mix(in srgb, var(--red) 55%, transparent);
+      text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
       text-decoration-thickness: 2px;
       text-underline-offset: 3px;
       transition: color 0.15s ease;
     }
 
-    .source a:hover { color: var(--red); }
+    .source a:hover { color: var(--accent); }
 
     .source p {
       margin-top: 8px;
@@ -1392,7 +1405,7 @@
       display: inline-block;
       width: 8px;
       height: 8px;
-      background: var(--red);
+      background: var(--accent);
       margin-right: 10px;
       vertical-align: baseline;
     }
@@ -1447,7 +1460,7 @@
         <div class="mark">AI</div>
         <div>
           <h2>AI Engineer Field Deck</h2>
-          <p class="small">Active recall for founding and senior AI engineer interviews — the 80/20 of building with LLMs in production, kept current with frontier-lab practice.</p>
+          <p class="small">Active recall for founding and senior AI engineer interviews - the 80/20 of building with LLMs in production, kept current with frontier-lab practice.</p>
         </div>
       </div>
 
@@ -1458,7 +1471,7 @@
         <button data-view="blank">Blanks <span id="blankCount">0</span></button>
         <button data-view="mcq">MCQ <span id="mcqCount">0</span></button>
         <button data-view="products">Map <span>14</span></button>
-        <button data-view="sources">Sources <span>25</span></button>
+        <button data-view="sources">Sources <span>22</span></button>
       </nav>
 
       <button class="theme-toggle" id="themeToggle" aria-pressed="false">Light mode</button>
@@ -1481,7 +1494,7 @@
           <div>
             <div class="kicker">Founding / senior AI engineer prep</div>
             <h1>Train the answers until production risk feels <em>obvious.</em></h1>
-            <p class="lede">A CTO grilling simulator first, study deck second. Timed scenarios span the 80/20 of production AI — context engineering, agents and MCP, RAG, evals, inference economics, fine-tuning, security, and shipping judgment — with flash, match, blanks, and MCQs to patch weak spots. One regulated-fintech case study keeps it concrete.</p>
+            <p class="lede">A CTO grilling simulator first, study deck second. Timed scenarios span the 80/20 of production AI - context engineering, agents and MCP, RAG, evals, inference economics, fine-tuning, security, and shipping judgment - with flash, match, blanks, and MCQs to patch weak spots. One regulated-fintech case study keeps it concrete.</p>
             <div class="controls">
               <button class="primary" id="startMixed">Mixed drill</button>
               <button class="ghost" id="resetRun">Reset run</button>
@@ -1521,7 +1534,7 @@
         </div>
         <div class="grill-layout">
           <article class="panel grill-card">
-            <div class="topic" style="--topic: var(--red)"><span class="dot"></span><span id="grillTopic"></span></div>
+            <div class="topic" style="--topic: var(--accent)"><span class="dot"></span><span id="grillTopic"></span></div>
             <div class="interviewer">
               <div class="kicker">CTO says</div>
               <blockquote id="grillPrompt"></blockquote>
@@ -1645,10 +1658,10 @@
         <div class="section-head" style="margin-top:44px">
           <div>
             <div class="kicker">Case study</div>
-            <h2>Case file: AdvisoryAI</h2>
+            <h2>Case file: a regulated fintech</h2>
           </div>
         </div>
-        <p class="small" style="margin:-6px 0 20px; max-width:760px">Evie (meeting transcription), Emma (suitability reports), Colin (compliance checks), and Atlas (the unified copilot) — a regulated-fintech product family that grounds the scenarios marked "case study" across the deck.</p>
+        <p class="small" style="margin:-6px 0 20px; max-width:760px">Notetaker (meeting transcription), Drafter (suitability reports), Checker (compliance checks), and Copilot (unified assistant) - a regulated-fintech product family that grounds the scenarios marked "case study" across the deck.</p>
         <div class="grid" id="caseGrid"></div>
       </section>
 
@@ -1672,10 +1685,10 @@
     const TOPIC_COLOR = {
       Reliability: "var(--teal)", Idempotency: "var(--green)", Observability: "var(--blue)",
       Metrics: "var(--blue)", Evals: "var(--violet)", RAG: "var(--amber)",
-      "Output Control": "var(--rust)", ASR: "var(--teal)", Evie: "var(--teal)",
-      Security: "var(--red)", "AI Cybersec": "var(--red)", Emma: "var(--violet)",
-      Colin: "var(--green)", Atlas: "var(--blue)", Agents: "var(--rust)",
-      Grounding: "var(--amber)", "Prompt Injection": "var(--red)", "Founder Mode": "var(--red)",
+      "Output Control": "var(--rust)", ASR: "var(--teal)", Notetaker: "var(--teal)",
+      Security: "var(--danger)", "AI Cybersec": "var(--danger)", Drafter: "var(--violet)",
+      Checker: "var(--green)", Copilot: "var(--blue)", Agents: "var(--rust)",
+      Grounding: "var(--amber)", "Prompt Injection": "var(--danger)", "Founder Mode": "var(--accent)",
       "Architecture": "var(--blue)", "Launch Plan": "var(--green)", "Incident": "var(--rust)",
       "Context Eng": "var(--amber)", "Multi-Agent": "var(--rust)", MCP: "var(--teal)",
       Memory: "var(--green)", Inference: "var(--blue)", "Fine-tuning": "var(--violet)",
@@ -1684,13 +1697,13 @@
     };
 
     const MASTERY_DOMAINS = [
-      { name: "AI Cybersec", color: "#ef6a4c", topics: ["Security", "AI Cybersec", "Prompt Injection", "Governance"] },
-      { name: "Agents & Tooling", color: "#c25a2a", topics: ["Agents", "Multi-Agent", "MCP", "Memory", "Context Eng", "Output Control"] },
-      { name: "RAG & Grounding", color: "#d08c1d", topics: ["RAG", "Grounding"] },
-      { name: "Evals & Reliability", color: "#8b74d8", topics: ["Evals", "Metrics", "Observability", "Reliability", "Idempotency"] },
-      { name: "Models & Inference", color: "#5d87d8", topics: ["Inference", "Fine-tuning", "Frontier", "Cost"] },
-      { name: "AdvisoryAI Products", color: "#2fa08e", topics: ["ASR", "Evie", "Emma", "Colin", "Atlas"] },
-      { name: "Founder Craft", color: "#3f9c5c", topics: ["Founder Mode", "Architecture", "Launch Plan", "Incident", "Product Sense"] }
+      { name: "AI Cybersec", color: "#f2555a", topics: ["Security", "AI Cybersec", "Prompt Injection", "Governance"] },
+      { name: "Agents & Tooling", color: "#e88a63", topics: ["Agents", "Multi-Agent", "MCP", "Memory", "Context Eng", "Output Control"] },
+      { name: "RAG & Grounding", color: "#e3b04f", topics: ["RAG", "Grounding"] },
+      { name: "Evals & Reliability", color: "#a48dff", topics: ["Evals", "Metrics", "Observability", "Reliability", "Idempotency"] },
+      { name: "Models & Inference", color: "#6b9eff", topics: ["Inference", "Fine-tuning", "Frontier", "Cost"] },
+      { name: "Product Suite", color: "#39c7b4", topics: ["ASR", "Notetaker", "Drafter", "Checker", "Copilot"] },
+      { name: "Founder Craft", color: "#3fbe7e", topics: ["Founder Mode", "Architecture", "Launch Plan", "Incident", "Product Sense"] }
     ];
     const DOMAIN_OF = {};
     MASTERY_DOMAINS.forEach(domain => domain.topics.forEach(topic => { DOMAIN_OF[topic] = domain.name; }));
@@ -1698,7 +1711,7 @@
     const GRILLS = [
       {
         topic: "Founder Mode",
-        prompt: "Case study: you inherit quality for Evie, a meeting-transcription product for financial advisers. Advisers love the speed, but compliance says transcripts are occasionally wrong in ways that leak into suitability reports. What do you do in the first 30 days?",
+        prompt: "Case study: you inherit quality for Notetaker, a meeting-transcription product for financial advisers. Advisers love the speed, but compliance says transcripts are occasionally wrong in ways that leak into suitability reports. What do you do in the first 30 days?",
         answer: [
           ["Opening", ["I would not start by swapping ASR providers. I would define the business-critical failure modes first: wrong client facts, wrong speaker attribution, missed soft facts, bad action extraction, and unsafe write-back."]],
           ["System design", ["Create a labeled eval set from real meetings with consent and redaction.", "Track WER plus critical-term error rate for names, products, amounts, dates, risk terms, and regulatory phrases.", "Split the pipeline into ASR, diarization, extraction, review, and CRM/write-back so each layer can fail independently."]],
@@ -1714,25 +1727,25 @@
       },
       {
         topic: "Architecture",
-        prompt: "Case study: Atlas, a unified assistant, becomes the front door for meetings, reports, compliance, client data, and tools. A CTO asks: what is the architecture risk that keeps you up?",
+        prompt: "Case study: Copilot, a unified assistant, becomes the front door for meetings, reports, compliance, client data, and tools. A CTO asks: what is the architecture risk that keeps you up?",
         answer: [
-          ["Opening", ["Atlas increases value by unifying workflows, but it also increases blast radius. My worry is not one bad answer; it is one conversational surface crossing product, tenant, permission, and tool boundaries."]],
-          ["System design", ["Use a typed orchestrator that routes to Evie, Emma, Colin, research, and integration services.", "Authorization must be checked at retrieval and tool-call time, not only at login.", "Every answer/action needs source IDs, tenant/user permission, workflow version, model/prompt version, tool events, validation, and approval state in one trace."]],
+          ["Opening", ["Copilot increases value by unifying workflows, but it also increases blast radius. My worry is not one bad answer; it is one conversational surface crossing product, tenant, permission, and tool boundaries."]],
+          ["System design", ["Use a typed orchestrator that routes to Notetaker, Drafter, Checker, research, and integration services.", "Authorization must be checked at retrieval and tool-call time, not only at login.", "Every answer/action needs source IDs, tenant/user permission, workflow version, model/prompt version, tool events, validation, and approval state in one trace."]],
           ["Metrics", ["Trace completeness, tool-policy denial rate, cross-tenant retrieval test pass rate, source freshness, approval bypass attempts, task success."]],
           ["Tradeoff", ["Start with narrow workflows and explicit approval gates, then expand tool autonomy as evals and policy coverage improve."]]
         ],
-        traps: ["Do not describe Atlas as just a chatbot UI.", "Do not let the model decide permissions.", "Do not merge product traces into unstructured logs."],
+        traps: ["Do not describe Copilot as just a chatbot UI.", "Do not let the model decide permissions.", "Do not merge product traces into unstructured logs."],
         followups: [
-          "How would you stop Atlas from answering with another tenant's cached result?",
+          "How would you stop Copilot from answering with another tenant's cached result?",
           "Where do you put the policy engine?",
-          "How do you debug one bad Atlas answer in five minutes?"
+          "How do you debug one bad Copilot answer in five minutes?"
         ]
       },
       {
         topic: "Evals",
-        prompt: "Case study: the team wants to ship a new drafting prompt for Emma, a suitability-report generator, today. The demos look better. What eval gate would you require before release?",
+        prompt: "Case study: the team wants to ship a new drafting prompt for Drafter, a suitability-report generator, today. The demos look better. What eval gate would you require before release?",
         answer: [
-          ["Opening", ["I would not block on generic benchmarks. I would gate on Emma-specific failures: unsupported claims, missing mandatory sections, stale provider data, template drift, and adviser rewrites."]],
+          ["Opening", ["I would not block on generic benchmarks. I would gate on Drafter-specific failures: unsupported claims, missing mandatory sections, stale provider data, template drift, and adviser rewrites."]],
           ["System design", ["Build a golden set from real anonymized reports and known failure traces.", "Separate extraction accuracy, retrieval quality, drafting quality, validation, and adviser review.", "Use structured rubrics for groundedness, completeness, template fidelity, citation coverage, and compliance criteria."]],
           ["Metrics", ["Unsupported-claim rate, missing-field recall, citation/source coverage, template adherence, edit distance by section, judge-human agreement."]],
           ["Tradeoff", ["LLM judges can scale review, but critical gates need calibration against human labels and hidden holdouts."]]
@@ -1762,7 +1775,7 @@
       },
       {
         topic: "Incident",
-        prompt: "Case study: a customer reports that Colin, a compliance checker, gave a green score on a file that missed a vulnerable-client disclosure. You have one week. What do you do?",
+        prompt: "Case study: a customer reports that Checker, a compliance checker, gave a green score on a file that missed a vulnerable-client disclosure. You have one week. What do you do?",
         answer: [
           ["Opening", ["The dangerous failure is a false green on a critical check. I would treat it as an incident, not a normal quality bug."]],
           ["System design", ["Freeze or downgrade the affected scoring path if blast radius is unclear.", "Pull traces: source docs, criteria version, prompt/model version, retrieved evidence, checks run, score rationale, reviewer edits.", "Convert the case into a regression test and inspect adjacent files for the same pattern.", "Break the single score into explainable checks with severity and evidence."]],
@@ -1778,7 +1791,7 @@
       },
       {
         topic: "Launch Plan",
-        prompt: "The CEO asks you to make AdvisoryAI 'agentic' this quarter. What do you ship without creating a compliance nightmare?",
+        prompt: "The CEO asks you to make the firm 'agentic' this quarter. What do you ship without creating a compliance nightmare?",
         answer: [
           ["Opening", ["I would translate 'agentic' into a ranked workflow portfolio, not a vague autonomy push. Start with high-frequency, low-risk assistance before irreversible actions."]],
           ["System design", ["Classify tools by risk: read-only, reversible write, irreversible write, regulated action.", "Use typed tools, idempotency keys, policy checks, append-only logs, before/after snapshots, and approval gates.", "Give the model proposal power first; deterministic code authorizes and executes."]],
@@ -1804,7 +1817,7 @@
         traps: ["Do not let every worker independently hammer the provider.", "Do not hide fallbacks from observability.", "Do not treat batch and adviser-facing workflows equally."],
         followups: [
           "When do you open the circuit breaker?",
-          "What is the fallback for Emma versus Evie?",
+          "What is the fallback for Drafter versus Notetaker?",
           "How do you preserve idempotency through retries?"
         ]
       },
@@ -1828,7 +1841,7 @@
         topic: "Context Eng",
         prompt: "Your agent degrades on long tasks: it forgets constraints from early in the session and repeats work. The PM wants to buy a bigger context window. What do you actually do?",
         answer: [
-          ["Opening", ["A bigger window raises the ceiling but does not fix attention dilution and context rot. Context is a curated budget, not storage — the fix is context engineering, not capacity."]],
+          ["Opening", ["A bigger window raises the ceiling but does not fix attention dilution and context rot. Context is a curated budget, not storage - the fix is context engineering, not capacity."]],
           ["System design", ["Add compaction: summarize near the limit and re-initiate a fresh window seeded with decisions, constraints, artifacts, and open TODOs.", "Move durable state out of the window into structured notes, files, or a task store the agent re-reads on demand.", "Split long tasks into sub-agents with clean, purpose-sized contexts; retrieve on demand instead of preloading everything."]],
           ["Metrics", ["Task success versus session length, constraint-retention checks, compaction-fidelity evals, tokens per completed task, re-work rate."]],
           ["First ship", ["Ship compaction plus structured note-taking first; only reach for longer-context models where the working set is genuinely irreducible."]]
@@ -1844,8 +1857,8 @@
         topic: "Multi-Agent",
         prompt: "The team proposes a twelve-agent system with a planner, critics, and workers. The demo looks magical. As the senior engineer in the room, what is your call?",
         answer: [
-          ["Opening", ["Agent count is not the goal. I'd demand the single-agent-with-good-tools baseline first — multi-agent is justified by a real decomposition win: context isolation, parallel read-heavy work, or privilege separation."]],
-          ["System design", ["If it survives the baseline test: orchestrator–worker with typed handoffs, each worker getting a scoped context and toolset.", "Workers exchange artifacts through a shared store, not raw transcripts; the orchestrator owns synthesis.", "Deterministic control flow wherever steps are known — workflows around agent islands — and one trace ID across every agent."]],
+          ["Opening", ["Agent count is not the goal. I'd demand the single-agent-with-good-tools baseline first - multi-agent is justified by a real decomposition win: context isolation, parallel read-heavy work, or privilege separation."]],
+          ["System design", ["If it survives the baseline test: orchestrator-worker with typed handoffs, each worker getting a scoped context and toolset.", "Workers exchange artifacts through a shared store, not raw transcripts; the orchestrator owns synthesis.", "Deterministic control flow wherever steps are known - workflows around agent islands - and one trace ID across every agent."]],
           ["Metrics", ["End-to-end task success versus the single-agent baseline, cost and latency per completed task, token multiplier, handoff failure rate."]],
           ["Tradeoff", ["Multi-agent systems can burn an order of magnitude more tokens than a single session. That buys real lift on parallelizable research-shaped work and mostly overhead elsewhere."]]
         ],
@@ -1861,7 +1874,7 @@
         prompt: "The platform team wants to expose 200 internal APIs to agents through MCP servers. Security is nervous. Sketch the architecture and the controls.",
         answer: [
           ["Opening", ["MCP standardizes the connection layer, but mirroring 200 raw endpoints creates tool sprawl and a huge attack surface. I'd curate task-shaped tools per workflow, not an API catalog."]],
-          ["System design", ["Small, distinct toolsets per agent surface, with progressive disclosure or tool-search for the long tail.", "A gateway that enforces authentication and authorization on every call: scoped per-user, per-tenant credentials, allowlists, rate limits, immutable audit logs.", "Treat tool descriptions and results as untrusted input — tool poisoning and injection-via-results are real; vet, pin, and review servers like dependencies."]],
+          ["System design", ["Small, distinct toolsets per agent surface, with progressive disclosure or tool-search for the long tail.", "A gateway that enforces authentication and authorization on every call: scoped per-user, per-tenant credentials, allowlists, rate limits, immutable audit logs.", "Treat tool descriptions and results as untrusted input - tool poisoning and injection-via-results are real; vet, pin, and review servers like dependencies."]],
           ["Metrics", ["Tool-selection accuracy, policy-denial rate, unused-tool count, red-team pass rate on poisoned tools, audit-log completeness."]],
           ["Tradeoff", ["Fewer, better tools beat completeness. Every tool you expose is prompt surface, attack surface, and eval surface."]]
         ],
@@ -1877,9 +1890,9 @@
         prompt: "Your LLM judge gives the new prompt 4.6 out of 5, up from 4.3, and the team wants to ship. Tear this apart.",
         answer: [
           ["Opening", ["A five-point vibe score from an uncalibrated judge is not a release gate. Judges carry position, verbosity, and self-preference biases, and a 0.3 average delta says nothing about critical failures."]],
-          ["System design", ["Replace the scalar with binary rubrics per failure mode, calibrated against expert labels — measure per-class TPR/TNR, not overall agreement.", "For pairwise comparisons, evaluate both orderings and count consistent wins.", "Keep a hidden holdout so the team cannot overfit the eval; convert production incidents into regression cases; use code-based checks for anything deterministic."]],
-          ["Metrics", ["Judge–human agreement per class, false-pass rate on critical failure modes, regression pass rate, holdout-versus-dev gap."]],
-          ["Tradeoff", ["LLM judges scale review cheaply, but a release gate needs human-anchored calibration and periodic drift re-checks — that cost is the price of trusting it."]]
+          ["System design", ["Replace the scalar with binary rubrics per failure mode, calibrated against expert labels - measure per-class TPR/TNR, not overall agreement.", "For pairwise comparisons, evaluate both orderings and count consistent wins.", "Keep a hidden holdout so the team cannot overfit the eval; convert production incidents into regression cases; use code-based checks for anything deterministic."]],
+          ["Metrics", ["Judge-human agreement per class, false-pass rate on critical failure modes, regression pass rate, holdout-versus-dev gap."]],
+          ["Tradeoff", ["LLM judges scale review cheaply, but a release gate needs human-anchored calibration and periodic drift re-checks - that cost is the price of trusting it."]]
         ],
         traps: ["Do not average heterogeneous rubrics into one number.", "Do not gate releases with a judge from the same model family without checking self-preference.", "Do not iterate prompts against the eval set you gate on."],
         followups: [
@@ -1892,10 +1905,10 @@
         topic: "Inference",
         prompt: "Your inference bill doubled quarter over quarter while traffic grew thirty percent. Take fifty percent out of the cost without wrecking quality. Walk me through it.",
         answer: [
-          ["Opening", ["First I'd get cost per successful task by workflow — a doubled bill with flat traffic means waste: retries, bloated contexts, or premium models on commodity work. Optimize the funnel, not the token price."]],
+          ["Opening", ["First I'd get cost per successful task by workflow - a doubled bill with flat traffic means waste: retries, bloated contexts, or premium models on commodity work. Optimize the funnel, not the token price."]],
           ["System design", ["Prompt caching: order context stable-first (system, tools, examples) so prefixes hit; keep them byte-stable.", "Model routing and cascades: small model by default, escalate on low confidence or failed validation; distill high-volume narrow tasks.", "Output discipline via structured outputs and length caps; batch or async tier for non-interactive work; kill retry storms with budgets and idempotent resume; semantic caching only where tenant-safe."]],
           ["Metrics", ["Cost per successful workflow, cache hit rate, escalation rate with quality delta, tokens per task trend, p95 latency guardrail."]],
-          ["Tradeoff", ["Routing saves real money but every route needs its own eval gate — the router becomes a model problem you now own."]]
+          ["Tradeoff", ["Routing saves real money but every route needs its own eval gate - the router becomes a model problem you now own."]]
         ],
         traps: ["Do not report blended average cost per token.", "Do not share caches across tenants.", "Do not downgrade models without eval gates and rollback."],
         followups: [
@@ -1908,10 +1921,10 @@
         topic: "Fine-tuning",
         prompt: "A director insists you fine-tune an open model on your support tickets 'to build a moat'. When is that right, and what do you tell them?",
         answer: [
-          ["Opening", ["Fine-tuning is a tool, not a moat — the durable moat is the data flywheel plus evals. The ladder is prompting and context engineering, then retrieval and tools, then structured outputs, and only then tuning."]],
+          ["Opening", ["Fine-tuning is a tool, not a moat - the durable moat is the data flywheel plus evals. The ladder is prompting and context engineering, then retrieval and tools, then structured outputs, and only then tuning."]],
           ["System design", ["Tune for form, not facts: format reliability, tone, tool-call discipline, or latency/cost by moving a narrow task to a smaller model (SFT, usually LoRA).", "Preference optimization (DPO-family) on chosen-versus-rejected pairs for taste; distillation from a frontier model for high-volume narrow tasks.", "Keep knowledge in retrieval so it stays fresh and auditable; scrub PII, dedupe, and decontaminate training data against eval sets."]],
           ["Metrics", ["Eval lift versus the best prompted frontier baseline at matched cost, regression on general capabilities, serving cost and latency delta, refresh cadence cost."]],
-          ["Tradeoff", ["A tuned model means you own serving, safety behavior, and every future refresh — while API frontier models keep improving underneath you. Sometimes worth it, never free."]]
+          ["Tradeoff", ["A tuned model means you own serving, safety behavior, and every future refresh - while API frontier models keep improving underneath you. Sometimes worth it, never free."]]
         ],
         traps: ["Do not tune to inject fresh knowledge.", "Do not skip the prompted baseline comparison.", "Do not let eval data leak into training data."],
         followups: [
@@ -1925,7 +1938,7 @@
         prompt: "Users complain the assistant forgets everything between sessions. Legal complains about what it remembers. Design memory that satisfies both.",
         answer: [
           ["Opening", ["Memory is a product and governance surface, not a vector-store bolt-on. Define what is worth remembering, for whom, with consent, visibility, and expiry."]],
-          ["System design", ["Layer it: session working context, episodic task artifacts, a durable structured profile, and org knowledge via retrieval.", "Write policies decide what gets saved — scrubbed, structured, user-visible and editable; retrieval policies blend relevance, recency, and permissions.", "Deletion must propagate to indexes, embeddings, and caches with a measurable SLA."]],
+          ["System design", ["Layer it: session working context, episodic task artifacts, a durable structured profile, and org knowledge via retrieval.", "Write policies decide what gets saved - scrubbed, structured, user-visible and editable; retrieval policies blend relevance, recency, and permissions.", "Deletion must propagate to indexes, embeddings, and caches with a measurable SLA."]],
           ["Metrics", ["Measured task lift from memory hits, false-memory rate, deletion-propagation SLA compliance, memory-related complaints and opt-outs."]],
           ["Tradeoff", ["Aggressive implicit memory feels magical until it is wrong or creepy. Bias to explicit, inspectable memories and earn the right to automate."]]
         ],
@@ -1941,11 +1954,11 @@
         prompt: "Friday, 4pm: your provider announces the model version you pinned is deprecated, effective in 30 days. Your prompts and evals were tuned to it. What happens next?",
         answer: [
           ["Opening", ["Model migration should be a standing capability, not an emergency. Assume regression until proven otherwise and start the clock on evidence, not vibes."]],
-          ["System design", ["Run the full eval suite and golden traces against the successor behind a flag; diff behavior by workflow — tool-call formats, refusal patterns, verbosity shifts that break parsers.", "Staged rollout with canaries and automatic rollback on metric gates.", "Longer term: contract review of deprecation windows, a second-provider fallback for critical flows, and notes wherever prompts encode model-specific quirks."]],
+          ["System design", ["Run the full eval suite and golden traces against the successor behind a flag; diff behavior by workflow - tool-call formats, refusal patterns, verbosity shifts that break parsers.", "Staged rollout with canaries and automatic rollback on metric gates.", "Longer term: contract review of deprecation windows, a second-provider fallback for critical flows, and notes wherever prompts encode model-specific quirks."]],
           ["Metrics", ["Eval delta by suite, parser and schema-validation failure rate, refusal and latency shifts, canary error budget burn."]],
           ["First ship", ["The flagged migration with eval diffs ships this week; the second-provider fallback becomes next quarter's resilience work."]]
         ],
-        traps: ["Do not blind-swap and watch dashboards.", "Do not let prompts accumulate undocumented model-specific hacks.", "Do not skip tool-call format diffs — they break quietly."],
+        traps: ["Do not blind-swap and watch dashboards.", "Do not let prompts accumulate undocumented model-specific hacks.", "Do not skip tool-call format diffs - they break quietly."],
         followups: [
           "What belongs in a golden trace set for migrations?",
           "What does a multi-provider abstraction actually cost you?",
@@ -1956,12 +1969,12 @@
         topic: "Security",
         prompt: "Red team shows your browsing agent can be steered by a webpage into exfiltrating a user's documents through a tool call. Product wants to ship anyway. Your move?",
         answer: [
-          ["Opening", ["That is not an edge case — private data, untrusted content, and external egress in one agent is the lethal trifecta. I would block the ship until one leg is broken, and say so in writing."]],
+          ["Opening", ["That is not an edge case - private data, untrusted content, and external egress in one agent is the lethal trifecta. I would block the ship until one leg is broken, and say so in writing."]],
           ["System design", ["Remove or approval-gate external egress for sessions that touch private data.", "Least-privilege, allowlisted tools; taint-track content so web-derived text cannot trigger sensitive tools.", "Deterministic policy engine outside the model, sandboxed browsing, and adversarial suites in CI so the red-team finding becomes a permanent regression test."]],
           ["Metrics", ["Red-team pass rate by attack class, unsafe-tool-attempt rate in production, leak canary triggers, approval friction versus bypass attempts."]],
           ["Tradeoff", ["Ship narrower capability with hard walls now; expand as controls mature. A refusal-trained model is a layer, never the boundary."]]
         ],
-        traps: ["Do not treat 'the prompt says ignore injections' as a control.", "Do not confuse refusal rates with security.", "Do not rely on output filtering alone — exfiltration hides in URLs and tool args."],
+        traps: ["Do not treat 'the prompt says ignore injections' as a control.", "Do not confuse refusal rates with security.", "Do not rely on output filtering alone - exfiltration hides in URLs and tool args."],
         followups: [
           "How do you taint-track through a summarization step?",
           "What does the approval UX show so it isn't a rubber stamp?",
@@ -1972,26 +1985,26 @@
         topic: "Product Sense",
         prompt: "The CEO says: competitors ship AI features weekly; we shipped one this quarter because of your eval gates. Defend the process or change it.",
         answer: [
-          ["Opening", ["If throughput is that low, the eval system is built wrong — evals should accelerate shipping by making risk legible, not tax every release equally."]],
+          ["Opening", ["If throughput is that low, the eval system is built wrong - evals should accelerate shipping by making risk legible, not tax every release equally."]],
           ["System design", ["Tier gates by blast radius: read-only and reversible UX ships behind flags in days; write-path and regulated actions keep hard gates.", "Pre-built eval harness templates so a new feature starts with evals in hours, not weeks.", "Online monitoring and staged rollouts as the second gate; a weekly release train for prompts and models."]],
           ["Metrics", ["Time from idea to flagged beta, incident rate by tier, eval-authoring time, win rate of shipped features."]],
-          ["Tradeoff", ["Speed for reversible things, rigor for irreversible ones — and the tier criteria are public inside the company so the tradeoff is a policy, not a negotiation per feature."]]
+          ["Tradeoff", ["Speed for reversible things, rigor for irreversible ones - and the tier criteria are public inside the company so the tradeoff is a policy, not a negotiation per feature."]]
         ],
-        traps: ["Do not defend process for its own sake.", "Do not quietly drop gates under pressure — renegotiate tiers openly.", "Do not let 'AI feature' mean an unscoped chatbot."],
+        traps: ["Do not defend process for its own sake.", "Do not quietly drop gates under pressure - renegotiate tiers openly.", "Do not let 'AI feature' mean an unscoped chatbot."],
         followups: [
           "What exactly are the tier criteria?",
-          "Who owns evals — platform or feature teams?",
+          "Who owns evals - platform or feature teams?",
           "How do you stop feature flags from rotting?"
         ]
       },
       {
         topic: "Frontier",
-        prompt: "When do you reach for a reasoning model with extended thinking versus a fast model — and how do you stop thinking tokens from eating latency and budget?",
+        prompt: "When do you reach for a reasoning model with extended thinking versus a fast model - and how do you stop thinking tokens from eating latency and budget?",
         answer: [
-          ["Opening", ["Test-time compute is a dial: pay for it where verifiable difficulty lives — planning, math, code, gnarly tool decisions — not on every request."]],
-          ["System design", ["Route by task hardness and cap thinking budgets per tier.", "Plan-once, execute-many: a reasoning model writes the plan, fast models execute the steps.", "Verify cheaply — schemas, tests, calibrated judges — so you retry cheap before escalating expensive; parallel sampling with a verifier for the highest stakes."]],
+          ["Opening", ["Test-time compute is a dial: pay for it where verifiable difficulty lives - planning, math, code, gnarly tool decisions - not on every request."]],
+          ["System design", ["Route by task hardness and cap thinking budgets per tier.", "Plan-once, execute-many: a reasoning model writes the plan, fast models execute the steps.", "Verify cheaply - schemas, tests, calibrated judges - so you retry cheap before escalating expensive; parallel sampling with a verifier for the highest stakes."]],
           ["Metrics", ["Accuracy-versus-thinking-budget curves per workflow, escalation rate, p95 latency by tier, cost per solved task."]],
-          ["Tradeoff", ["More thinking lifts reasoning-heavy work and just burns money elsewhere — measured curves beat vibes, and UX must stream progress so latency feels intentional."]]
+          ["Tradeoff", ["More thinking lifts reasoning-heavy work and just burns money elsewhere - measured curves beat vibes, and UX must stream progress so latency feels intentional."]]
         ],
         traps: ["Do not default maximum reasoning everywhere.", "Do not hide thinking latency behind a spinner.", "Do not expect reasoning to compensate for missing retrieval."],
         followups: [
@@ -2002,12 +2015,12 @@
       },
       {
         topic: "Architecture",
-        prompt: "Greenfield. You are the founding AI engineer. Sketch the platform you stand up in month one — and name what you refuse to build yet.",
+        prompt: "Greenfield. You are the founding AI engineer. Sketch the platform you stand up in month one - and name what you refuse to build yet.",
         answer: [
           ["Opening", ["I'd build the paved road, not a platform buffet: one gateway, tracing, an eval harness, and exactly one high-value workflow shipped end to end."]],
-          ["System design", ["An LLM gateway owning routing, caching, rate limits, budgets, and keys.", "Tracing from day one with OTel GenAI-style spans — prompt, model, tools, validation — plus token and cost telemetry.", "Eval harness with golden sets wired into CI; structured-output validation layer; boring infra: managed queue, Postgres with pgvector before exotic vector stores; the one workflow ships with human review."]],
+          ["System design", ["An LLM gateway owning routing, caching, rate limits, budgets, and keys.", "Tracing from day one with OTel GenAI-style spans - prompt, model, tools, validation - plus token and cost telemetry.", "Eval harness with golden sets wired into CI; structured-output validation layer; boring infra: managed queue, Postgres with pgvector before exotic vector stores; the one workflow ships with human review."]],
           ["Metrics", ["Time to first shipped workflow, trace coverage, eval-in-CI adoption, cost per successful task, incident count."]],
-          ["First ship", ["Refuse for now: multi-agent frameworks, fine-tuning pipelines, custom vector infra, semantic caching, and any agent marketplace — until usage data demands them."]]
+          ["First ship", ["Refuse for now: multi-agent frameworks, fine-tuning pipelines, custom vector infra, semantic caching, and any agent marketplace - until usage data demands them."]]
         ],
         traps: ["Do not build for hypothetical scale.", "Do not adopt a framework before feeling the raw API pain.", "Do not ship workflow number two before workflow number one has evals and traces."],
         followups: [
@@ -2120,8 +2133,8 @@
         metric: "Critical-term error rate, numeric/date accuracy, speaker attribution accuracy, adviser corrections."
       },
       {
-        topic: "Evie",
-        q: "What makes Evie harder than a normal meeting transcription app?",
+        topic: "Notetaker",
+        q: "What makes Notetaker harder than a normal meeting transcription app?",
         a: [
           "Financial advice meetings include product names, amounts, dates, risk language, vulnerabilities, and soft facts.",
           "The transcript is upstream evidence for reports and compliance.",
@@ -2160,8 +2173,8 @@
         metric: "Retrieval isolation pass rate, access-denied rate, cache-key coverage, leakage incidents."
       },
       {
-        topic: "Emma",
-        q: "How would you evaluate Emma suitability report generation?",
+        topic: "Drafter",
+        q: "How would you evaluate Drafter suitability report generation?",
         a: [
           "Split the workflow into extraction, retrieval, drafting, validation, and adviser review.",
           "Measure provider-data accuracy, missing-field detection, groundedness, completeness, template fidelity, citation coverage, unsupported claims.",
@@ -2170,20 +2183,20 @@
         metric: "Extraction accuracy, missing-field recall, groundedness, template adherence, edit distance by section."
       },
       {
-        topic: "Colin",
-        q: "How would you design Colin as a compliance checker without overclaiming?",
+        topic: "Checker",
+        q: "How would you design Checker as a compliance checker without overclaiming?",
         a: [
-          "Colin should surface risk and evidence, not replace final compliance authority.",
+          "Checker should surface risk and evidence, not replace final compliance authority.",
           "Use versioned FCA, Consumer Duty, and firm criteria; deterministic checks where possible; semantic checks where language judgment matters.",
           "Every flag should have severity, rationale snippets, uncertainty handling, and reviewer decision in the audit trail."
         ],
         metric: "Critical-issue recall, flag precision by severity, false-negative rate, reviewer override rate."
       },
       {
-        topic: "Atlas",
-        q: "How does Atlas change the architecture problem?",
+        topic: "Copilot",
+        q: "How does Copilot change the architecture problem?",
         a: [
-          "Atlas turns separate assistants into a unified conversational operating layer.",
+          "Copilot turns separate assistants into a unified conversational operating layer.",
           "The blast radius grows: permissions, tenant isolation, stale sources, tool routing, and cross-product traceability matter more.",
           "Each answer/action should trace back to source data, user permission, product stage, and human approval."
         ],
@@ -2224,7 +2237,7 @@
         q: "What is context engineering, and how is it more than prompt engineering?",
         a: [
           "Prompt engineering optimizes one instruction; context engineering curates everything in the window: system prompt, tools, examples, retrieved docs, history, and state.",
-          "The goal is the smallest set of high-signal tokens that maximizes the outcome — attention is a finite budget.",
+          "The goal is the smallest set of high-signal tokens that maximizes the outcome - attention is a finite budget.",
           "It is iterative: every turn you decide what enters, what compacts, and what lives outside the window."
         ],
         metric: "Task success versus context size, tokens per completed task, constraint-retention rate."
@@ -2243,7 +2256,7 @@
         topic: "Context Eng",
         q: "Why does stuffing more into context often hurt?",
         a: [
-          "Attention dilutes across tokens — long inputs show context rot and lost-in-the-middle effects.",
+          "Attention dilutes across tokens - long inputs show context rot and lost-in-the-middle effects.",
           "Distractor content raises wrong-tool and wrong-fact rates while adding latency and cost.",
           "Retrieval precision and curation beat volume; load on demand instead of preloading."
         ],
@@ -2254,7 +2267,7 @@
         q: "How do you use few-shot examples well?",
         a: [
           "Curate a small, diverse set of canonical examples that demonstrate the exact behavior, including edge cases.",
-          "Examples are the behavioral contract — models imitate them more faithfully than prose rules.",
+          "Examples are the behavioral contract - models imitate them more faithfully than prose rules.",
           "Keep ordering stable so prompt caching hits, and version them alongside evals."
         ],
         metric: "Format adherence and eval pass rate when examples change."
@@ -2263,7 +2276,7 @@
         topic: "Context Eng",
         q: "What is the 'right altitude' for a system prompt?",
         a: [
-          "Not brittle if-else scripting, not vague vibes — a clear role, constraints, success criteria, and non-goals.",
+          "Not brittle if-else scripting, not vague vibes - a clear role, constraints, success criteria, and non-goals.",
           "Give heuristics and decision rules, then trust the model with specifics.",
           "Warning signs: the prompt grows with every incident, or behavior collapses on paraphrase."
         ],
@@ -2271,11 +2284,11 @@
       },
       {
         topic: "Agents",
-        q: "Workflows versus agents — how do you choose?",
+        q: "Workflows versus agents - how do you choose?",
         a: [
           "If the steps are enumerable in advance, write a workflow: deterministic code with LLM calls where judgment lives.",
           "Reserve agent loops for tasks where the path depends on intermediate findings.",
-          "Workflows are cheaper, testable, and debuggable — most production 'agents' should have started as workflows."
+          "Workflows are cheaper, testable, and debuggable - most production 'agents' should have started as workflows."
         ],
         metric: "Cost and failure rate versus a workflow baseline on the same task."
       },
@@ -2293,9 +2306,9 @@
         topic: "Agents",
         q: "What makes a tool definition good?",
         a: [
-          "Task-shaped, not an API mirror — one unambiguous purpose per tool.",
+          "Task-shaped, not an API mirror - one unambiguous purpose per tool.",
           "Strict typed parameters, concise high-signal returns, and errors written so the model can recover.",
-          "If an engineer can't say which tool applies, the model can't either — merge or remove overlaps."
+          "If an engineer can't say which tool applies, the model can't either - merge or remove overlaps."
         ],
         metric: "Tool-selection accuracy, tool-error recovery rate, unused-tool count."
       },
@@ -2303,7 +2316,7 @@
         topic: "Agents",
         q: "How do long-running agents survive crashes and context limits?",
         a: [
-          "Persist state outside the context — files, databases, artifact stores — checkpointed at step boundaries.",
+          "Persist state outside the context - files, databases, artifact stores - checkpointed at step boundaries.",
           "Idempotency keys on side effects so a resumed run doesn't double-write.",
           "A harness re-initializes fresh windows from the checkpoint plus an initializer prompt."
         ],
@@ -2311,7 +2324,7 @@
       },
       {
         topic: "Multi-Agent",
-        q: "When does orchestrator–worker beat a single agent?",
+        q: "When does orchestrator-worker beat a single agent?",
         a: [
           "Context isolation: each worker gets a clean window sized to its subtask.",
           "Parallelism on read-heavy work like research and codebase exploration.",
@@ -2323,7 +2336,7 @@
         topic: "Multi-Agent",
         q: "What are the real costs of multi-agent designs?",
         a: [
-          "Token spend multiplies — parallel workers can burn an order of magnitude more than one session.",
+          "Token spend multiplies - parallel workers can burn an order of magnitude more than one session.",
           "Coordination failures: duplicated work, contradictory conclusions, context lost at handoffs.",
           "Debugging requires one trace across all agents; per-agent logs cannot explain a bad final answer."
         ],
@@ -2333,8 +2346,8 @@
         topic: "Agents",
         q: "Where does human-in-the-loop belong in agent systems?",
         a: [
-          "At irreversible, regulated, or low-confidence actions — approval before execution.",
-          "Approvals must show evidence: what, why, and the diff — or they decay into rubber stamps.",
+          "At irreversible, regulated, or low-confidence actions - approval before execution.",
+          "Approvals must show evidence: what, why, and the diff - or they decay into rubber stamps.",
           "Sample approved runs for QA and mine overrides as eval fodder."
         ],
         metric: "Override rate, approval latency, incident rate on auto-approved paths."
@@ -2343,7 +2356,7 @@
         topic: "MCP",
         q: "What does MCP standardize, and why does it matter?",
         a: [
-          "An open protocol for exposing tools, resources, and prompts to any client — N apps times M systems without custom glue.",
+          "An open protocol for exposing tools, resources, and prompts to any client - N apps times M systems without custom glue.",
           "Discovery, schemas, and auth patterns come standardized; servers become reusable infrastructure.",
           "It moved integrations from per-app adapters to an ecosystem layer."
         ],
@@ -2353,7 +2366,7 @@
         topic: "MCP",
         q: "Top security risks when adopting MCP servers?",
         a: [
-          "Supply chain: a malicious or compromised server ships instructions inside tool descriptions — tool poisoning.",
+          "Supply chain: a malicious or compromised server ships instructions inside tool descriptions - tool poisoning.",
           "Injection via tool results, which re-enter the model as trusted-looking text.",
           "Credential scope creep when servers hold broad tokens instead of scoped ones."
         ],
@@ -2365,17 +2378,17 @@
         a: [
           "Curate small task-shaped toolsets per workflow instead of exposing the catalog.",
           "Namespace tools and write distinct descriptions; merge or delete overlaps.",
-          "For large catalogs, use progressive disclosure — search over tools rather than loading every definition."
+          "For large catalogs, use progressive disclosure - search over tools rather than loading every definition."
         ],
         metric: "Tool-selection accuracy, context tokens spent on definitions, unused-tool count."
       },
       {
         topic: "Evals",
-        q: "Offline versus online evals — why do you need both?",
+        q: "Offline versus online evals - why do you need both?",
         a: [
           "Offline golden sets and CI gates catch regressions before ship, on a distribution you chose.",
           "Online sampled scoring, canaries, and A/B catch drift and the distribution you didn't choose.",
-          "Error analysis on production traces feeds new offline cases — the loop is the asset."
+          "Error analysis on production traces feeds new offline cases - the loop is the asset."
         ],
         metric: "Regression catch rate pre-ship; time-to-detect for production drift."
       },
@@ -2383,19 +2396,19 @@
         topic: "Evals",
         q: "How do you calibrate an LLM judge before trusting it?",
         a: [
-          "Experts label 30–50+ examples; measure the judge per class with TPR/TNR or precision/recall, not overall agreement.",
+          "Experts label 30-50+ examples; measure the judge per class with TPR/TNR or precision/recall, not overall agreement.",
           "Iterate the rubric until critical-failure classes hit target recall; keep a hidden holdout.",
           "Re-check periodically for drift and self-preference whenever models change."
         ],
-        metric: "Judge–human agreement per class, false-pass rate on critical classes."
+        metric: "Judge-human agreement per class, false-pass rate on critical classes."
       },
       {
         topic: "Evals",
         q: "Which judge biases do you design around?",
         a: [
-          "Position bias in pairwise comparisons — evaluate both orders and count only consistent wins.",
-          "Verbosity and style bias — length-normalize and anchor rubrics to substance.",
-          "Self-preference — use a different model family for release gates."
+          "Position bias in pairwise comparisons - evaluate both orders and count only consistent wins.",
+          "Verbosity and style bias - length-normalize and anchor rubrics to substance.",
+          "Self-preference - use a different model family for release gates."
         ],
         metric: "Order-swap consistency, length-score correlation, cross-family gate agreement."
       },
@@ -2403,7 +2416,7 @@
         topic: "Evals",
         q: "What belongs in a golden set?",
         a: [
-          "Real redacted traces stratified by workflow and segment — hard cases over easy wins.",
+          "Real redacted traces stratified by workflow and segment - hard cases over easy wins.",
           "Every serious production incident converted into a permanent regression case.",
           "Adversarial and synthetic edge cases, versioned like code with named owners."
         ],
@@ -2413,7 +2426,7 @@
         topic: "Evals",
         q: "How do you measure agent reliability beyond pass rate?",
         a: [
-          "pass^k: the probability of succeeding k consecutive independent runs — users feel consistency, not averages.",
+          "pass^k: the probability of succeeding k consecutive independent runs - users feel consistency, not averages.",
           "Perturbation testing: reworded tasks, injected tool errors, changed environments.",
           "Recovery rate after failures, and steps or cost per success."
         ],
@@ -2423,7 +2436,7 @@
         topic: "RAG",
         q: "Why hybrid search instead of pure vectors?",
         a: [
-          "Dense retrieval blurs exact identifiers — SKUs, error codes, names; lexical search like BM25 nails them.",
+          "Dense retrieval blurs exact identifiers - SKUs, error codes, names; lexical search like BM25 nails them.",
           "Dense catches paraphrase and semantics that lexical misses; fuse with reciprocal rank fusion.",
           "Rerank the fused candidates with a cross-encoder for precision at small k."
         ],
@@ -2434,7 +2447,7 @@
         q: "What does good chunking look like?",
         a: [
           "Structure-aware: respect headings, sections, and tables instead of fixed-size windows.",
-          "Contextualized chunks — prepend document and section context so each chunk stands alone at retrieval time.",
+          "Contextualized chunks - prepend document and section context so each chunk stands alone at retrieval time.",
           "Carry metadata for filters and permissions, and evaluate retrieval separately from generation."
         ],
         metric: "Context precision and recall deltas across chunking strategies."
@@ -2445,16 +2458,16 @@
         a: [
           "The model drives search as a tool: reformulates queries, applies filters, iterates, and decides when it has enough.",
           "It wins on multi-hop and ambiguous questions where one-shot top-k fails.",
-          "It costs more tokens and latency — route simple lookups to classic RAG."
+          "It costs more tokens and latency - route simple lookups to classic RAG."
         ],
         metric: "Multi-hop answer quality versus one-shot RAG at matched cost."
       },
       {
         topic: "RAG",
-        q: "Long context versus RAG — the real tradeoff?",
+        q: "Long context versus RAG - the real tradeoff?",
         a: [
           "A small, stable, cache-friendly corpus that fits the window: loading it whole can beat retrieval and simplifies everything.",
-          "Large, fresh, permissioned, or auditable corpora need retrieval — you cannot cache your way to access control.",
+          "Large, fresh, permissioned, or auditable corpora need retrieval - you cannot cache your way to access control.",
           "Hybrid wins in practice: retrieve the right documents, then load them generously."
         ],
         metric: "Quality and cost per query across corpus sizes; permission test pass rate."
@@ -2463,7 +2476,7 @@
         topic: "Inference",
         q: "How do you exploit prompt caching?",
         a: [
-          "Providers reuse computation for identical prompt prefixes — order content stable-first: system, tools, examples; volatile context last.",
+          "Providers reuse computation for identical prompt prefixes - order content stable-first: system, tools, examples; volatile context last.",
           "Hits cut input cost dramatically and slash time-to-first-token.",
           "Design context assembly so prefixes stay byte-stable across requests."
         ],
@@ -2473,7 +2486,7 @@
         topic: "Inference",
         q: "Why does the KV cache dominate serving memory?",
         a: [
-          "Attention stores keys and values for every token, layer, and head — it grows with context length times batch size.",
+          "Attention stores keys and values for every token, layer, and head - it grows with context length times batch size.",
           "It is why long context stays expensive to serve even when the weights fit.",
           "Mitigations: paged attention, grouped-query attention, KV quantization, sliding windows."
         ],
@@ -2483,8 +2496,8 @@
         topic: "Inference",
         q: "Continuous batching and speculative decoding in one breath?",
         a: [
-          "Continuous batching schedules new requests into the running batch at every step — the throughput workhorse.",
-          "Speculative decoding: a small draft model proposes tokens, the target verifies them in parallel — lower latency, identical output.",
+          "Continuous batching schedules new requests into the running batch at every step - the throughput workhorse.",
+          "Speculative decoding: a small draft model proposes tokens, the target verifies them in parallel - lower latency, identical output.",
           "Together they are much of why managed APIs keep getting faster at the same quality."
         ],
         metric: "Tokens per second per GPU; p95 latency at fixed throughput."
@@ -2495,7 +2508,7 @@
         a: [
           "Default traffic to a small, cheap model; escalate on low confidence, failed validation, or a router classifier.",
           "Or pre-route by task type: extraction to small models, hard reasoning to frontier ones.",
-          "Every route needs its own eval gate — the router is a model problem too."
+          "Every route needs its own eval gate - the router is a model problem too."
         ],
         metric: "Escalation rate, quality delta versus all-frontier, cost per successful task."
       },
@@ -2503,7 +2516,7 @@
         topic: "Inference",
         q: "Where does latency go, and in what order do you attack it?",
         a: [
-          "TTFT is queueing plus prefill — which scales with input length — plus network; decode is output length times tokens per second.",
+          "TTFT is queueing plus prefill - which scales with input length - plus network; decode is output length times tokens per second.",
           "Attack order: trim context, hit the prompt cache, stream, cap output length, parallelize tool calls.",
           "Only then pay for faster tiers or dedicated capacity."
         ],
@@ -2513,7 +2526,7 @@
         topic: "Cost",
         q: "Define the unit economics of an AI feature.",
         a: [
-          "Cost per successful task: model tokens plus infra plus human review, divided by successes — not cost per request.",
+          "Cost per successful task: model tokens plus infra plus human review, divided by successes - not cost per request.",
           "Segment by workflow and tenant; blended averages hide the loss-makers.",
           "Levers: caching, routing, output discipline, automation rate, retry hygiene."
         ],
@@ -2523,15 +2536,15 @@
         topic: "Fine-tuning",
         q: "What is the decision ladder before fine-tuning?",
         a: [
-          "Prompting and context engineering, then retrieval and tools, then structured outputs — then tuning.",
+          "Prompting and context engineering, then retrieval and tools, then structured outputs - then tuning.",
           "Tune for form: format reliability, style, tool-call discipline, or latency and cost via a smaller model.",
-          "Never tune to inject fresh facts — that is retrieval's job."
+          "Never tune to inject fresh facts - that is retrieval's job."
         ],
         metric: "Eval lift versus the best prompted baseline at matched cost."
       },
       {
         topic: "Fine-tuning",
-        q: "SFT versus DPO-family — what does each buy you?",
+        q: "SFT versus DPO-family - what does each buy you?",
         a: [
           "SFT imitates demonstrations: formats, procedures, and tone from curated examples.",
           "DPO-style preference optimization learns from chosen-versus-rejected pairs: taste and edge-case judgment.",
@@ -2554,7 +2567,7 @@
         q: "State the lethal trifecta and the rule it gives you.",
         a: [
           "Private data, untrusted content, and external egress in one agent equals exfiltration waiting for a trigger.",
-          "The rule: break at least one leg — isolate the data, sanitize or taint-track the content, or gate egress behind approval.",
+          "The rule: break at least one leg - isolate the data, sanitize or taint-track the content, or gate egress behind approval.",
           "Apply it as a checklist to every new tool grant."
         ],
         metric: "Trifecta review coverage of agent surfaces; exfiltration red-team pass rate."
@@ -2564,8 +2577,8 @@
         q: "Which OWASP LLM risks do you actually architect around?",
         a: [
           "Prompt injection, direct and indirect, plus insecure output handling downstream.",
-          "Excessive agency — more tools and autonomy than the task needs.",
-          "Supply chain across models, servers, and datasets; and unbounded consumption — denial of wallet."
+          "Excessive agency - more tools and autonomy than the task needs.",
+          "Supply chain across models, servers, and datasets; and unbounded consumption - denial of wallet."
         ],
         metric: "One named control and one test per risk class."
       },
@@ -2574,14 +2587,14 @@
         q: "What governance basics should a senior AI engineer carry?",
         a: [
           "Risk-tier your systems; high-risk paths need logging, human oversight, and documented data governance.",
-          "Keep a model and provider inventory, audit trails, and an incident reporting path — regulators and enterprise buyers ask.",
+          "Keep a model and provider inventory, audit trails, and an incident reporting path - regulators and enterprise buyers ask.",
           "Design deletion and consent propagation into pipelines, embeddings, and caches from day one."
         ],
         metric: "Audit completeness, deletion SLA compliance, oversight coverage of high-risk actions."
       },
       {
         topic: "Security",
-        q: "Tenant isolation for AI features — the checklist?",
+        q: "Tenant isolation for AI features - the checklist?",
         a: [
           "Authorization enforced at retrieval time and tool-call time, not just at login.",
           "Per-tenant filters and indexes, tenant-scoped cache keys, no cross-tenant traces or eval samples.",
@@ -2593,7 +2606,7 @@
         topic: "Observability",
         q: "What do OTel GenAI conventions give you?",
         a: [
-          "Standard span attributes for model calls — model, tokens, parameters — plus tool executions and agent steps.",
+          "Standard span attributes for model calls - model, tokens, parameters - plus tool executions and agent steps.",
           "Vendor-portable traces: swap dashboards without re-instrumenting, and correlate LLM spans with the rest of the system.",
           "Attach eval scores and cost to spans for per-workflow economics."
         ],
@@ -2614,7 +2627,7 @@
         q: "What is test-time compute scaling in practice?",
         a: [
           "Buying accuracy at inference: longer reasoning, parallel samples with a verifier, or search over candidate solutions.",
-          "It is a per-request dial — budget by task tier instead of paying everywhere.",
+          "It is a per-request dial - budget by task tier instead of paying everywhere.",
           "It pairs with cheap verification: schemas, tests, and judges decide when to stop or escalate."
         ],
         metric: "Accuracy versus thinking-budget curves; cost per solved task."
@@ -2634,7 +2647,7 @@
         q: "Design agent memory in layers.",
         a: [
           "Working context for this session; episodic artifacts from past tasks; a durable structured profile; org knowledge via retrieval.",
-          "Write policies decide what is worth saving — scrubbed, structured, user-visible and editable.",
+          "Write policies decide what is worth saving - scrubbed, structured, user-visible and editable.",
           "Most agent 'hallucination' complaints are missing-memory failures; most privacy incidents are careless writes."
         ],
         metric: "Task lift from memory hits, false-memory rate, deletion propagation SLA."
@@ -2657,11 +2670,11 @@
       ["Context engineering", "Curating the smallest set of high-signal tokens across prompt, tools, examples, and history."],
       ["Compaction", "Summarizes a session near the context limit and restarts a fresh window from the summary."],
       ["Workflow", "A predefined code path with LLM calls at the steps that need judgment."],
-      ["Orchestrator–worker", "A lead agent plans and delegates to isolated sub-agents, exchanging artifacts, not transcripts."],
+      ["Orchestrator-worker", "A lead agent plans and delegates to isolated sub-agents, exchanging artifacts, not transcripts."],
       ["MCP", "Open protocol standardizing how clients expose tools, resources, and prompts to models."],
       ["Tool poisoning", "Malicious instructions hidden in tool descriptions or results to steer an agent."],
       ["Lethal trifecta", "Private data, untrusted content, and external egress combined in one agent."],
-      ["pass^k", "The probability an agent succeeds on all of k independent trials — reliability, not average quality."],
+      ["pass^k", "The probability an agent succeeds on all of k independent trials - reliability, not average quality."],
       ["Golden set", "Versioned, stratified eval examples including regressions from real incidents."],
       ["Position bias", "A judge preferring an answer because of where it appears; fixed by order swapping."],
       ["Hybrid search", "Fusing lexical retrieval like BM25 with dense vectors, typically via reciprocal rank fusion."],
@@ -2680,9 +2693,9 @@
       { topic: "Observability", text: "A useful LLM trace should include model, prompt version, retrieval query, chunk IDs, tool calls, validation, and ____.", answer: ["fallback", "fallbacks"], hint: "What happened after the primary path failed?" },
       { topic: "Output Control", text: "When JSON is malformed, validate against a schema, retry with the error, then route to ____ if needed.", answer: ["review", "human review", "manual review"], hint: "The safe fallback for high-impact ambiguity." },
       { topic: "ASR", text: "WER can look good while the transcript still fails on client names, product names, amounts, dates, and ____ language.", answer: ["risk", "regulatory", "risk/regulatory"], hint: "The terms that affect advice and compliance." },
-      { topic: "Atlas", text: "Atlas increases value but also increases ____ radius across tools, data, products, and permissions.", answer: ["blast"], hint: "What gets bigger when one mistake can cross product boundaries?" },
+      { topic: "Copilot", text: "Copilot increases value but also increases ____ radius across tools, data, products, and permissions.", answer: ["blast"], hint: "What gets bigger when one mistake can cross product boundaries?" },
       { topic: "Prompt Injection", text: "In RAG, retrieved documents should be treated as untrusted ____ rather than instructions.", answer: ["data", "content"], hint: "Evidence, not command text." },
-      { topic: "Colin", text: "A compliance checker should optimize high ____ for serious issues, then manage precision.", answer: ["recall"], hint: "Missing critical issues is the expensive failure." },
+      { topic: "Checker", text: "A compliance checker should optimize high ____ for serious issues, then manage precision.", answer: ["recall"], hint: "Missing critical issues is the expensive failure." },
       { topic: "Context Eng", text: "Context engineering finds the smallest set of high-____ tokens that still maximizes the outcome.", answer: ["signal"], hint: "Density, not volume." },
       { topic: "Agents", text: "If the steps are known in advance, build a ____ with LLM calls instead of a free agent loop.", answer: ["workflow"], hint: "Deterministic code path." },
       { topic: "Multi-Agent", text: "A single agent with good tools should be the ____ before any multi-agent design.", answer: ["baseline", "default", "starting point"], hint: "Simplest thing that works, measured first." },
@@ -2693,7 +2706,7 @@
       { topic: "Inference", text: "Keep stable content first in the prompt so provider ____ caching can hit.", answer: ["prompt", "prefix"], hint: "System prompt and tools before volatile context." },
       { topic: "Inference", text: "In a model cascade, the small model answers first and ____ on low confidence or failed checks.", answer: ["escalates"], hint: "Hand the request up, not down." },
       { topic: "Inference", text: "Most long-context serving memory is consumed by the ____ cache.", answer: ["kv", "key-value", "key value"], hint: "Attention keys and values per token, per layer." },
-      { topic: "Fine-tuning", text: "Fine-tune for format, style, latency, or cost — keep fresh ____ in retrieval.", answer: ["knowledge", "facts"], hint: "Weights make a bad database." },
+      { topic: "Fine-tuning", text: "Fine-tune for format, style, latency, or cost - keep fresh ____ in retrieval.", answer: ["knowledge", "facts"], hint: "Weights make a bad database." },
       { topic: "Security", text: "Private data, untrusted content, and external egress form the lethal ____.", answer: ["trifecta"], hint: "Break any one leg before shipping." },
       { topic: "Frontier", text: "Reasoning models spend extra test-time ____ to buy accuracy on hard problems.", answer: ["compute"], hint: "The scaling axis beyond model size." },
       { topic: "Memory", text: "A deletion request must propagate to indexes, caches, and ____.", answer: ["embeddings", "vectors"], hint: "Derived data is still personal data." }
@@ -2730,14 +2743,14 @@
       },
       {
         topic: "Output Control",
-        q: "For provider-data extraction into Emma, what is the strongest output-control pattern?",
+        q: "For provider-data extraction into Drafter, what is the strongest output-control pattern?",
         options: ["Free prose with manual parsing", "Structured output plus schema and business-rule validation", "Ask the model to be careful", "Retry forever until valid"],
         answer: 1,
         why: "Structured shape plus deterministic validation catches missing fields, wrong enums, and impossible values."
       },
       {
         topic: "ASR",
-        q: "Why might Evie need critical-term error rate in addition to WER?",
+        q: "Why might Notetaker need critical-term error rate in addition to WER?",
         options: ["WER only measures speed", "WER ignores all insertions", "A low WER transcript can still miss names, amounts, dates, or risk terms", "Critical terms are cheaper to compute"],
         answer: 2,
         why: "Business risk depends on specific words, not only aggregate transcription accuracy."
@@ -2750,7 +2763,7 @@
         why: "Failures cross retrieval, models, tools, validators, fallbacks, and human review."
       },
       {
-        topic: "Colin",
+        topic: "Checker",
         q: "What is the biggest danger of a single AI compliance score?",
         options: ["It is too slow to calculate", "It can create false confidence if a serious issue is hidden behind a green score", "It cannot be displayed in a UI", "It prevents audit logging"],
         answer: 1,
@@ -2764,11 +2777,11 @@
         why: "Grounding helps, but bad retrieval or bad use of evidence can still produce a poor answer."
       },
       {
-        topic: "Atlas",
-        q: "What question best probes Atlas architecture maturity?",
+        topic: "Copilot",
+        q: "What question best probes Copilot architecture maturity?",
         options: ["Can the font be changed?", "How are permissions enforced across client data, meetings, documents, tools, and reports?", "Can it answer jokes?", "Does it use a chatbot UI?"],
         answer: 1,
-        why: "Atlas is a cross-product operating layer. Permissions and traceability are core architecture risks."
+        why: "Copilot is a cross-product operating layer. Permissions and traceability are core architecture risks."
       },
       {
         topic: "Context Eng",
@@ -2796,7 +2809,7 @@
         q: "You want to add a popular third-party MCP server. What do you assess first?",
         options: ["Whether it might be slow", "Supply chain risk: malicious or compromised tool descriptions and results", "Whether it supports streaming", "Whether its license requires attribution"],
         answer: 1,
-        why: "Tool descriptions and results enter the model as trusted-looking text. Vet, pin, and scope credentials like a dependency — stricter."
+        why: "Tool descriptions and results enter the model as trusted-looking text. Vet, pin, and scope credentials like a dependency - stricter."
       },
       {
         topic: "Evals",
@@ -2829,7 +2842,7 @@
       {
         topic: "Inference",
         q: "Time-to-first-token is slow on long-context requests. What dominates, and what do you try first?",
-        options: ["Decode speed — buy faster GPUs", "Prefill cost — trim context and exploit prompt caching", "Network — move regions", "Tokenizer overhead — switch tokenizers"],
+        options: ["Decode speed - buy faster GPUs", "Prefill cost - trim context and exploit prompt caching", "Network - move regions", "Tokenizer overhead - switch tokenizers"],
         answer: 1,
         why: "Prefill scales with input length. Smaller, cache-friendly prompts cut TTFT before any infrastructure change does."
       },
@@ -2857,7 +2870,7 @@
       {
         topic: "Security",
         q: "An assistant reads private docs, browses the web, and can call an HTTP tool. What must change before ship?",
-        options: ["A firmer system prompt about ignoring injections", "Break the lethal trifecta — gate or remove external egress", "A bigger model that resists attacks", "Log everything and ship"],
+        options: ["A firmer system prompt about ignoring injections", "Break the lethal trifecta - gate or remove external egress", "A bigger model that resists attacks", "Log everything and ship"],
         answer: 1,
         why: "Private data + untrusted content + egress is exfiltration by design. Remove or approval-gate one leg; prompts are not a boundary."
       },
@@ -2880,35 +2893,35 @@
         q: "Month one as the founding AI engineer. What do you stand up first?",
         options: ["A multi-agent framework", "Gateway, tracing, and an eval harness around one shipped workflow", "A fine-tuning pipeline", "A custom vector database"],
         answer: 1,
-        why: "The paved road — routing, traces, evals — plus one real workflow compounds. Everything else waits for evidence."
+        why: "The paved road - routing, traces, evals - plus one real workflow compounds. Everything else waits for evidence."
       }
     ];
 
     const PRODUCTS = [
       {
-        name: "Evie",
-        topic: "Evie",
+        name: "Notetaker",
+        topic: "Notetaker",
         role: "Meeting intelligence and adviser assistant.",
         risks: "Audio privacy, ASR mistakes, wrong speaker attribution, missed soft facts, bad CRM write-back.",
         control: "WER plus critical-term error rate, diarization checks, consent logs, reviewable write-back."
       },
       {
-        name: "Emma",
-        topic: "Emma",
+        name: "Drafter",
+        topic: "Drafter",
         role: "Suitability reports, annual reviews, LOA pack summaries, template-driven drafting.",
         risks: "Missing provider data, unsupported claims, stale documents, broken template fidelity.",
         control: "Structured extraction, source/version IDs, groundedness checks, missing-data workflow, adviser edit telemetry."
       },
       {
-        name: "Colin",
-        topic: "Colin",
+        name: "Checker",
+        topic: "Checker",
         role: "Compliance checker and Consumer Duty evidence assistant.",
         risks: "False green scores, weak audit trails, overtrusted AI judgment, poor issue recall.",
         control: "Versioned criteria, evidence snippets, severity, reviewer override capture, critical-issue recall."
       },
       {
-        name: "Atlas",
-        topic: "Atlas",
+        name: "Copilot",
+        topic: "Copilot",
         role: "Unified conversational layer across meetings, reports, compliance, research, data, and integrations.",
         risks: "Bigger blast radius across permissions, tools, tenant data, stale sources, and traceability.",
         control: "Tenant-aware auth, tool routing policy, source freshness, one trace across the full workflow."
@@ -2933,7 +2946,7 @@
       {
         name: "Agents & orchestration",
         topic: "Agents",
-        scope: "Workflows vs agent loops, tool design, orchestrator–worker, durable execution, human-in-the-loop.",
+        scope: "Workflows vs agent loops, tool design, orchestrator-worker, durable execution, human-in-the-loop.",
         risks: "Runaway loops, tool sprawl, unresumable state, rubber-stamp approvals, token multipliers.",
         control: "Task success and pass^k, steps and cost per success, recovery rate, override rate."
       },
@@ -2942,7 +2955,7 @@
         topic: "Evals",
         scope: "Golden sets, calibrated LLM judges, CI gates, online sampling, A/B, error analysis loops.",
         risks: "Overfit eval sets, uncalibrated judges, scalar vibe scores, no online signal.",
-        control: "Judge–human agreement per class, false-pass rate on critical modes, drift time-to-detect."
+        control: "Judge-human agreement per class, false-pass rate on critical modes, drift time-to-detect."
       },
       {
         name: "Observability",
@@ -2989,10 +3002,7 @@
     ];
 
     const SOURCES = [
-      ["Original Obsidian study file", "file:///Users/faiqhilman/Documents/Obsidian%20Vault/02%20-%20Career/AdvisoryAI%20LLM%20Production%20Study%20Cards.html#products", "Used for Evie, Emma, Colin, Atlas framing, flashcards, glossary terms, failure modes, and interview answer shapes."],
-      ["AdvisoryAI Atlas / AI co-pilot", "https://advisoryai.com/product/ai-copilot", "Used to refresh product framing around Atlas, firm workflows, integrations, meetings, suitability, compliance, and research."],
-      ["AdvisoryAI Emma suitability reports", "https://advisoryai.com/product/ai-suitability-reports", "Used for Emma report generation, LOA extraction, missing data, templates, and provider-data study items."],
-      ["AdvisoryAI Colin compliance checker", "https://advisoryai.com/product/ai-compliance-checker", "Used for Colin compliance risk scoring, audit trail, Consumer Duty board report, and file-review questions."],
+      ["Case-study product briefs (private notes)", "#", "Framing for the Notetaker, Drafter, Checker, and Copilot scenarios: workflows, suitability, compliance, meetings, and research."],
       ["OpenAI structured outputs", "https://developers.openai.com/api/docs/guides/structured-outputs", "Used for schema-constrained outputs, JSON validation, and extraction reliability items."],
       ["OpenAI Agents guardrails and approvals", "https://developers.openai.com/api/docs/guides/agents/guardrails-approvals", "Used for input, output, and tool guardrail boundaries in agent workflows."],
       ["OpenAI Agents tracing", "https://openai.github.io/openai-agents-python/tracing/", "Used for tracing questions covering model generations, tool calls, handoffs, guardrails, and custom events."],
@@ -3002,18 +3012,18 @@
       ["Google Gen AI evaluation overview", "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview", "Used for rubric-based evaluation and model migration/evaluation concepts."],
       ["Google agent observability", "https://docs.cloud.google.com/stackdriver/docs/observability/agent-observability", "Used for logs, metrics, traces, token usage, and prompt/response quality monitoring."],
       ["OWASP LLM Prompt Injection Prevention", "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html", "Used for prompt-injection, tool-output injection, and defensive-control language."],
-      ["Anthropic — Building effective agents", "https://www.anthropic.com/engineering/building-effective-agents", "Workflows versus agents, composable patterns, and the simplest-thing-that-works doctrine behind the agent items."],
-      ["Anthropic — Effective context engineering", "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents", "Context as a curated budget: prompt altitude, tool hygiene, compaction, and note-taking items."],
-      ["Anthropic — Harnesses for long-running agents", "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents", "Long-horizon patterns: initializer contexts, checkpoints, resumability, multi-window workflows."],
-      ["Anthropic — Multi-agent research system", "https://www.anthropic.com/engineering/built-multi-agent-research-system", "Orchestrator–worker economics, token multipliers, and parallel research patterns in the multi-agent items."],
-      ["OpenAI — A practical guide to building agents", "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf", "Single-agent-first guidance, manager and handoff patterns, layered guardrails."],
-      ["Model Context Protocol — spec and docs", "https://modelcontextprotocol.io", "Tools, resources, prompts, and the auth model behind the MCP items."],
-      ["OWASP GenAI Security — LLM Top 10", "https://genai.owasp.org", "Prompt injection, excessive agency, supply chain, and unbounded-consumption risk framing."],
-      ["Simon Willison — The lethal trifecta", "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/", "The private-data + untrusted-content + egress rule used across the security scenarios."],
-      ["OpenTelemetry — GenAI semantic conventions", "https://opentelemetry.io/docs/specs/semconv/gen-ai/", "Standard span attributes for model calls, tools, and agent steps in the observability items."],
-      ["Hamel Husain — evals field guide", "https://hamel.dev/blog/posts/evals/", "Error analysis first, binary rubrics, and the judge-calibration workflow."],
-      ["DeepEval — LLM-as-a-judge guide", "https://deepeval.com/guides/guides-llm-as-a-judge", "Judge bias catalogue and calibration targets referenced in the eval items."],
-      ["Pragmatic Engineer — a pragmatic guide to evals", "https://newsletter.pragmaticengineer.com/p/evals", "How industry teams wire offline and online evals into shipping."]
+      ["Anthropic - Building effective agents", "https://www.anthropic.com/engineering/building-effective-agents", "Workflows versus agents, composable patterns, and the simplest-thing-that-works doctrine behind the agent items."],
+      ["Anthropic - Effective context engineering", "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents", "Context as a curated budget: prompt altitude, tool hygiene, compaction, and note-taking items."],
+      ["Anthropic - Harnesses for long-running agents", "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents", "Long-horizon patterns: initializer contexts, checkpoints, resumability, multi-window workflows."],
+      ["Anthropic - Multi-agent research system", "https://www.anthropic.com/engineering/built-multi-agent-research-system", "Orchestrator-worker economics, token multipliers, and parallel research patterns in the multi-agent items."],
+      ["OpenAI - A practical guide to building agents", "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf", "Single-agent-first guidance, manager and handoff patterns, layered guardrails."],
+      ["Model Context Protocol - spec and docs", "https://modelcontextprotocol.io", "Tools, resources, prompts, and the auth model behind the MCP items."],
+      ["OWASP GenAI Security - LLM Top 10", "https://genai.owasp.org", "Prompt injection, excessive agency, supply chain, and unbounded-consumption risk framing."],
+      ["Simon Willison - The lethal trifecta", "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/", "The private-data + untrusted-content + egress rule used across the security scenarios."],
+      ["OpenTelemetry - GenAI semantic conventions", "https://opentelemetry.io/docs/specs/semconv/gen-ai/", "Standard span attributes for model calls, tools, and agent steps in the observability items."],
+      ["Hamel Husain - evals field guide", "https://hamel.dev/blog/posts/evals/", "Error analysis first, binary rubrics, and the judge-calibration workflow."],
+      ["DeepEval - LLM-as-a-judge guide", "https://deepeval.com/guides/guides-llm-as-a-judge", "Judge bias catalogue and calibration targets referenced in the eval items."],
+      ["Pragmatic Engineer - a pragmatic guide to evals", "https://newsletter.pragmaticengineer.com/p/evals", "How industry teams wire offline and online evals into shipping."]
     ];
 
     const ITEM_POOLS = [["g", GRILLS], ["f", FLASH], ["b", BLANKS], ["q", MCQ]];
