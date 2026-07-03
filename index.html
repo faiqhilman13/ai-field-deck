@@ -1453,116 +1453,119 @@
     }
 
     /* ===== System Design Lab ===== */
-    .design-layout { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
-    .design-grade { display: grid; grid-template-columns: 340px 1fr; gap: 18px; margin-top: 18px; align-items: start; }
-    .design-rail { position: sticky; top: 16px; }
-    .design-title { font-family: var(--display); font-size: 20px; margin: 8px 0 6px; }
+    /* On the Design tab, drop the study-deck hero so the canvas fills the main area. */
+    body.view-design .hero { display: none; }
+    body.view-design #design { margin-top: 2px; }
+    .design-brief-panel { margin-bottom: 16px; }
+    .design-title { font-family: var(--display); font-size: 20px; margin: 8px 0 8px; }
     .design-select {
       font-family: var(--mono); font-size: 12px; background: var(--paper-bright); color: var(--ink);
-      border: 1px solid var(--line-ink); border-radius: var(--radius); padding: 7px 10px; max-width: 240px;
+      border: 1px solid var(--line-ink); border-radius: var(--radius); padding: 7px 10px; max-width: 260px;
     }
-    .palette { display: grid; gap: 12px; margin-top: 10px; }
-    .palette-group-label { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 5px; }
-    .palette-group .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-    .chip {
-      font-family: var(--mono); font-size: 11.5px; line-height: 1.25; cursor: grab; user-select: none;
-      background: var(--paper-bright); color: var(--ink); border: 1px solid var(--line-ink);
-      border-left: 3px solid var(--k, var(--accent)); border-radius: var(--radius); padding: 6px 9px;
+    .constraints { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .constraint {
+      font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+      background: var(--paper-bright); border: 1px solid var(--line-ink);
+      border-left: 3px solid var(--amber); border-radius: var(--radius); padding: 5px 9px;
     }
-    .chip:hover { border-color: color-mix(in srgb, var(--k, var(--accent)) 60%, var(--line-ink)); transform: translateY(-1px); }
-    .chip:active { cursor: grabbing; }
-    .chip.placed { opacity: .34; cursor: default; pointer-events: none; }
-    .chip .chip-note { display: block; color: var(--ink-faint); font-size: 10px; margin-top: 1px; }
-    .chip[data-kind="source"]  { --k: var(--blue); }
-    .chip[data-kind="compute"] { --k: var(--ink-soft); }
-    .chip[data-kind="gate"]    { --k: var(--amber); }
-    .chip[data-kind="model"]   { --k: var(--violet); }
-    .chip[data-kind="store"]   { --k: var(--teal); }
-    .chip[data-kind="agent"]   { --k: var(--rust); }
-    .chip[data-kind="human"]   { --k: var(--green); }
-    .chip[data-kind="control"] { --k: var(--accent); }
+    .constraint::before { content: "\25B8 "; color: var(--amber); }
 
-    .design-main { padding: 14px; }
-    .design-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
-    .design-canvas {
-      position: relative; min-height: 460px; border: 1px dashed var(--line-ink); border-radius: var(--radius);
-      background:
-        radial-gradient(circle at 1px 1px, rgba(var(--ink-rgb), 0.10) 1px, transparent 0);
-      background-size: 22px 22px; overflow: auto; touch-action: none;
-    }
-    .design-canvas.linking { cursor: crosshair; }
-    .edge-layer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-    .edge-layer .edge { stroke: var(--accent); stroke-width: 2; }
-    .edge-layer .edge-hit { stroke: transparent; stroke-width: 14; pointer-events: stroke; cursor: pointer; }
-    .edge-layer .rubber { stroke: var(--accent-bright); stroke-width: 2; stroke-dasharray: 5 4; }
-    .canvas-empty {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      color: var(--ink-faint); font-family: var(--mono); font-size: 12px; pointer-events: none; padding: 20px; text-align: center;
-    }
-    .node {
-      position: absolute; z-index: 2; width: 150px; box-sizing: border-box; cursor: grab;
-      background: var(--paper); color: var(--ink); border: 1px solid var(--line-ink);
-      border-top: 3px solid var(--k, var(--accent)); border-radius: var(--radius);
-      padding: 8px 9px 9px; box-shadow: 0 2px 8px rgba(0,0,0,.28); font-size: 11.5px; line-height: 1.25;
-    }
-    .node:active { cursor: grabbing; }
-    .node.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
-    .node.link-target { outline: 2px dashed var(--accent-bright); outline-offset: 1px; }
-    .node .node-label { font-family: var(--mono); display: block; padding-right: 12px; }
-    .node .node-note { display: block; color: var(--ink-faint); font-size: 9.5px; margin-top: 2px; }
-    .node[data-kind="source"]  { --k: var(--blue); }
-    .node[data-kind="compute"] { --k: var(--ink-soft); }
-    .node[data-kind="gate"]    { --k: var(--amber); }
-    .node[data-kind="model"]   { --k: var(--violet); }
-    .node[data-kind="store"]   { --k: var(--teal); }
-    .node[data-kind="agent"]   { --k: var(--rust); }
-    .node[data-kind="human"]   { --k: var(--green); }
-    .node[data-kind="control"] { --k: var(--accent); }
-    .node.trap { border-color: color-mix(in srgb, var(--danger) 60%, var(--line-ink)); }
-    .node-del {
-      position: absolute; top: -9px; right: -9px; width: 19px; height: 19px; display: none; z-index: 3;
-      align-items: center; justify-content: center; font-size: 11px; line-height: 1; cursor: pointer;
-      background: var(--danger); color: #fff; border: none; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,.5);
-    }
-    .node.selected .node-del { display: flex; }
-    .wire-handle {
-      position: absolute; bottom: -10px; right: 8px; width: 20px; height: 20px; z-index: 3;
-      display: flex; align-items: center; justify-content: center; cursor: crosshair; font-size: 12px;
-      background: var(--accent); color: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,.45);
-      opacity: 0; transition: opacity .12s ease;
-    }
-    .node:hover .wire-handle, .node.selected .wire-handle { opacity: 1; }
+    .design-main { margin-bottom: 18px; }
+    .design-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
 
-    .forks { display: grid; gap: 14px; margin-top: 10px; }
-    .fork-q { font-size: 13px; font-weight: 600; margin-bottom: 7px; }
-    .fork-opts { display: grid; gap: 6px; }
-    .fork-opts label {
-      display: flex; gap: 8px; align-items: flex-start; font-size: 12px; cursor: pointer;
-      border: 1px solid var(--line-ink); border-radius: var(--radius); padding: 8px 9px; background: var(--paper-bright);
+    .stage-flow {
+      display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px;
+      padding: 10px; border: 1px dashed var(--line-ink); border-radius: var(--radius);
+      background: radial-gradient(circle at 1px 1px, rgba(var(--ink-rgb), 0.08) 1px, transparent 0);
+      background-size: 22px 22px; min-height: 120px;
     }
-    .fork-opts label:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line-ink)); }
-    .fork-opts input { margin-top: 2px; accent-color: var(--accent); }
-    .fork-opts label.chosen-best { border-color: color-mix(in srgb, var(--green) 60%, var(--line-ink)); }
-    .fork-opts label.chosen-sub { border-color: color-mix(in srgb, var(--amber) 60%, var(--line-ink)); }
+    .stage-box {
+      position: relative; width: 170px; box-sizing: border-box; cursor: pointer;
+      background: var(--paper); border: 1px solid var(--line-ink); border-top: 3px solid var(--stagecol, var(--ink-faint));
+      border-radius: var(--radius); padding: 10px 10px 10px; box-shadow: 0 2px 8px rgba(0,0,0,.22);
+      display: flex; flex-direction: column; gap: 6px; transition: border-color .12s ease, transform .12s ease;
+    }
+    .stage-box:hover { transform: translateY(-2px); }
+    .stage-box.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .stage-box.done  { --stagecol: var(--green); }
+    .stage-box.weak  { --stagecol: var(--rust); }
+    .stage-box.empty { --stagecol: var(--ink-faint); border-style: dashed; }
+    .stage-num { font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+    .stage-name { font-family: var(--display); font-size: 13px; font-weight: 600; line-height: 1.2; padding-right: 16px; }
+    .stage-choice { font-family: var(--mono); font-size: 10.5px; color: var(--ink-soft); line-height: 1.35; min-height: 14px; }
+    .stage-choice.unset { color: var(--accent-bright); }
+    .stage-verdict { position: absolute; top: 9px; right: 9px; font-size: 12px; font-family: var(--mono); }
+    .stage-controls { display: flex; gap: 4px; margin-top: 4px; }
+    .stage-controls button {
+      font-family: var(--mono); font-size: 11px; line-height: 1; width: 24px; height: 20px; cursor: pointer;
+      background: var(--paper-bright); color: var(--ink-soft); border: 1px solid var(--line-ink); border-radius: 2px;
+    }
+    .stage-controls button:hover { color: var(--ink); border-color: var(--accent); }
+    .stage-controls .rm:hover { color: #fff; background: var(--danger); border-color: var(--danger); }
+    .stage-arrow { align-self: center; color: var(--ink-faint); font-size: 16px; padding: 0 1px; user-select: none; }
+    .stage-add {
+      align-self: center; width: 42px; min-height: 64px; display: flex; align-items: center; justify-content: center;
+      font-size: 20px; cursor: pointer; color: var(--ink-faint);
+      background: transparent; border: 1px dashed var(--line-ink); border-radius: var(--radius);
+    }
+    .stage-add:hover { color: var(--accent); border-color: var(--accent); }
+    .add-menu { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; align-items: center; }
+    .add-chip {
+      font-family: var(--mono); font-size: 11px; cursor: pointer; color: var(--ink);
+      background: var(--paper-bright); border: 1px solid var(--line-ink); border-radius: var(--radius); padding: 5px 9px;
+    }
+    .add-chip:hover { border-color: var(--accent); }
+    .add-chip::before { content: "+ "; color: var(--accent); }
+
+    .design-grade { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+
+    .decision-stage-name { font-family: var(--display); font-size: 17px; margin: 6px 0 2px; }
+    .decision-prompt { color: var(--ink-soft); font-size: 13px; margin-bottom: 12px; }
+    .opts { display: grid; gap: 8px; }
+    .opt {
+      display: flex; gap: 9px; align-items: flex-start; cursor: pointer; font-size: 12.5px;
+      border: 1px solid var(--line-ink); border-radius: var(--radius); padding: 10px 11px; background: var(--paper-bright);
+    }
+    .opt:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line-ink)); }
+    .opt input { margin-top: 2px; accent-color: var(--accent); }
+    .opt.chosen { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+    .opt .opt-label { font-weight: 500; }
+    .opt-why {
+      margin-top: 12px; font-size: 12.5px; border-left: 3px solid var(--accent);
+      background: var(--paper-bright); border-radius: var(--radius); padding: 10px 12px;
+    }
+    .opt-why.best { border-left-color: var(--green); }
+    .opt-why.solid { border-left-color: var(--amber); }
+    .opt-why.weak { border-left-color: var(--rust); }
+    .opt-why .vtag { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; display: inline-block; margin-bottom: 4px; }
+    .vtag.best { color: var(--green); } .vtag.solid { color: var(--amber); } .vtag.weak { color: var(--rust); }
+    .justify { margin-top: 14px; }
+    .justify label { font-size: 12px; color: var(--ink-soft); display: block; margin-bottom: 5px; }
+    .justify textarea {
+      width: 100%; min-height: 80px; resize: vertical; font-family: var(--sans); font-size: 12.5px;
+      background: var(--paper-bright); color: var(--ink); border: 1px solid var(--line-ink); border-radius: var(--radius); padding: 9px;
+    }
+    .must { margin-top: 10px; display: grid; gap: 4px; }
+    .must-item { font-size: 11.5px; color: var(--ink-soft); }
+    .must-item::before { content: "\25CB "; color: var(--ink-faint); }
 
     .rubric-out { display: grid; gap: 6px; margin-top: 12px; }
     .rubric-item { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; }
     .rubric-item .mk { font-family: var(--mono); font-weight: 700; }
     .rubric-item.pass .mk { color: var(--green); }
+    .rubric-item.warn .mk { color: var(--amber); }
     .rubric-item.fail .mk { color: var(--rust); }
-    .rubric-item.crit .lbl::after { content: " · critical"; color: var(--ink-faint); font-size: 10px; }
     .trap-flag {
       border-left: 3px solid var(--danger); background: color-mix(in srgb, var(--danger) 8%, var(--paper-bright));
       padding: 8px 10px; border-radius: var(--radius); font-size: 12px; margin-top: 6px;
     }
     .trap-flag b { color: color-mix(in srgb, var(--danger) 85%, var(--ink)); }
-
     .grill-out { margin-top: 14px; display: none; }
     .grill-out.show { display: block; }
     .grill-verdict { font-family: var(--mono); font-size: 12.5px; border: 1px solid var(--line-ink); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 12px; }
     .grill-item { border-top: 1px solid var(--line-ink); padding: 11px 0; }
     .grill-item .gq { font-weight: 600; font-size: 13px; margin-bottom: 5px; }
-    .grill-item .gq::before { content: "⚡ "; }
+    .grill-item .gq::before { content: "\26A1 "; }
     .grill-item .gc { font-size: 12.5px; color: var(--ink-soft); }
     .grill-item .gb { font-size: 12.5px; margin-top: 5px; }
     .grill-item .gb b { color: var(--green); }
@@ -1580,8 +1583,9 @@
     }
 
     @media (max-width: 820px) {
-      .design-layout, .design-grade { grid-template-columns: 1fr; }
-      .design-rail { position: static; }
+      .design-grade { grid-template-columns: 1fr; }
+      .stage-box { width: 100%; }
+      .stage-arrow { transform: rotate(90deg); }
     }
   </style>
 </head>
@@ -1719,55 +1723,39 @@
           <p class="small" id="llmStatus">Key is stored in this browser only (localStorage). Fine for local/personal use — don't ship it on a public deploy; proxy it through a Netlify Function instead.</p>
         </div>
 
-        <div class="design-layout">
-          <aside class="panel design-rail">
-            <div class="topic" style="--topic: var(--accent)"><span class="dot"></span><span id="designTopic"></span></div>
-            <h3 id="designTitle" class="design-title"></h3>
-            <p class="small" id="designBrief"></p>
-            <div class="palette-group-label" style="margin-top:14px">Components — drag onto the canvas</div>
-            <div class="palette" id="designPalette"></div>
-          </aside>
+        <article class="panel design-brief-panel">
+          <div class="topic" style="--topic: var(--accent)"><span class="dot"></span><span id="designTopic"></span></div>
+          <h3 id="designTitle" class="design-title"></h3>
+          <p class="small" id="designBrief"></p>
+          <div class="constraints" id="designConstraints"></div>
+        </article>
 
-          <div class="panel design-main">
-            <div class="design-toolbar">
-              <span class="small" id="designHint">Drag a component in · click its ↘ handle then another node to wire · drag to move · click to select</span>
-              <div class="controls" style="margin-top:0">
-                <button class="ghost" id="designTidy">Tidy</button>
-                <button class="ghost" id="designClear">Clear</button>
-                <button class="primary" id="designGrade">Grade my design</button>
-              </div>
-            </div>
-            <div class="design-canvas" id="designCanvas">
-              <svg class="edge-layer" id="edgeLayer">
-                <defs>
-                  <marker id="dl-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                    <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"></path>
-                  </marker>
-                </defs>
-              </svg>
-              <div class="canvas-empty" id="canvasEmpty">Drop components here, then wire them into a flow.</div>
+        <article class="panel design-main">
+          <div class="design-toolbar">
+            <span class="small">Your system — click a stage to make a decision · <b>◀ ▶</b> reorder · <b>✕</b> remove · <b>+</b> add a stage</span>
+            <div class="controls" style="margin-top:0">
+              <button class="ghost" id="designReset">Reset stages</button>
+              <button class="primary" id="designGrade">Grade my design</button>
             </div>
           </div>
-        </div>
+          <div class="stage-flow" id="stageFlow"></div>
+        </article>
 
         <div class="design-grade">
-          <aside class="panel">
-            <div class="kicker">Trade-off decisions</div>
-            <p class="small">Each one is a place you will get grilled. Commit to a side.</p>
-            <div class="forks" id="designForks"></div>
-          </aside>
-          <div class="panel">
+          <article class="panel" id="decisionPanel">
+            <div class="kicker">Decision</div>
+            <div id="decisionBody"><p class="small">Click a stage above to choose an approach and defend the trade-off.</p></div>
+          </article>
+          <article class="panel">
             <div class="kicker">Scorecard</div>
-            <div class="feedback" id="designScore">Build the flow, pick your trade-offs, then hit <b>Grade my design</b>.</div>
+            <div class="feedback" id="designScore">Make a call at each stage, then hit <b>Grade my design</b>.</div>
             <div class="rubric-out" id="designRubric"></div>
             <div class="controls" style="margin-top:14px">
               <button class="primary" id="designGrill">Grill me on this</button>
-              <button class="ghost" id="designModel">Show model answer</button>
               <button class="ghost" id="nextDesign">Next challenge</button>
             </div>
-            <div class="model-answer" id="designModelAnswer"></div>
             <div class="grill-out" id="designGrillOut"></div>
-          </div>
+          </article>
         </div>
       </section>
 
@@ -3344,6 +3332,7 @@
       state.view = view;
       document.querySelectorAll(".section").forEach(section => section.classList.toggle("active", section.id === view));
       document.querySelectorAll("nav button").forEach(btn => btn.setAttribute("aria-current", btn.dataset.view === view ? "true" : "false"));
+      document.body.classList.toggle("view-design", view === "design");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -3672,272 +3661,168 @@
       setView(views[Math.floor(Math.random() * views.length)]);
     });
 
-    /* ===== System Design Lab ===== */
-    const DESIGN_KINDS = [
-      ["source", "Sources & I/O"], ["compute", "Compute & flow"], ["gate", "Gates & checks"],
-      ["model", "Model calls"], ["store", "Storage & index"], ["agent", "Agents"],
-      ["human", "Human in the loop"], ["control", "Control & policy"]
-    ];
+    /* ===== System Design Lab (stage-based) ===== */
     const LLM_KEY = "aiFieldDeckLLM";
     const DEFAULT_MODEL = "anthropic/claude-3.5-sonnet";
-    const dz = { drag: null, sx: 0, sy: 0, nx: 0, ny: 0, moved: false, linkFrom: null, selected: null };
+    let selStage = null;
 
     function getLLM() { try { return JSON.parse(localStorage.getItem(LLM_KEY) || "{}"); } catch (e) { return {}; } }
     function curChallenge() { return DESIGN_CHALLENGES[state.designIndex % DESIGN_CHALLENGES.length]; }
     function curBuild() {
       const ch = curChallenge();
-      if (!state.designBuilds[ch.id]) state.designBuilds[ch.id] = { nodes: [], edges: [], forks: {} };
-      const b = state.designBuilds[ch.id];
-      if (!b.nodes) b.nodes = []; if (!b.edges) b.edges = []; if (!b.forks) b.forks = {};
+      let b = state.designBuilds[ch.id];
+      if (!b || !Array.isArray(b.order)) { b = { order: (ch.skeleton || []).slice(), picks: {}, notes: {} }; state.designBuilds[ch.id] = b; }
+      if (!b.picks) b.picks = {}; if (!b.notes) b.notes = {};
       return b;
     }
-    function compOf(ch, id) { return ch.palette.find(p => p.id === id); }
-    const canvasEl = () => $("designCanvas");
-    const nodeEl = (id) => canvasEl().querySelector('.node[data-id="' + id + '"]');
+    function stageDef(ch, id) { return ch.stages[id]; }
+    function optDef(st, optId) { return st ? st.options.find(o => o.id === optId) : null; }
+    function bestOpt(st) { return st.options.find(o => o.verdict === "best"); }
+    function verdictMark(v) { return v === "best" ? "★" : v === "solid" ? "◆" : v === "weak" ? "▲" : ""; }
+    function verdictColor(v) { return v === "best" ? "var(--green)" : v === "solid" ? "var(--amber)" : "var(--rust)"; }
 
     function renderDesign() {
-      if (!DESIGN_CHALLENGES.length) {
-        $("designTitle").textContent = "No challenges loaded";
-        $("designBrief").textContent = "challenges.js did not load. Serve the folder (python3 -m http.server) or check the file sits next to index.html.";
-        return;
-      }
+      if (!DESIGN_CHALLENGES.length) { $("designTitle").textContent = "No challenges loaded"; $("designBrief").textContent = "challenges.js did not load."; return; }
       const ch = curChallenge(), idx = state.designIndex % DESIGN_CHALLENGES.length;
-      $("designPick").innerHTML = DESIGN_CHALLENGES.map((c, i) =>
-        `<option value="${i}" ${i === idx ? "selected" : ""}>${esc(c.title)}</option>`).join("");
+      $("designPick").innerHTML = DESIGN_CHALLENGES.map((c, i) => `<option value="${i}" ${i === idx ? "selected" : ""}>${esc(c.title)}</option>`).join("");
       $("designTopic").textContent = ch.topic;
       $("designTitle").textContent = ch.title;
       $("designBrief").textContent = ch.brief;
-      renderForks();
-      renderCanvas();
-      $("designScore").innerHTML = "Build the flow, pick your trade-offs, then hit <b>Grade my design</b>.";
+      $("designConstraints").innerHTML = (ch.constraints || []).map(c => `<span class="constraint">${esc(c)}</span>`).join("");
+      selStage = null;
+      renderStages();
+      renderDecision();
+      $("designScore").innerHTML = "Make a call at each stage, then hit <b>Grade my design</b>.";
       $("designRubric").innerHTML = "";
-      $("designModelAnswer").classList.remove("revealed");
-      $("designModelAnswer").innerHTML = renderModelAnswer(ch);
-      $("designGrillOut").classList.remove("show");
-      $("designGrillOut").innerHTML = "";
+      $("designGrillOut").classList.remove("show"); $("designGrillOut").innerHTML = "";
     }
 
-    function renderPalette() {
-      const ch = curChallenge(), placed = new Set(curBuild().nodes.map(n => n.id)), byKind = {};
-      ch.palette.forEach(p => { (byKind[p.kind] = byKind[p.kind] || []).push(p); });
-      $("designPalette").innerHTML = DESIGN_KINDS.filter(([k]) => byKind[k]).map(([k, label]) => `
-        <div class="palette-group">
-          <div class="palette-group-label">${esc(label)}</div>
-          <div class="chips">
-            ${byKind[k].map(p => `
-              <div class="chip ${placed.has(p.id) ? "placed" : ""}" draggable="${placed.has(p.id) ? "false" : "true"}"
-                   data-comp="${esc(p.id)}" data-kind="${esc(p.kind)}" title="${esc(p.note || p.label)}">
-                ${esc(p.label)}${p.note ? `<span class="chip-note">${esc(p.note)}</span>` : ""}
-              </div>`).join("")}
-          </div>
-        </div>`).join("");
-      $("designPalette").querySelectorAll(".chip[draggable='true']").forEach(chip => {
-        chip.addEventListener("dragstart", e => { e.dataTransfer.setData("text/plain", chip.dataset.comp); e.dataTransfer.effectAllowed = "copy"; });
+    function renderStages() {
+      const ch = curChallenge(), b = curBuild(), flow = $("stageFlow");
+      let html = "";
+      b.order.forEach((sid, i) => {
+        const st = stageDef(ch, sid); if (!st) return;
+        const opt = optDef(st, b.picks[sid]);
+        const cls = !opt ? "empty" : (opt.verdict === "weak" ? "weak" : "done");
+        html += `<div class="stage-box ${cls} ${selStage === sid ? "selected" : ""}" data-sid="${esc(sid)}">
+            <span class="stage-num">Stage ${i + 1}${st.required ? "" : " · optional"}</span>
+            <span class="stage-name">${esc(st.name)}</span>
+            <span class="stage-choice ${opt ? "" : "unset"}">${opt ? esc(opt.label) : "— choose —"}</span>
+            ${opt ? `<span class="stage-verdict" style="color:${verdictColor(opt.verdict)}">${verdictMark(opt.verdict)}</span>` : ""}
+            <span class="stage-controls">
+              <button title="Move left" data-act="left" data-sid="${esc(sid)}">◀</button>
+              <button title="Move right" data-act="right" data-sid="${esc(sid)}">▶</button>
+              <button class="rm" title="Remove stage" data-act="remove" data-sid="${esc(sid)}">✕</button>
+            </span>
+          </div>`;
+        if (i < b.order.length - 1) html += `<span class="stage-arrow">→</span>`;
       });
+      html += `<div class="stage-add" id="stageAddBtn" title="Add a stage">+</div>`;
+      flow.innerHTML = html;
+      let menu = document.getElementById("addMenu");
+      if (!menu) { menu = document.createElement("div"); menu.id = "addMenu"; menu.className = "add-menu"; menu.style.display = "none"; flow.parentElement.appendChild(menu); }
+      renderAddMenu();
+    }
+    function renderAddMenu() {
+      const ch = curChallenge(), b = curBuild(), menu = document.getElementById("addMenu"); if (!menu) return;
+      const inOrder = new Set(b.order);
+      const avail = Object.keys(ch.stages).filter(id => !inOrder.has(id));
+      menu.innerHTML = avail.length
+        ? `<span class="small">Add a stage:</span>` + avail.map(id => `<button class="add-chip" data-add="${esc(id)}">${esc(ch.stages[id].name)}</button>`).join("")
+        : `<span class="small">Every stage is already on the board.</span>`;
     }
 
-    function renderForks() {
-      const ch = curChallenge(), build = curBuild();
-      $("designForks").innerHTML = ch.forks.map(f => `
-        <div class="fork" data-fork="${esc(f.id)}">
-          <div class="fork-q">${esc(f.q)}</div>
-          <div class="fork-opts">
-            ${f.options.map(o => `
-              <label><input type="radio" name="fork-${esc(f.id)}" value="${esc(o.id)}" ${build.forks[f.id] === o.id ? "checked" : ""}>
-                <span>${esc(o.label)}</span></label>`).join("")}
-          </div>
-        </div>`).join("");
-      $("designForks").querySelectorAll("input[type=radio]").forEach(r => {
-        r.addEventListener("change", () => { curBuild().forks[r.closest(".fork").dataset.fork] = r.value; save(); });
-      });
-    }
-
-    function renderCanvas() {
-      const ch = curChallenge(), build = curBuild(), cv = canvasEl();
-      cv.querySelectorAll(".node").forEach(n => n.remove());
-      build.nodes.forEach(n => {
-        const comp = compOf(ch, n.id); if (!comp) return;
-        const el = document.createElement("div");
-        el.className = "node" + (comp.correct === false ? " trap" : "") + (dz.selected === n.id ? " selected" : "");
-        el.dataset.id = n.id; el.dataset.kind = comp.kind;
-        el.style.left = n.x + "px"; el.style.top = n.y + "px";
-        el.innerHTML = `<span class="node-label">${esc(comp.label)}</span>${comp.note ? `<span class="node-note">${esc(comp.note)}</span>` : ""}<button class="node-del" title="Delete">✕</button><span class="wire-handle" title="Draw a connection">↘</span>`;
-        cv.appendChild(el);
-      });
-      $("canvasEmpty").style.display = build.nodes.length ? "none" : "flex";
-      drawEdges();
-      renderPalette();
-    }
-
-    function nodeGeom(id) {
-      const el = nodeEl(id); if (!el) return null;
-      return { w: el.offsetWidth, h: el.offsetHeight, cx: el.offsetLeft + el.offsetWidth / 2, cy: el.offsetTop + el.offsetHeight / 2 };
-    }
-    function boxEdgePoint(g, tx, ty) {
-      const dx = tx - g.cx, dy = ty - g.cy;
-      if (!dx && !dy) return { x: g.cx, y: g.cy };
-      const s = Math.min(dx ? (g.w / 2) / Math.abs(dx) : Infinity, dy ? (g.h / 2) / Math.abs(dy) : Infinity);
-      return { x: g.cx + dx * s, y: g.cy + dy * s };
-    }
-    function drawEdges() {
-      const build = curBuild(), svg = $("edgeLayer"), NS = "http://www.w3.org/2000/svg";
-      svg.querySelectorAll(".edge, .edge-hit, .rubber").forEach(e => e.remove());
-      build.edges.forEach(([a, b]) => {
-        const ga = nodeGeom(a), gb = nodeGeom(b); if (!ga || !gb) return;
-        const p1 = boxEdgePoint(ga, gb.cx, gb.cy), p2 = boxEdgePoint(gb, ga.cx, ga.cy);
-        const hit = document.createElementNS(NS, "line");
-        hit.setAttribute("class", "edge-hit");
-        hit.setAttribute("x1", p1.x); hit.setAttribute("y1", p1.y); hit.setAttribute("x2", p2.x); hit.setAttribute("y2", p2.y);
-        hit.addEventListener("click", () => removeEdge(a, b));
-        const ln = document.createElementNS(NS, "line");
-        ln.setAttribute("class", "edge");
-        ln.setAttribute("x1", p1.x); ln.setAttribute("y1", p1.y); ln.setAttribute("x2", p2.x); ln.setAttribute("y2", p2.y);
-        ln.setAttribute("marker-end", "url(#dl-arrow)");
-        svg.appendChild(hit); svg.appendChild(ln);
-      });
-    }
-    function updateRubber(clientX, clientY) {
-      const svg = $("edgeLayer"); let r = svg.querySelector(".rubber");
-      if (!dz.linkFrom) { if (r) r.remove(); return; }
-      const g = nodeGeom(dz.linkFrom); if (!g) return;
-      const rect = canvasEl().getBoundingClientRect();
-      const x = clientX - rect.left + canvasEl().scrollLeft, y = clientY - rect.top + canvasEl().scrollTop;
-      if (!r) { r = document.createElementNS("http://www.w3.org/2000/svg", "line"); r.setAttribute("class", "rubber"); r.setAttribute("marker-end", "url(#dl-arrow)"); svg.appendChild(r); }
-      r.setAttribute("x1", g.cx); r.setAttribute("y1", g.cy); r.setAttribute("x2", x); r.setAttribute("y2", y);
-    }
-
-    function addNode(compId, x, y) {
-      const ch = curChallenge(), build = curBuild();
-      if (!compOf(ch, compId) || build.nodes.some(n => n.id === compId)) return;
-      build.nodes.push({ id: compId, x: Math.max(0, Math.round(x)), y: Math.max(0, Math.round(y)) });
-      dz.selected = compId; save(); renderCanvas();
-    }
-    function removeNode(id) {
-      const build = curBuild();
-      build.nodes = build.nodes.filter(n => n.id !== id);
-      build.edges = build.edges.filter(([a, b]) => a !== id && b !== id);
-      if (dz.selected === id) dz.selected = null;
-      if (dz.linkFrom === id) cancelLink();
-      save(); renderCanvas();
-    }
-    function addEdge(a, b) {
-      if (a === b) return;
-      const build = curBuild();
-      if (build.edges.some(([x, y]) => x === a && y === b)) return;
-      build.edges.push([a, b]); save(); drawEdges();
-    }
-    function removeEdge(a, b) {
-      const build = curBuild();
-      build.edges = build.edges.filter(([x, y]) => !(x === a && y === b));
-      save(); drawEdges();
-    }
-    function selectNode(id) {
-      dz.selected = id;
-      canvasEl().querySelectorAll(".node").forEach(n => n.classList.toggle("selected", n.dataset.id === id));
-    }
-    function deselect() { dz.selected = null; canvasEl().querySelectorAll(".node.selected").forEach(n => n.classList.remove("selected")); }
-    function startLink(id) {
-      dz.linkFrom = id; canvasEl().classList.add("linking");
-      canvasEl().querySelectorAll(".node").forEach(n => n.classList.toggle("link-target", n.dataset.id !== id));
-    }
-    function cancelLink() {
-      dz.linkFrom = null; canvasEl().classList.remove("linking");
-      canvasEl().querySelectorAll(".node.link-target").forEach(n => n.classList.remove("link-target"));
-      const r = $("edgeLayer").querySelector(".rubber"); if (r) r.remove();
-    }
-    function completeLink(toId) { if (dz.linkFrom && dz.linkFrom !== toId) addEdge(dz.linkFrom, toId); cancelLink(); }
-
-    function tidyLayout() {
-      const build = curBuild(); if (!build.nodes.length) return;
-      const ids = build.nodes.map(n => n.id), indeg = {}, adj = {};
-      ids.forEach(i => indeg[i] = 0);
-      build.edges.forEach(([a, b]) => { if (indeg[b] != null) indeg[b]++; (adj[a] = adj[a] || []).push(b); });
-      const depth = {}; let roots = ids.filter(i => indeg[i] === 0); if (!roots.length) roots = [ids[0]];
-      const order = roots.slice(), seen = new Set(roots); roots.forEach(i => depth[i] = 0);
-      for (let h = 0; h < order.length; h++) {
-        (adj[order[h]] || []).forEach(m => {
-          const d = (depth[order[h]] || 0) + 1; if (depth[m] == null || d > depth[m]) depth[m] = d;
-          if (!seen.has(m)) { seen.add(m); order.push(m); }
-        });
+    function renderDecision() {
+      const body = $("decisionBody");
+      if (!selStage) { body.innerHTML = `<p class="small">Click a stage above to choose an approach and defend the trade-off.</p>`; return; }
+      const ch = curChallenge(), b = curBuild(), st = stageDef(ch, selStage); if (!st) { body.innerHTML = ""; return; }
+      const opt = optDef(st, b.picks[selStage]), note = b.notes[selStage] || "";
+      let html = `<div class="decision-stage-name">${esc(st.name)}</div><div class="decision-prompt">${esc(st.prompt)}</div>`;
+      html += `<div class="opts">` + st.options.map(o => `
+          <label class="opt ${b.picks[selStage] === o.id ? "chosen" : ""}">
+            <input type="radio" name="opt-${esc(selStage)}" value="${esc(o.id)}" ${b.picks[selStage] === o.id ? "checked" : ""}>
+            <span class="opt-label">${esc(o.label)}</span>
+          </label>`).join("") + `</div>`;
+      if (opt) {
+        const tag = opt.verdict === "best" ? "★ strong call" : opt.verdict === "solid" ? "◆ defensible" : "▲ weak for these constraints";
+        html += `<div class="opt-why ${esc(opt.verdict)}"><span class="vtag ${esc(opt.verdict)}">${tag}</span><div>${esc(opt.why)}</div></div>`;
       }
-      ids.forEach(i => { if (depth[i] == null) depth[i] = 0; });
-      const cols = {}; ids.forEach(i => (cols[depth[i]] = cols[depth[i]] || []).push(i));
-      Object.keys(cols).forEach(d => cols[d].forEach((id, r) => {
-        const n = build.nodes.find(nn => nn.id === id); n.x = 20 + (+d) * 186; n.y = 20 + r * 108;
-      }));
-      save(); renderCanvas();
+      html += `<div class="justify"><label>Your justification — why this, and the trade-off you're accepting:</label><textarea id="justifyBox" placeholder="I chose X because … the trade-off is … which is acceptable here because …">${esc(note)}</textarea></div>`;
+      if (st.mustMention && st.mustMention.length) {
+        html += `<div class="must"><span class="small">A strong answer touches:</span>` + st.mustMention.map(m => `<span class="must-item">${esc(m)}</span>`).join("") + `</div>`;
+      }
+      body.innerHTML = html;
     }
 
-    function pathExists(edges, from, to) {
-      if (from === to) return true;
-      const adj = {}; edges.forEach(([a, b]) => (adj[a] = adj[a] || []).push(b));
-      const seen = new Set(), stack = [from];
-      while (stack.length) { const n = stack.pop(); if (n === to) return true; if (seen.has(n)) continue; seen.add(n); (adj[n] || []).forEach(m => stack.push(m)); }
-      return false;
+    function selectStage(sid) { selStage = sid; renderStages(); renderDecision(); }
+    function moveStage(sid, dir) {
+      const b = curBuild(), i = b.order.indexOf(sid), j = i + dir;
+      if (i < 0 || j < 0 || j >= b.order.length) return;
+      b.order[i] = b.order.splice(j, 1, b.order[i])[0]; save(); renderStages();
     }
-    function evaluateRubric(build, rubric) {
-      const ids = new Set(build.nodes.map(n => n.id)), deg = {};
-      build.edges.forEach(([a, b]) => { deg[a] = (deg[a] || 0) + 1; deg[b] = (deg[b] || 0) + 1; });
-      return rubric.map(r => {
-        let pass = false;
-        if (r.type === "present") pass = ids.has(r.node);
-        else if (r.type === "absent") pass = !ids.has(r.node);
-        else if (r.type === "precedes") pass = ids.has(r.from) && ids.has(r.to) && pathExists(build.edges, r.from, r.to);
-        else if (r.type === "onpath") pass = ids.has(r.node) && (deg[r.node] || 0) > 0;
-        return { rule: r, pass };
-      });
+    function removeStage(sid) {
+      const b = curBuild(); b.order = b.order.filter(x => x !== sid);
+      if (selStage === sid) selStage = null;
+      save(); renderStages(); renderDecision();
     }
+    function addStage(sid) {
+      const b = curBuild(); if (!b.order.includes(sid)) b.order.push(sid);
+      selStage = sid; save(); renderStages(); renderDecision();
+      const m = document.getElementById("addMenu"); if (m) m.style.display = "none";
+    }
+
     function gradeDesign() {
-      const ch = curChallenge(), build = curBuild();
-      if (!build.nodes.length) { $("designScore").innerHTML = "Nothing on the canvas yet — drag some components in first."; return; }
-      const results = evaluateRubric(build, ch.rubric);
-      const traps = build.nodes.map(n => compOf(ch, n.id)).filter(c => c && c.correct === false);
-      const forkResults = ch.forks.map(f => ({ f, sel: build.forks[f.id], opt: f.options.find(o => o.id === build.forks[f.id]) }));
-      const passed = results.filter(r => r.pass).length;
-      const critPass = results.filter(r => r.rule.critical).every(r => r.pass);
-      const forksAnswered = forkResults.every(fr => fr.sel);
-      const forksBest = forkResults.every(fr => fr.opt && fr.opt.best);
-      const noTraps = traps.length === 0;
-      const bestForks = forkResults.filter(fr => fr.opt && fr.opt.best).length;
-      const mastered = critPass && noTraps && forksBest && forksAnswered && passed === results.length;
+      const ch = curChallenge(), b = curBuild();
+      const requiredIds = Object.keys(ch.stages).filter(id => ch.stages[id].required);
+      const missingRequired = requiredIds.filter(id => !b.order.includes(id));
+      let decided = 0, best = 0, solid = 0, weak = 0, unjust = 0;
+      const rows = [], weakFlags = [];
+      b.order.forEach(sid => {
+        const st = stageDef(ch, sid); if (!st) return;
+        const opt = optDef(st, b.picks[sid]);
+        const note = (b.notes[sid] || "").trim();
+        if (!opt) { rows.push({ cls: "fail", mk: "✗", label: `${st.name}: no option chosen` }); return; }
+        decided++;
+        if (opt.verdict === "best") best++; else if (opt.verdict === "solid") solid++; else { weak++; weakFlags.push({ st, opt }); }
+        if (!note) unjust++;
+        const cls = opt.verdict === "weak" ? "fail" : (opt.verdict === "solid" ? "warn" : "pass");
+        const mk = opt.verdict === "weak" ? "✗" : (opt.verdict === "solid" ? "◆" : "✓");
+        rows.push({ cls, mk, label: `${st.name}: ${opt.label}${note ? "" : " — no justification written"}` });
+      });
+      const total = b.order.length;
+      const allDecided = total > 0 && decided === total;
+      const allJust = decided > 0 && unjust === 0;
+      const mastered = missingRequired.length === 0 && allDecided && weak === 0 && allJust;
       let verdict;
-      if (mastered) verdict = "Solid. This holds up under grilling.";
-      else if (!critPass) verdict = "Fails a critical check — this gets torn apart.";
-      else if (!noTraps) verdict = "Has a trap component an interviewer will jump on.";
-      else if (!forksBest) verdict = "Works, but at least one trade-off is the weaker call.";
-      else verdict = "Close — tighten the gaps below.";
-      $("designScore").innerHTML = `<b>${passed}/${results.length}</b> checks · <b>${bestForks}/${ch.forks.length}</b> trade-offs best · <b>${traps.length}</b> trap${traps.length === 1 ? "" : "s"}. ${esc(verdict)}`;
-      let html = results.map(r => `<div class="rubric-item ${r.pass ? "pass" : "fail"} ${r.rule.critical ? "crit" : ""}"><span class="mk">${r.pass ? "✓" : "✗"}</span><span class="lbl">${esc(r.rule.label)}</span></div>`).join("");
-      html += traps.map(t => `<div class="trap-flag"><b>Trap — ${esc(t.label)}:</b> ${esc(t.trap)}</div>`).join("");
-      html += forkResults.filter(fr => fr.sel && fr.opt && !fr.opt.best).map(fr => `<div class="trap-flag" style="border-left-color:var(--amber);background:color-mix(in srgb, var(--amber) 8%, var(--paper-bright))"><b>Weaker trade-off — ${esc(fr.f.q)}</b> ${esc(fr.opt.rationale)}</div>`).join("");
-      if (!forksAnswered) html += `<div class="rubric-item fail"><span class="mk">✗</span><span class="lbl">Answer every trade-off fork on the left.</span></div>`;
+      if (!total) verdict = "Empty board — add some stages first.";
+      else if (missingRequired.length) verdict = `Missing ${missingRequired.length} required stage(s).`;
+      else if (!allDecided) verdict = "Some stages still need a decision.";
+      else if (weak) verdict = "At least one choice is weak for these constraints — an interviewer will pounce.";
+      else if (!allJust) verdict = "Decisions look solid — now justify the ones you left blank.";
+      else if (solid) verdict = "Defensible throughout. Push the 'defensible' picks toward the strongest option.";
+      else verdict = "Strong. This holds up under grilling.";
+      $("designScore").innerHTML = `<b>${decided}/${total}</b> decided · <b>${best}</b> strong · <b>${solid}</b> defensible · <b>${weak}</b> weak. ${esc(verdict)}`;
+      let html = missingRequired.map(id => `<div class="rubric-item fail"><span class="mk">✗</span><span class="lbl">Missing required stage: ${esc(ch.stages[id].name)}</span></div>`).join("");
+      html += rows.map(r => `<div class="rubric-item ${r.cls}"><span class="mk">${r.mk}</span><span class="lbl">${esc(r.label)}</span></div>`).join("");
+      html += weakFlags.map(w => `<div class="trap-flag"><b>Weak — ${esc(w.st.name)} / ${esc(w.opt.label)}:</b> ${esc(w.opt.why)}</div>`).join("");
       $("designRubric").innerHTML = html;
       const key = "d:" + (state.designIndex % DESIGN_CHALLENGES.length);
       if (mastered && !state.mastered[key]) { state.mastered[key] = true; award(6, true); } else { updateHud(); }
     }
 
-    function renderModelAnswer(ch) {
-      const flow = ch.model.nodes.map(id => (compOf(ch, id) || {}).label || id).join("  →  ");
-      return `<div class="kicker">Model answer — canonical flow</div><p style="font-family:var(--mono);font-size:12px;line-height:1.7">${esc(flow)}</p>` +
-        `<div class="kicker" style="margin-top:10px">Trade-offs that matter</div><ul style="margin:6px 0 0;padding-left:18px">${ch.model.tradeoffs.map(t => `<li style="margin-bottom:6px">${esc(t)}</li>`).join("")}</ul>`;
+    function describeBuild(ch, b) {
+      return b.order.map(sid => {
+        const st = stageDef(ch, sid); if (!st) return null;
+        const opt = optDef(st, b.picks[sid]);
+        return { stage: st.name, chose: opt ? opt.label : "(undecided)", verdict: opt ? opt.verdict : null, justification: (b.notes[sid] || "").trim() || null };
+      }).filter(Boolean);
     }
-    function describeBuild(ch, build) {
-      const label = id => { const c = compOf(ch, id); return c ? c.label : id; };
-      return {
-        components: build.nodes.map(n => label(n.id)),
-        connections: build.edges.map(([a, b]) => label(a) + " -> " + label(b)),
-        tradeoffChoices: ch.forks.map(f => { const o = f.options.find(x => x.id === build.forks[f.id]); return { question: f.q, chose: o ? o.label : "(unanswered)", isBest: o ? !!o.best : null }; })
-      };
-    }
-    function offlineGrill(ch, build) {
+    function offlineGrill(ch, b) {
       const items = [];
-      ch.forks.forEach(f => {
-        const o = f.options.find(x => x.id === build.forks[f.id]);
-        if (o && !o.best) { const best = f.options.find(x => x.best); items.push({ question: f.q, critique: "You chose “" + o.label + "”. " + o.rationale, better: best ? best.label + " — " + best.rationale : "" }); }
-      });
-      build.nodes.forEach(n => { const c = compOf(ch, n.id); if (c && c.correct === false) items.push({ question: "Why is “" + c.label + "” in your design?", critique: c.trap, better: "" }); });
+      b.order.forEach(sid => { const st = stageDef(ch, sid), opt = optDef(st, b.picks[sid]); if (opt && opt.verdict === "weak") { const bo = bestOpt(st); items.push({ question: `${st.name}: why "${opt.label}"?`, critique: opt.why, better: bo ? `${bo.label} — ${bo.why}` : "" }); } });
+      b.order.forEach(sid => { const st = stageDef(ch, sid), opt = optDef(st, b.picks[sid]); if (opt && !(b.notes[sid] || "").trim()) items.push({ question: `Defend your ${st.name} choice: you picked "${opt.label}" but didn't say why.`, critique: `What trade-off are you accepting, and why is it OK here? A strong answer touches: ${(st.mustMention || []).join("; ")}.`, better: "" }); });
       ch.grills.forEach(g => items.push({ question: g.q, critique: "", better: g.a }));
-      return { verdict: "Offline grill from the model answer. Paste an OpenRouter key (⚙ LLM) for a live interrogation of your exact build.", items };
+      return { verdict: "Offline grill from the model answers. Paste an OpenRouter key (⚙ LLM) for a live interrogation of your exact reasoning.", items };
     }
     function renderGrillOutput(data, live) {
       const out = $("designGrillOut");
@@ -3947,37 +3832,26 @@
           ${it.critique ? `<div class="gc">${esc(it.critique)}</div>` : ""}
           ${it.better ? `<div class="gb"><b>${live ? "Better:" : "Answer to give:"}</b> ${esc(it.better)}</div>` : ""}
         </div>`).join("");
-      out.innerHTML =
-        `<div class="grill-verdict">${live ? "⚡ " : ""}${esc(data.verdict || "")}${data.score != null ? ` · <b>${esc(String(data.score))}/100</b>` : ""}</div>` + items +
-        `<div class="defend">
-           <div class="palette-group-label">Defend your choice — push back and get grilled harder</div>
-           <textarea id="designDefense" placeholder="e.g. 'pgvector can't scale past X so I chose a dedicated vector DB because…'"></textarea>
-           <div class="controls" style="margin-top:0"><button class="ghost" id="designPush">Push back</button></div>
-         </div>`;
+      out.innerHTML = `<div class="grill-verdict">${live ? "⚡ " : ""}${esc(data.verdict || "")}${data.score != null ? ` · <b>${esc(String(data.score))}/100</b>` : ""}</div>` + items +
+        `<div class="defend"><div class="small">Defend your reasoning — push back and get grilled harder</div><textarea id="designDefense" placeholder="e.g. 'pgvector can't scale past X so I chose a managed DB because…'"></textarea><div class="controls" style="margin-top:0"><button class="ghost" id="designPush">Push back</button></div></div>`;
       out.classList.add("show");
       $("designPush").addEventListener("click", () => { const d = $("designDefense").value.trim(); if (d) runGrill(d); });
     }
     async function runGrill(defense) {
-      const ch = curChallenge(), build = curBuild();
-      if (!build.nodes.length) { $("designScore").innerHTML = "Build something first, then I'll grill you on it."; return; }
+      const ch = curChallenge(), b = curBuild();
+      const decided = b.order.filter(sid => optDef(stageDef(ch, sid), b.picks[sid])).length;
+      if (!decided) { $("designScore").innerHTML = "Make at least one decision, then I'll grill you on it."; return; }
       const llm = getLLM();
-      if (!llm.key) { renderGrillOutput(offlineGrill(ch, build), false); return; }
+      if (!llm.key) { renderGrillOutput(offlineGrill(ch, b), false); return; }
       const out = $("designGrillOut"); out.classList.add("show");
-      out.innerHTML = `<div class="grill-loading">Grilling your design with ${esc(llm.model || DEFAULT_MODEL)}…</div>`;
-      try { renderGrillOutput(await gradeWithLLM(ch, build, defense, llm), true); }
-      catch (err) {
-        out.innerHTML = `<div class="trap-flag"><b>LLM call failed:</b> ${esc(err.message || String(err))}. Falling back to the offline grill.</div>`;
-        setTimeout(() => renderGrillOutput(offlineGrill(ch, build), false), 60);
-      }
+      out.innerHTML = `<div class="grill-loading">Grilling your reasoning with ${esc(llm.model || DEFAULT_MODEL)}…</div>`;
+      try { renderGrillOutput(await gradeWithLLM(ch, b, defense, llm), true); }
+      catch (err) { out.innerHTML = `<div class="trap-flag"><b>LLM call failed:</b> ${esc(err.message || String(err))}. Falling back to the offline grill.</div>`; setTimeout(() => renderGrillOutput(offlineGrill(ch, b), false), 60); }
     }
     function extractJson(s) { const a = s.indexOf("{"), b = s.lastIndexOf("}"); if (a < 0 || b < 0) return null; try { return JSON.parse(s.slice(a, b + 1)); } catch (e) { return null; } }
-    async function gradeWithLLM(ch, build, defense, llm) {
-      const sys = "You are a ruthless staff/principal engineer running a live system-design interview. The candidate built a system on a canvas. Interrogate WHY they made each choice. Where a choice is suboptimal, a trap, or missing, expose it, name the stronger option, and state the concrete cost of their choice. Be specific and technical and reference their actual components. If a prior defense is provided, respond to it directly and push harder. Return ONLY minified JSON of shape {\"verdict\":string(<=2 sentences),\"score\":number 0-100,\"grills\":[{\"question\":string,\"critique\":string,\"better\":string}]} with 3-6 grills.";
-      const payload = {
-        challenge: ch.title, brief: ch.brief, candidateBuild: describeBuild(ch, build),
-        answerKey: { canonicalFlow: ch.model.nodes.map(id => (compOf(ch, id) || {}).label || id), tradeoffs: ch.model.tradeoffs, forks: ch.forks.map(f => ({ q: f.q, best: (f.options.find(o => o.best) || {}).label })) },
-        priorDefense: defense || null
-      };
+    async function gradeWithLLM(ch, b, defense, llm) {
+      const sys = "You are a ruthless staff/principal engineer running a live system-design interview. The candidate designed a system as a sequence of stages and, at each, chose an approach and justified it. Interrogate their REASONING: for weak or under-justified choices, expose the flaw, name the stronger option, and state the concrete cost of theirs under the stated constraints. Be specific and reference their actual stages and choices. If a prior defense is present, respond to it directly and push harder. Return ONLY minified JSON: {\"verdict\":string(<=2 sentences),\"score\":number 0-100,\"grills\":[{\"question\":string,\"critique\":string,\"better\":string}]} with 3-6 grills.";
+      const payload = { challenge: ch.title, brief: ch.brief, constraints: ch.constraints, decisions: describeBuild(ch, b), priorDefense: defense || null };
       const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + llm.key, "HTTP-Referer": location.origin || "https://localhost", "X-Title": "AI Field Deck" },
@@ -3990,66 +3864,32 @@
       if (!parsed) throw new Error("could not parse model output");
       return { verdict: parsed.verdict, score: parsed.score, items: parsed.grills || parsed.items || [] };
     }
-    function updateLLMStatus() { const b = $("designGrill"); if (b) b.textContent = getLLM().key ? "Grill me (live)" : "Grill me on this"; }
+    function updateLLMStatus() { const btn = $("designGrill"); if (btn) btn.textContent = getLLM().key ? "Grill me (live)" : "Grill me on this"; }
 
     function initDesign() {
       if (!DESIGN_CHALLENGES.length) { renderDesign(); return; }
       $("designCount").textContent = DESIGN_CHALLENGES.length;
-      const cv = canvasEl();
-      cv.addEventListener("dragover", e => { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; });
-      cv.addEventListener("drop", e => {
-        e.preventDefault();
-        const comp = e.dataTransfer.getData("text/plain"); if (!comp) return;
-        const rect = cv.getBoundingClientRect();
-        addNode(comp, e.clientX - rect.left + cv.scrollLeft - 75, e.clientY - rect.top + cv.scrollTop - 22);
+      $("stageFlow").addEventListener("click", e => {
+        if (e.target.closest("#stageAddBtn")) { const m = document.getElementById("addMenu"); if (m) m.style.display = m.style.display === "none" ? "flex" : "none"; return; }
+        const ctrl = e.target.closest("button[data-act]");
+        if (ctrl) { const sid = ctrl.dataset.sid, act = ctrl.dataset.act; if (act === "left") moveStage(sid, -1); else if (act === "right") moveStage(sid, 1); else removeStage(sid); return; }
+        const box = e.target.closest(".stage-box");
+        if (box) selectStage(box.dataset.sid);
       });
-      cv.addEventListener("mousedown", e => {
-        const node = e.target.closest(".node");
-        if (e.target.classList.contains("node-del")) { if (node) removeNode(node.dataset.id); return; }
-        if (e.target.classList.contains("wire-handle")) { if (node) { e.preventDefault(); startLink(node.dataset.id); } return; }
-        if (!node) { if (dz.linkFrom) cancelLink(); deselect(); return; }
-        if (dz.linkFrom) { completeLink(node.dataset.id); return; }
-        const g = nodeGeom(node.dataset.id);
-        dz.drag = node.dataset.id; dz.sx = e.clientX; dz.sy = e.clientY; dz.nx = g.cx - g.w / 2; dz.ny = g.cy - g.h / 2; dz.moved = false;
-        e.preventDefault();
-      });
-      document.addEventListener("mousemove", e => {
-        if (dz.drag) {
-          const dx = e.clientX - dz.sx, dy = e.clientY - dz.sy;
-          if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dz.moved = true;
-          const n = curBuild().nodes.find(nn => nn.id === dz.drag); if (!n) return;
-          n.x = Math.max(0, dz.nx + dx); n.y = Math.max(0, dz.ny + dy);
-          const el = nodeEl(dz.drag); if (el) { el.style.left = n.x + "px"; el.style.top = n.y + "px"; }
-          drawEdges();
-        } else if (dz.linkFrom) { updateRubber(e.clientX, e.clientY); }
-      });
-      document.addEventListener("mouseup", () => { if (dz.drag) { if (!dz.moved) selectNode(dz.drag); else save(); dz.drag = null; } });
-      document.addEventListener("keydown", e => {
-        if (state.view !== "design") return;
-        const tag = (document.activeElement && document.activeElement.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
-        if (e.key === "Escape") { cancelLink(); deselect(); }
-        if ((e.key === "Delete" || e.key === "Backspace") && dz.selected) { e.preventDefault(); removeNode(dz.selected); }
-      });
-      $("designTidy").addEventListener("click", tidyLayout);
-      $("designClear").addEventListener("click", () => {
-        const b = curBuild(); b.nodes = []; b.edges = []; dz.selected = null; cancelLink(); save(); renderCanvas();
-        $("designRubric").innerHTML = ""; $("designScore").innerHTML = "Cleared. Rebuild the flow and grade again.";
-        $("designGrillOut").classList.remove("show");
-      });
+      $("stageFlow").parentElement.addEventListener("click", e => { const chip = e.target.closest(".add-chip"); if (chip) addStage(chip.dataset.add); });
+      $("decisionBody").addEventListener("change", e => { const r = e.target.closest('input[type=radio]'); if (r && selStage) { curBuild().picks[selStage] = r.value; save(); renderStages(); renderDecision(); } });
+      $("decisionBody").addEventListener("input", e => { if (e.target.id === "justifyBox" && selStage) { curBuild().notes[selStage] = e.target.value; save(); } });
+      $("designReset").addEventListener("click", () => { const ch = curChallenge(); state.designBuilds[ch.id] = { order: (ch.skeleton || []).slice(), picks: {}, notes: {} }; selStage = null; save(); renderDesign(); });
       $("designGrade").addEventListener("click", gradeDesign);
       $("designGrill").addEventListener("click", () => runGrill());
-      $("designModel").addEventListener("click", () => $("designModelAnswer").classList.toggle("revealed"));
-      $("nextDesign").addEventListener("click", () => { state.designIndex = (state.designIndex + 1) % DESIGN_CHALLENGES.length; dz.selected = null; cancelLink(); save(); renderDesign(); });
-      $("designPick").addEventListener("change", e => { state.designIndex = +e.target.value; dz.selected = null; cancelLink(); save(); renderDesign(); });
+      $("nextDesign").addEventListener("click", () => { state.designIndex = (state.designIndex + 1) % DESIGN_CHALLENGES.length; selStage = null; save(); renderDesign(); });
+      $("designPick").addEventListener("change", e => { state.designIndex = +e.target.value; selStage = null; save(); renderDesign(); });
       $("designSettings").addEventListener("click", () => { $("llmSettings").hidden = !$("llmSettings").hidden; });
-      const llm = getLLM();
-      $("llmKey").value = llm.key || ""; $("llmModel").value = llm.model || DEFAULT_MODEL;
+      const llm = getLLM(); $("llmKey").value = llm.key || ""; $("llmModel").value = llm.model || DEFAULT_MODEL;
       $("llmSave").addEventListener("click", () => {
         const key = $("llmKey").value.trim(), model = $("llmModel").value.trim() || DEFAULT_MODEL;
-        localStorage.setItem(LLM_KEY, JSON.stringify({ key, model }));
-        updateLLMStatus();
-        $("llmStatus").textContent = key ? "Saved. Live grilling is on — “Grill me” now calls " + model + "." : "Cleared. Grill runs offline from the model answers.";
+        localStorage.setItem(LLM_KEY, JSON.stringify({ key, model })); updateLLMStatus();
+        $("llmStatus").textContent = key ? `Saved. Live grilling on — "Grill me" now calls ${model}.` : "Cleared. Grill runs offline from the model answers.";
       });
       updateLLMStatus();
       renderDesign();

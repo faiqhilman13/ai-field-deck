@@ -1,245 +1,310 @@
 /*
  * challenges.js — content data layer for the "System Design Lab" mode.
  *
- * This file is pure DATA. The app reads it via loadChallenges() (window.CHALLENGE_DB).
- * A scraper (scraper/normalize.py) appends more challenge objects here over time;
- * a future Supabase migration just changes loadChallenges() to hit an API — the
- * schema below stays identical.
+ * Pure DATA (no functions). Read via loadChallenges() (window.CHALLENGE_DB).
+ * A scraper (scraper/normalize.py) appends more challenges over time; a future
+ * Supabase migration only changes loadChallenges() — this schema is stable.
  *
- * Schema (all JSON-serializable — no functions):
- *   id      : unique slug
- *   topic   : must match a topic in DOMAIN_OF (RAG / Agents / Evals / ...) for mastery
- *   title   : short name
- *   brief   : the challenge prompt shown to the user
- *   palette : [{ id, label, kind, correct, note?, trap? }]
- *             kind ∈ source|compute|gate|model|store|agent|human|control
- *             correct:false + trap:"why it's wrong" = a distractor that gets flagged
- *   forks   : [{ id, q, options:[{ id, label, best, rationale }] }]  pointed trade-offs
- *   model   : { nodes:[id...], edges:[[from,to]...], tradeoffs:[str...] }  the answer key
- *   grills  : [{ q, a }]  verbatim interview Q + the answer to give (offline grill)
- *   rubric  : [{ id, type, label, critical?, ...args }]  declarative grading rules
- *             type "present" {node}     — node must be on the canvas
- *             type "absent"  {node}     — node must NOT be on the canvas (trap)
- *             type "precedes"{from,to}  — a directed path from→to must exist
- *             type "onpath"  {node}     — node present AND wired (>=1 edge)
+ * Model: a challenge is a PROBLEM STATEMENT + a suggested skeleton of STAGES.
+ * The user edits the skeleton (add / remove / reorder) and, at each stage,
+ * PICKS one option and JUSTIFIES it. Grading rewards defensible picks + the
+ * quality of the trade-off reasoning (LLM-grilled).
+ *
+ * Schema (all JSON-serializable):
+ *   id, topic (must match DOMAIN_OF for mastery), title, brief
+ *   constraints : [str]        the constraints that make the choices non-trivial
+ *   skeleton    : [stageId]    default ordered stages shown on load
+ *   addable     : [stageId]    stages not in the skeleton the user may add
+ *   stages      : { stageId: {
+ *       name, prompt, required:bool,
+ *       options: [{ id, label, verdict:"best"|"solid"|"weak", why }]
+ *                   best  = ideal for these constraints
+ *                   solid = defensible with good justification
+ *                   weak  = poor fit / trap for these constraints
+ *       mustMention: [str]     points a strong justification should cover
+ *   }}
+ *   grills : [{ q, a }]        overall follow-up interrogation (offline reference)
  */
 window.CHALLENGE_DB = [
   {
-    id: "rag-ingest",
+    id: "rag-system",
     topic: "RAG",
-    title: "RAG Ingestion + Serving Pipeline",
-    brief: `Advisers upload firm documents (statements, factfinds, policies) to per-firm folders. Design the pipeline that ingests them and serves grounded answers — kept fresh, tenant-isolated, cheap to revise, and safe enough that a wrong figure never reaches a suitability report. Drag the components you'd use, wire the flow, and commit to the trade-offs.`,
-    palette: [
-      { id: "s3", label: "S3 upload (firm folder)", kind: "source", correct: true, note: "per-firm prefix" },
-      { id: "worker", label: "Sidekiq ingest worker", kind: "compute", correct: true, note: "SQS event · idempotent" },
-      { id: "parse", label: "Parse per doc type", kind: "compute", correct: true, note: "DOCX XML · Textract" },
-      { id: "validate", label: "Validation gate", kind: "gate", correct: true, note: "confidence · tables · speaker labels" },
-      { id: "quarantine", label: "Quarantine + human review", kind: "human", correct: true, note: "low-confidence docs" },
-      { id: "chunk", label: "Chunk structure-first", kind: "compute", correct: true, note: "tables atomic" },
-      { id: "chunkhash", label: "Chunk-hash diff", kind: "compute", correct: true, note: "changed only · ~10% re-embed" },
-      { id: "embed", label: "Embed changed chunks", kind: "model", correct: true, note: "batched · versioned" },
-      { id: "version", label: "Upsert vN+1 + atomic flip", kind: "store", correct: true, note: "old keeps serving · is_current N→N+1" },
-      { id: "pgvector", label: "pgvector on RDS + RLS", kind: "store", correct: true, note: "firm partitions · HNSW" },
-      { id: "filters", label: "Session-scoped filters", kind: "gate", correct: true, note: "firm · client · licence" },
-      { id: "hybrid", label: "Hybrid retrieve (BM25+dense · RRF)", kind: "compute", correct: true },
-      { id: "rerank", label: "Rerank 40 → 6–8", kind: "model", correct: true, note: "proven on a golden set" },
-      { id: "generate", label: "Generate w/ evidence + citations", kind: "model", correct: true },
-      { id: "judge", label: "LLM-as-judge gate", kind: "gate", correct: true, note: "L0 + L1 before adviser" },
-      { id: "pinecone", label: "Dedicated vector DB (Pinecone)", kind: "store", correct: false, trap: `A second datastore you must re-secure for tenant isolation + another service to run. pgvector-on-their-RDS gave DB-enforced RLS for free. Only switch past pre-agreed exit triggers: >100M vectors or p95 > 150ms.` },
-      { id: "reembed_all", label: "Re-embed all chunks on any change", kind: "model", correct: false, trap: `Throws away ~90% of the revision cost saving. Chunk-hash diff re-embeds only the ~10% that actually changed. Here staleness is a compliance failure, not a cache miss.` },
-      { id: "overwrite", label: "Overwrite index in place", kind: "store", correct: false, trap: `Creates a stale-serving window during re-embed and destroys audit history. Atomic version flip keeps vN serving until vN+1 is fully live; old versions kept for audit, never served.` },
-      { id: "globalretrieve", label: "Global retrieve (no tenant filter)", kind: "compute", correct: false, trap: `Cross-tenant leakage. Filters must be server-side and session-scoped, never caller-optional — this is an FCA breach, not a bug.` },
-      { id: "skipjudge", label: "Ship answer, skip eval gate", kind: "control", correct: false, trap: `Ungated generation reaches advisers with no L0 arithmetic/identity checks and no L1 judge. A fabricated figure goes straight into a suitability report.` }
+    title: "Design a RAG system",
+    brief: `Build retrieval-augmented generation over an enterprise knowledge base so employees get accurate, cited answers. Walk the stages of the system and, at each one, choose an approach and defend the trade-off.`,
+    constraints: [
+      "~10M documents across 500 tenants",
+      "p95 retrieval < 300ms",
+      "Answers must cite sources — no hallucinated facts",
+      "Documents change often; freshness matters",
+      "Strict per-tenant isolation (compliance)"
     ],
-    forks: [
-      { id: "store", q: "Where do the vectors live?", options: [
-        { id: "pgvector", label: "pgvector on their RDS + RLS", best: true, rationale: `Traded peak ANN speed for DB-enforced tenant isolation (RLS) + one less service to run. Exit triggers pre-agreed: >100M vecs, p95 > 150ms.` },
-        { id: "pinecone", label: "Dedicated vector DB", best: false, rationale: `Faster ANN, but a second store to secure for tenant isolation and another service to operate. Worth it only past their scale triggers — premature here.` }
-      ]},
-      { id: "revision", q: "How do you handle a re-uploaded/changed document?", options: [
-        { id: "hashdiff", label: "Chunk-hash diff + atomic version flip", best: true, rationale: `Extra ingest machinery buys ~90% cheaper revisions and a zero stale-serving window. Staleness is a compliance failure here, so it's worth it.` },
-        { id: "reembed", label: "Re-embed everything / overwrite in place", best: false, rationale: `Simpler code, but you pay full embedding cost every revision and open a window where old figures still serve.` }
-      ]},
-      { id: "embedmodel", q: "How do you pick the embedding model?", options: [
-        { id: "versioned", label: "Version embeddings now, swap later via backfill", best: true, rationale: `embedding_version on every chunk means a model swap is a backfill job, not a redesign. A/B a finance-tuned model once real data lands. Reversible beats optimal on day 0.` },
-        { id: "lockbest", label: "Lock in the best embedding model up front", best: false, rationale: `Optimises a number you can't yet measure and makes the eventual swap a migration. You don't have the real data to justify it on day 0.` }
-      ]},
-      { id: "reranker", q: "Which reranker — and how do you justify it?", options: [
-        { id: "proven", label: "Named reranker, proven on a golden retrieval set", best: true, rationale: `e.g. bge-reranker-v2-m3 or Cohere Rerank. Prove it offline: recall@k + context precision, before vs after, per doc type. 40 → 6–8 into context. Measure it, don't vibe it.` },
-        { id: "vendor", label: "Trust the vendor's benchmark", best: false, rationale: `Their benchmark isn't your corpus. Without a golden set on your own doc types you can't tell if it actually helps or quietly hurts recall.` }
-      ]}
-    ],
-    model: {
-      nodes: ["s3", "worker", "parse", "validate", "quarantine", "chunk", "chunkhash", "embed", "version", "pgvector", "filters", "hybrid", "rerank", "generate", "judge"],
-      edges: [
-        ["s3", "worker"], ["worker", "parse"], ["parse", "validate"],
-        ["validate", "quarantine"], ["validate", "chunk"], ["chunk", "chunkhash"],
-        ["chunkhash", "embed"], ["embed", "version"], ["version", "pgvector"],
-        ["filters", "hybrid"], ["hybrid", "rerank"], ["rerank", "generate"],
-        ["generate", "judge"], ["pgvector", "hybrid"]
-      ],
-      tradeoffs: [
-        `★ Reversible beats optimal (day 0): embedding_version on every chunk means a model swap is a backfill job, not a redesign. Voyage/finance-2 A/B once real data lands.`,
-        `★ pgvector on their RDS, not a vector DB: traded peak ANN speed for DB-enforced tenant isolation (RLS) + one less service to run. Exit triggers pre-agreed: >100M vecs, p95 > 150ms.`,
-        `★ Chunk-hash diff + atomic version flip: extra ingest machinery buys ~90% cheaper revisions and zero stale-serving window — staleness is a compliance failure here.`
-      ]
+    skeleton: ["ingest", "chunk", "embed", "store", "retrieve", "rerank", "generate", "guardrail"],
+    addable: ["cache", "observability"],
+    stages: {
+      ingest: {
+        name: "Ingestion & freshness", prompt: "How do documents get in and stay current?", required: true,
+        options: [
+          { id: "stream", label: "Event-driven ingestion (queue + idempotent workers)", verdict: "best", why: `Near-real-time freshness with idempotent workers that scale with load. Here staleness is a correctness bug, so push-based beats polling.` },
+          { id: "batch", label: "Nightly batch ETL", verdict: "solid", why: `Simple and cheap, but up to 24h stale — only acceptable if the corpus changes slowly, which it doesn't here.` },
+          { id: "manual", label: "Manual re-upload / re-index", verdict: "weak", why: `Doesn't scale and guarantees stale answers; no change detection at all.` }
+        ],
+        mustMention: ["freshness / staleness window", "idempotency / exactly-once", "change detection — re-embed only what changed"]
+      },
+      chunk: {
+        name: "Chunking", prompt: "How do you split documents for retrieval?", required: true,
+        options: [
+          { id: "structure", label: "Structure-aware (keep headings/tables intact)", verdict: "best", why: `Preserves meaning and keeps tables and atomic facts whole, so fewer broken or misleading retrievals.` },
+          { id: "fixed", label: "Fixed-size with overlap", verdict: "solid", why: `Easy and predictable, but splits tables and sentences and needs overlap tuning to avoid boundary loss.` },
+          { id: "whole", label: "Whole document as one chunk", verdict: "weak", why: `Blows the context window and destroys retrieval precision — you retrieve the whole doc for one fact.` }
+        ],
+        mustMention: ["retrieval granularity vs context size", "table / structure integrity", "overlap / boundary loss"]
+      },
+      embed: {
+        name: "Embedding strategy", prompt: "How do you embed, and future-proof it?", required: true,
+        options: [
+          { id: "versioned", label: "Versioned embeddings, model swappable via backfill", verdict: "best", why: `An embedding_version on every chunk makes a model upgrade a backfill job, not a re-architecture. Reversible beats optimal on day 0.` },
+          { id: "single", label: "Pick one strong model, no versioning", verdict: "solid", why: `Fine until you want to switch models — then it's a full re-index with a stale-serving window.` },
+          { id: "lexical", label: "No embeddings — BM25/keyword only", verdict: "weak", why: `Misses semantic matches; only defensible as one signal in a hybrid, never alone for this.` }
+        ],
+        mustMention: ["embedding versioning / backfill path", "domain fit (general vs finance/code)", "re-embed cost when docs change"]
+      },
+      store: {
+        name: "Vector store", prompt: "Where do the embeddings live?", required: true,
+        options: [
+          { id: "pgvector", label: "pgvector on Postgres + row-level security", verdict: "best", why: `DB-enforced tenant isolation (RLS), one fewer service to run, and fine to ~100M vectors. Multi-tenant compliance makes this the call.` },
+          { id: "managed", label: "Managed vector DB (Pinecone / Weaviate)", verdict: "solid", why: `Fast ANN that scales, but tenant isolation is now your app's job and it's another service to secure and operate.` },
+          { id: "faiss", label: "FAISS in-process", verdict: "weak", why: `No persistence, no multi-node, no isolation — a POC tool, not multi-tenant production.` }
+        ],
+        mustMention: ["per-tenant isolation", "scale ceiling / ANN index type", "ops & cost of another service"]
+      },
+      retrieve: {
+        name: "Retrieval", prompt: "How do you fetch candidate chunks?", required: true,
+        options: [
+          { id: "hybrid", label: "Hybrid: BM25 + dense, fused with RRF", verdict: "best", why: `Catches exact terms, IDs and acronyms AND semantics; fusion beats either alone on enterprise jargon.` },
+          { id: "dense", label: "Dense (vector) only", verdict: "solid", why: `Strong semantics, but misses exact IDs, acronyms and rare terms users actually search for.` },
+          { id: "keyword", label: "Keyword / BM25 only", verdict: "weak", why: `No semantic matching — brittle to paraphrase and synonyms.` }
+        ],
+        mustMention: ["exact-match vs semantic recall", "fusion / RRF", "recall before you rerank"]
+      },
+      rerank: {
+        name: "Reranking", prompt: "How do you order candidates before the model?", required: true,
+        options: [
+          { id: "cross", label: "Cross-encoder reranker, proven on a golden set", verdict: "best", why: `Big precision win. Prove it offline (recall@k, context precision) per doc type — never trust the vendor benchmark. Cut 40 candidates to ~6.` },
+          { id: "none", label: "No rerank — trust the vector scores", verdict: "solid", why: `Lower latency and cost; fine if retrieval is already precise, risky for nuanced queries.` },
+          { id: "llmrank", label: "LLM reranks every candidate", verdict: "weak", why: `Accurate but too slow and expensive at p95 < 300ms and this volume.` }
+        ],
+        mustMention: ["precision@k vs latency / cost", "proving it on a golden set", "how many candidates reach the context window"]
+      },
+      generate: {
+        name: "Generation & grounding", prompt: "How does the model actually answer?", required: true,
+        options: [
+          { id: "grounded", label: "Grounded with citations; refuse if unsupported", verdict: "best", why: `Every claim ties to a retrieved chunk, and low confidence returns 'I don't know'. Meets the must-cite / no-hallucination constraint.` },
+          { id: "plainrag", label: "Standard RAG prompt (context in, answer out)", verdict: "solid", why: `Works, but without enforced citation and refusal it can still fabricate confidently.` },
+          { id: "nogr", label: "No grounding constraints", verdict: "weak", why: `Invites hallucinated facts — disqualifying for a system that must cite.` }
+        ],
+        mustMention: ["citation / provenance per claim", "refusal on low support", "prompt injection from retrieved docs is untrusted"]
+      },
+      guardrail: {
+        name: "Quality / safety gate", prompt: "What checks the answer before the user sees it?", required: true,
+        options: [
+          { id: "evalgate", label: "Groundedness + citation eval, human review on low confidence", verdict: "best", why: `Catches unsupported claims and PII before delivery and escalates the uncertain ones to a person.` },
+          { id: "basic", label: "Basic PII / profanity filter only", verdict: "solid", why: `Necessary but not sufficient — it won't catch a well-phrased fabrication.` },
+          { id: "none", label: "No gate", verdict: "weak", why: `Ships fabrications and leaks straight to the user.` }
+        ],
+        mustMention: ["groundedness / faithfulness check", "PII / safety", "escalation path to a human"]
+      },
+      cache: {
+        name: "Caching", prompt: "Do you cache, and how?", required: false,
+        options: [
+          { id: "semantic", label: "Semantic + exact response cache, invalidate on doc change", verdict: "best", why: `Cuts cost and p95 for repeat and near-repeat queries; the hard part is invalidating when a source doc changes.` },
+          { id: "exact", label: "Exact-match cache only", verdict: "solid", why: `Simple, but misses paraphrased repeats which are most of the real traffic.` },
+          { id: "nocache", label: "No cache (yet)", verdict: "solid", why: `Fine early; revisit once cost or latency actually bite.` }
+        ],
+        mustMention: ["invalidation when a source doc changes", "hit rate vs staleness risk"]
+      },
+      observability: {
+        name: "Observability & feedback", prompt: "How do you know it's working?", required: false,
+        options: [
+          { id: "traces", label: "Per-query traces + thumbs + an offline eval set", verdict: "best", why: `You can debug why one answer was wrong and catch regressions before shipping a prompt change.` },
+          { id: "logs", label: "Basic logs only", verdict: "weak", why: `Can't trace a single bad answer or detect a quality regression from a prompt tweak.` }
+        ],
+        mustMention: ["trace a single answer end to end", "regression eval before shipping changes"]
+      }
     },
     grills: [
-      { q: "Which reranker — and how do you prove it's actually better?", a: `Name one: bge-reranker-v2-m3 (or Cohere Rerank). Prove it offline on a golden retrieval set: recall@k + context precision, before vs after, per doc type. 40 → 6–8 into context. Measure it, don't vibe it.` },
-      { q: "Advisers uploaded a newer statement but reports still pull old figures. What happened?", a: `Stale retrieval — and is_current alone isn't the full answer: atomic version flip + the filter hard-coded server-side (never caller-optional) + nightly S3↔index reconciliation to catch partial failures. Old versions kept for audit, never served.` }
-    ],
-    rubric: [
-      { id: "validate_before_store", type: "precedes", from: "validate", to: "pgvector", label: "Validation gate runs before anything is stored", critical: true },
-      { id: "has_versioning", type: "present", node: "version", label: "Versioned upsert + atomic flip (no stale-serving window)", critical: true },
-      { id: "tenant_filters", type: "present", node: "filters", label: "Session-scoped tenant filters on retrieval", critical: true },
-      { id: "eval_gate", type: "onpath", node: "judge", label: "LLM-as-judge gate on the serving path before the adviser", critical: true },
-      { id: "has_hash_diff", type: "present", node: "chunkhash", label: "Chunk-hash diff — only changed chunks re-embed" },
-      { id: "human_review", type: "present", node: "quarantine", label: "Low-confidence docs quarantined to human review" },
-      { id: "no_pinecone", type: "absent", node: "pinecone", label: "Didn't reach for a dedicated vector DB (pgvector+RLS was the call)" },
-      { id: "no_reembed_all", type: "absent", node: "reembed_all", label: "Didn't re-embed the whole corpus on every change" },
-      { id: "no_global", type: "absent", node: "globalretrieve", label: "No cross-tenant global retrieve" }
+      { q: "p95 latency creeps to 900ms. Where do you look first?", a: `Rerank and candidate count first — cross-encoder cost scales with k — then ANN params (HNSW ef_search) and cache hit rate. Measure per-stage latency; don't guess.` },
+      { q: "A tenant reports seeing another firm's document in results. What failed?", a: `Tenant isolation. The filter must be enforced server-side at the DB (RLS) or index partition, never caller-optional. Add a cross-tenant retrieval regression test.` },
+      { q: "Answers occasionally cite the wrong source. Fix?", a: `Bind citations to chunk IDs and verify each generated claim maps to a retrieved chunk in a post-generation check; refuse or flag when it doesn't. It's a grounding+verification problem, not a prompt tweak.` }
     ]
   },
   {
-    id: "atlas-agents",
-    topic: "Agents",
-    title: "Atlas — Agent Topology",
-    brief: `Atlas is the adviser-facing assistant. A query might be a one-liner ("what's this client's risk score?") or an open-ended research task. Design the agent topology that stays fast on the easy 80%, escalates safely on the hard tail, keeps every step auditable under FCA, and never lets an agent quietly perform a write. Drag, wire, and defend your trade-offs.`,
-    palette: [
-      { id: "session", label: "Adviser session (SSE)", kind: "source", correct: true },
-      { id: "router", label: "Router — 1 small call", kind: "model", correct: true, note: "strict JSON: intent · entities · tier" },
-      { id: "t0", label: "T0 direct lane", kind: "compute", correct: true, note: "tool + template · cached · ~$0.0002" },
-      { id: "t1", label: "T1 one specialist", kind: "agent", correct: true, note: "book screening → SQL · ~$0.02" },
-      { id: "t2", label: "T2 orchestrator (code, durable)", kind: "control", correct: true, note: "checkpointed plan DAG · not an LLM · ~$0.3" },
-      { id: "clientdata", label: "Client Data agent", kind: "agent", correct: true, note: "CRM MCP · read only" },
-      { id: "knowledge", label: "Knowledge agent", kind: "agent", correct: true, note: "retrieval MCP (Part 1 index)" },
-      { id: "analysis", label: "Analysis agent", kind: "agent", correct: true, note: "extended thinking · NO direct tools" },
-      { id: "action", label: "Action agent (appendix)", kind: "agent", correct: true, note: "write tools · propose→confirm→execute" },
-      { id: "evidence", label: "Evidence packets", kind: "compute", correct: true, note: "claims + provenance" },
-      { id: "synthesis", label: "Synthesis + citations", kind: "model", correct: true },
-      { id: "llm_orchestrator", label: "LLM orchestrator (plans freely)", kind: "model", correct: false, trap: `Non-deterministic, uncheckpointed, unauditable — under FCA you need a durable, replayable plan. Keep planning as code; reserve LLM planning for the open-ended ~5% tail only.` },
-      { id: "many_agents", label: "Many autonomous agents", kind: "agent", correct: false, trap: `Hundreds of free-running agents = unauditable and unbounded cost. The answer is a small capability-bounded set (4) with scoped MCP permissions, not more agents.` },
-      { id: "analysis_tools", label: "Give Analysis agent direct tools", kind: "agent", correct: false, trap: `Removes the single governed, logged, scope-checked fetch point and invites runaway retrieval loops. The cost of no-tools is one latency hop per request — worth it.` },
-      { id: "rawdocs", label: "Pass raw documents to the model", kind: "compute", correct: false, trap: `Blows the token budget and loses citability. Evidence packets carry provenance the judge can later verify — the model shouldn't 'see everything'.` },
-      { id: "write_default", label: "Agents call write tools by default", kind: "agent", correct: false, trap: `De-scoped by Roshan — zero write actions in real queries. Writes are appendix-only and gated propose→confirm→execute, never a default capability.` }
-    ],
-    forks: [
-      { id: "orchestration", q: "What runs the multi-step plan?", options: [
-        { id: "code", label: "Orchestrator is code (durable, checkpointed)", best: true, rationale: `Traded runtime flexibility for determinism, checkpoints and auditability. Custom LLM planning only for the open-ended ~5% tail.` },
-        { id: "llm", label: "An LLM orchestrator plans and calls tools", best: false, rationale: `Flexible, but non-deterministic and hard to audit or replay — unacceptable when a regulator can ask "why did it do that?"` }
-      ]},
-      { id: "analysistools", q: "Does the Analysis agent fetch its own data?", options: [
-        { id: "notools", label: "Zero direct tools — one governed fetch point", best: true, rationale: `Costs one latency hop per data request; buys a single governed, logged, scope-checked fetch point and no runaway retrieval loops.` },
-        { id: "tools", label: "Give it tools so it can fetch what it needs", best: false, rationale: `Saves a hop but scatters retrieval across an agent you can't easily bound — loops, cost, and audit gaps follow.` }
-      ]},
-      { id: "context", q: "What does the model actually see?", options: [
-        { id: "packets", label: "Evidence packets (claims + provenance)", best: true, rationale: `Traded 'model sees everything' for token discipline + citability — every claim carries provenance the judge can later verify.` },
-        { id: "raw", label: "Raw documents / full context", best: false, rationale: `Convenient but expensive and uncitable; you can't later prove which source backed which claim.` }
-      ]},
-      { id: "accuracy", q: "How does Atlas know its answers are accurate?", options: [
-        { id: "perstep", label: "Per-step verification + refuse unsupported", best: true, rationale: `SQL results get schema/count checks; retrieval returns evidence packets with citations; synthesis refuses unsupported claims; low confidence → ask, don't guess. Part 3's gates consume Atlas traces too.` },
-        { id: "trustfinal", label: "Trust the final answer", best: false, rationale: `No per-step checks means errors compound silently — and you'll admit live you 'hadn't thought about it'. Never repeat that.` }
-      ]}
-    ],
-    model: {
-      nodes: ["session", "router", "t0", "t1", "t2", "clientdata", "knowledge", "analysis", "action", "evidence", "synthesis"],
-      edges: [
-        ["session", "router"], ["router", "t0"], ["router", "t1"], ["router", "t2"],
-        ["t2", "clientdata"], ["t2", "knowledge"], ["t2", "analysis"], ["t2", "action"],
-        ["clientdata", "evidence"], ["knowledge", "evidence"], ["analysis", "evidence"],
-        ["evidence", "synthesis"]
-      ],
-      tradeoffs: [
-        `★ Orchestrator is code, not an LLM: traded runtime flexibility for determinism, checkpoints and auditability. Custom LLM planning only for the open-ended ~5% tail.`,
-        `★ Analysis agent gets zero direct tools: costs one latency hop per data request; buys a single governed, logged, scope-checked fetch point — no runaway retrieval loops.`,
-        `★ Evidence packets, not raw documents: traded 'model sees everything' for token discipline + citability — every claim carries provenance the judge can later verify.`
-      ]
-    },
-    grills: [
-      { q: "How does Atlas know its answers are accurate?", a: `Per-step verification: SQL results get schema/count checks; retrieval returns evidence packets with citations; synthesis refuses unsupported claims; low confidence → ask, don't guess. Part 3's gates consume Atlas traces too — eval in the loop, not bolted on.` },
-      { q: "How do you manage lots of agents?", a: `Don't have lots. A small capability-bounded set (4), a durable orchestrator executing typed plans with checkpointed state, scoped MCP tool permissions per agent. Hundreds of free-running agents = unauditable under FCA.` },
-      { q: "CRM dies mid-query — what does the adviser actually see?", a: `Product answer first, mechanics second: "Live CRM values unavailable — this answer is incomplete, based on retrieved reports only." Never present partial as complete. Checkpoint completed steps; resume from the failed step, not from scratch.` }
-    ],
-    rubric: [
-      { id: "code_orchestrator", type: "present", node: "t2", label: "Orchestration is durable code, not a free-running LLM", critical: true },
-      { id: "router_first", type: "precedes", from: "router", to: "t2", label: "Router classifies + tiers before escalating to the orchestrator" },
-      { id: "evidence_packets", type: "present", node: "evidence", label: "Evidence packets with provenance, not raw docs", critical: true },
-      { id: "readonly_crm", type: "present", node: "clientdata", label: "Client data via read-only CRM MCP" },
-      { id: "no_llm_orch", type: "absent", node: "llm_orchestrator", label: "Didn't make the orchestrator an LLM" },
-      { id: "analysis_no_tools", type: "absent", node: "analysis_tools", label: "Analysis agent kept tool-free (one governed fetch point)" },
-      { id: "no_raw_docs", type: "absent", node: "rawdocs", label: "Didn't dump raw documents into context" },
-      { id: "bounded_agents", type: "absent", node: "many_agents", label: "Kept a small, capability-bounded agent set" },
-      { id: "no_default_writes", type: "absent", node: "write_default", label: "No write tools by default (appendix-only, gated)" }
-    ]
-  },
-  {
-    id: "eval-gate",
+    id: "eval-platform",
     topic: "Evals",
-    title: "Three-Layer Eval Gate (LLM-as-Judge)",
-    brief: `Every generated suitability report must pass a quality gate before an adviser sees it — at Emma's real volume (~550/week). Design the gate so a fabricated income or a missing vulnerable-client disclosure can never slip through as a false green, the judge itself can't silently drift, and advisers actually trust the output. Drag, wire, and commit to the trade-offs.`,
-    palette: [
-      { id: "report", label: "Emma report + evidence bundle", kind: "source", correct: true, note: "provenance" },
-      { id: "l0", label: "L0 deterministic gates", kind: "gate", correct: true, note: "identity · figures · sections · arithmetic · dates · length" },
-      { id: "block", label: "Block + regenerate", kind: "control", correct: true },
-      { id: "l1", label: "L1 LLM judge", kind: "model", correct: true, note: "per-criterion · strict JSON · evidence quotes · unknown" },
-      { id: "mingate", label: "Min-gate (all critical ≥ 4?)", kind: "gate", correct: true, note: "never average" },
-      { id: "autopass", label: "Auto-pass → adviser", kind: "control", correct: true, note: "2–5% audit sample" },
-      { id: "review", label: "Review queues", kind: "human", correct: true, note: "standard / priority" },
-      { id: "humanqa", label: "L2 Human QA", kind: "human", correct: true, note: "calibrates the judge" },
-      { id: "calibration", label: "Calibration loop", kind: "control", correct: true, note: "frozen set · seeded defects · pass^k · pinned judge versions" },
-      { id: "avg_score", label: "Average the criteria into one score", kind: "gate", correct: false, trap: `An average lets style bury a fabricated income figure. Critical criteria must each score ≥ 4 (min-gate), never be averaged away.` },
-      { id: "judge_first", label: "LLM judge does everything (no L0)", kind: "model", correct: false, trap: `Spends model judgment on what code can prove — identity, arithmetic, sections. Every deterministic check you move to L0 is a check that cannot drift.` },
-      { id: "default_pass", label: "Default to pass when judge is unsure", kind: "control", correct: false, trap: `Unknown must route to a human, never default-pass. A silent false-green on a missed vulnerable-client disclosure is the dangerous failure.` },
-      { id: "unpinned_judge", label: "Unversioned judge (latest model)", kind: "model", correct: false, trap: `The judge must be a versioned release artifact — pinned model + prompt, frozen calibration suite re-run on every change. 'Latest model' makes scores drift silently.` },
-      { id: "raw_scores", label: "Show advisers the raw judge score", kind: "control", correct: false, trap: `"95%" means nothing to an adviser. Show trust evidence — pass/fail gates, citations, unresolved warnings — not internal scores. Raw judge scores stay internal.` }
+    title: "Design an LLM quality-gate platform",
+    brief: `Every AI-generated report must pass a quality gate before a human acts on it. Design the gate so a fabricated figure or a missing disclosure can never pass as a false green, the judge itself can't silently drift, and the people downstream actually trust the output.`,
+    constraints: [
+      "~550 generated reports/week must be gated",
+      "A fabricated figure or missing disclosure must never pass as a false green",
+      "The judge itself must not silently drift over time",
+      "Downstream users must trust and act on the result",
+      "Human review capacity ~8–12 reports/day"
     ],
-    forks: [
-      { id: "detvsjudge", q: "What checks the deterministic facts (names, figures, sections)?", options: [
-        { id: "deterministic", label: "L0 deterministic gates first, judge second", best: true, rationale: `Never spend model judgment on what code proves. Every check moved to L0 is a check that cannot drift. The judge reads only the residual — grounding, adequacy.` },
-        { id: "judgeall", label: "Let the LLM judge do it all", best: false, rationale: `The judge will sometimes miss an arithmetic or identity error a one-line assertion would always catch — and it can drift between model versions.` }
-      ]},
-      { id: "aggregate", q: "How do you combine per-criterion scores?", options: [
-        { id: "mingate", label: "Min-gate — each critical criterion ≥ 4", best: true, rationale: `An average lets style bury a fabricated income. Critical criteria each score ≥ 4 or the report doesn't ship.` },
-        { id: "average", label: "Average the scores into one number", best: false, rationale: `A high average can hide a single catastrophic criterion — exactly the failure that matters most here.` }
-      ]},
-      { id: "unsure", q: "What happens when the judge is unsure?", options: [
-        { id: "unknown", label: "Return 'unknown' → route to human", best: true, rationale: `Unsure → "unknown" → human, never default-pass. Low-confidence is a routing signal, not a green light.` },
-        { id: "pass", label: "Default to pass to keep throughput up", best: false, rationale: `Optimises throughput at the cost of the exact false-green — a missed disclosure — that the gate exists to stop.` }
-      ]},
-      { id: "versioning", q: "How do you stop the judge drifting over time?", options: [
-        { id: "pinned", label: "Pinned, versioned judge + calibration suite", best: true, rationale: `The judge is a versioned release artifact: pinned model + prompt, frozen calibration suite + seeded defects re-run on every change, score-distribution monitoring, benchmarks bound to template versions.` },
-        { id: "latest", label: "Always use the latest model", best: false, rationale: `Every model update silently changes your scores and you can't tell quality change from judge change. Never grade a 17-section report against a 20-section rubric.` }
-      ]}
-    ],
-    model: {
-      nodes: ["report", "l0", "block", "l1", "mingate", "autopass", "review", "humanqa", "calibration"],
-      edges: [
-        ["report", "l0"], ["l0", "block"], ["l0", "l1"], ["l1", "mingate"],
-        ["mingate", "autopass"], ["mingate", "review"], ["review", "humanqa"],
-        ["humanqa", "calibration"], ["calibration", "l1"]
-      ],
-      tradeoffs: [
-        `★ Deterministic-first, judge second: never spend model judgment on what code proves — every check moved to L0 is a check that cannot drift.`,
-        `★ Min-gate, never average: an average lets style bury a fabricated income — critical criteria each score ≥ 4 or the report doesn't ship.`,
-        `★ Threshold is a capacity equation: flag volume ≈ review capacity (8–12/day at Emma's real ~550/wk); false-pass rate is measured by the 2–5% audit — not vibes.`
-      ]
+    skeleton: ["intake", "l0", "l1", "aggregate", "route", "humanqa", "calibration", "trust"],
+    addable: [],
+    stages: {
+      intake: {
+        name: "Intake", prompt: "What actually arrives at the gate?", required: true,
+        options: [
+          { id: "bundle", label: "Report + evidence bundle (provenance)", verdict: "best", why: `The gate can only verify a claim it can trace back to a source, so provenance must come with the report.` },
+          { id: "reportonly", label: "Just the report text", verdict: "weak", why: `You can't verify figures without the evidence they were derived from.` }
+        ],
+        mustMention: ["provenance / traceable claims", "what the gate needs to verify"]
+      },
+      l0: {
+        name: "Deterministic gates (L0)", prompt: "What does code check before any model runs?", required: true,
+        options: [
+          { id: "det", label: "Deterministic checks first (identity, arithmetic, sections, dates)", verdict: "best", why: `Never spend model judgment on what code can prove. Every check you move to L0 is a check that cannot drift.` },
+          { id: "skip", label: "Skip straight to the LLM judge", verdict: "weak", why: `The judge will occasionally miss an arithmetic or identity error that a one-line assertion always catches.` }
+        ],
+        mustMention: ["deterministic-first", "drift resistance", "cheap and exact checks"]
+      },
+      l1: {
+        name: "LLM judge (L1)", prompt: "How does the model judge what code can't?", required: true,
+        options: [
+          { id: "percriterion", label: "Per-criterion, strict JSON, evidence quotes, 'unknown' allowed", verdict: "best", why: `Structured, quotable, and able to abstain. The judge reads only the residual — grounding and adequacy — that L0 can't prove.` },
+          { id: "holistic", label: "One holistic 'is this good?' score", verdict: "weak", why: `Unauditable and gameable; you can't tell which criterion failed or why.` }
+        ],
+        mustMention: ["per-criterion scoring", "mandatory evidence quotes", "abstain / unknown option"]
+      },
+      aggregate: {
+        name: "Aggregation", prompt: "How do you combine the criterion scores?", required: true,
+        options: [
+          { id: "mingate", label: "Min-gate — each critical criterion ≥ threshold", verdict: "best", why: `An average lets style bury a fabricated income figure. Critical criteria each pass or the report doesn't ship.` },
+          { id: "average", label: "Average into one overall score", verdict: "weak", why: `A high average hides the single catastrophic failure that matters most.` }
+        ],
+        mustMention: ["never average critical criteria", "threshold ≈ review capacity", "false-pass rate is the number that matters"]
+      },
+      route: {
+        name: "Routing", prompt: "Where do reports go after scoring?", required: true,
+        options: [
+          { id: "passfail", label: "Auto-pass + audit sample; uncertain or failing → human", verdict: "best", why: `Unknown routes to a human, never default-pass; a 2–5% audit sample measures the real false-pass rate.` },
+          { id: "autopassall", label: "Auto-pass unless clearly failing", verdict: "weak", why: `Default-passing the uncertain ones is exactly how a missed disclosure ships.` }
+        ],
+        mustMention: ["unknown → human, never default-pass", "audit sample", "flag volume bounded by capacity"]
+      },
+      humanqa: {
+        name: "Human QA", prompt: "What do the humans in the loop do?", required: true,
+        options: [
+          { id: "calibrate", label: "Review flagged + audit set, and calibrate the judge", verdict: "best", why: `Humans are the ground truth that keeps the judge honest — a calibration source, not just a backstop.` },
+          { id: "nohuman", label: "No humans — fully automated", verdict: "weak", why: `No ground truth to detect judge drift or catch novel failure modes.` }
+        ],
+        mustMention: ["human as calibration source", "capacity-bounded flag volume"]
+      },
+      calibration: {
+        name: "Calibration & versioning", prompt: "How do you stop the judge drifting?", required: true,
+        options: [
+          { id: "pinned", label: "Pinned model+prompt; frozen calibration set + seeded defects re-run on every change", verdict: "best", why: `The judge is a versioned release artifact. Benchmarks are bound to template versions — never grade a 17-section report against a 20-section rubric.` },
+          { id: "latest", label: "Always use the latest model", verdict: "weak", why: `Every model update silently moves your scores; you can't separate a quality change from a judge change.` }
+        ],
+        mustMention: ["pinned / versioned judge", "frozen calibration + seeded defects", "benchmarks bound to template version"]
+      },
+      trust: {
+        name: "What the human sees", prompt: "What do you surface to the person who acts on it?", required: true,
+        options: [
+          { id: "evidence", label: "Trust evidence: pass/fail gates, citations, unresolved warnings", verdict: "best", why: `'95%' means nothing to a reviewer; show why it passed and exactly what to double-check.` },
+          { id: "rawscore", label: "The raw judge score", verdict: "weak", why: `Uninterpretable and falsely precise — raw scores stay internal.` }
+        ],
+        mustMention: ["trust evidence, not scores", "surface unresolved warnings", "what still needs a human look"]
+      }
     },
     grills: [
-      { q: "Each report section runs its own one-shot prompt, no communication between prompts — how do we stop a figure leaking into every section? (Brad, verbatim)", a: `It's a prompt-contract problem: each section = prompt ID + expected facts + allowed sources + INCLUDE/SUPPRESS rules. Diff generated sections against the QA Resolution Map and fail any fact appearing where its contract suppresses it. Deterministic, per prompt ID. (Content hashes = the wrong answer.)` },
-      { q: "Eval said 87 on 50 reports; Brad changes a prompt, now it's 91. Is quality better?", a: `Only if the SAME frozen 50 improved on the intended criteria with no regression in seeded-defect recall or false-pass rate. Per-case, per-criterion deltas + read the actual prompt diff + human spot-check before believing it. A score without decomposition is a vibe.` },
-      { q: "How do you actually build the judge?", a: `The judge is one layer, not the system. Deterministic gates own names, figures, arithmetic, prompt-ID compliance, suppressed sections, length budgets. The judge reads only the residual (grounding, adequacy) with strict JSON + mandatory evidence quotes; unsure → "unknown" → human, never default-pass.` },
-      { q: "What about judge drift and benchmark updates?", a: `The judge is a versioned release artifact: pinned model + prompt, frozen calibration suite + seeded defects re-run on every change, score-distribution monitoring, benchmarks bound to template versions — never grade a 17-section report against a 20-section rubric.` },
-      { q: "How do you make advisers trust the output? (Brad)", a: `Show trust evidence, not scores: pass/fail gates, key citations, unresolved warnings, and why a report needs review. Raw judge scores stay internal — "95%" means nothing to an adviser.` }
+      { q: "Eval was 87 on 50 reports; someone tweaks a prompt and it's 91. Is quality better?", a: `Only if the SAME frozen 50 improved on the intended criteria with no regression in seeded-defect recall or false-pass rate. Per-criterion deltas + read the prompt diff + spot-check. A score without decomposition is a vibe.` },
+      { q: "Each report section is a separate one-shot prompt with no shared state — how do you stop a figure leaking across sections?", a: `Prompt-contract per section: expected facts + allowed sources + INCLUDE/SUPPRESS rules. Diff generated sections against the resolution map and fail any fact appearing where its contract suppresses it. Deterministic, per prompt ID.` }
+    ]
+  },
+  {
+    id: "agent-system",
+    topic: "Agents",
+    title: "Design an AI agent system",
+    brief: `Build an assistant that handles both one-line lookups and open-ended research over internal systems — fast and cheap on the easy path, fully auditable on the hard one, and never performing a silent write. Choose an approach at each stage and defend it.`,
+    constraints: [
+      "Mix of trivial lookups and multi-step research",
+      "Every step must be auditable (regulated)",
+      "No silent write actions to systems of record",
+      "Cost-bounded — the easy 80% must stay cheap",
+      "Answers must be accurate and cite evidence"
     ],
-    rubric: [
-      { id: "l0_before_l1", type: "precedes", from: "l0", to: "l1", label: "Deterministic gates run before the LLM judge", critical: true },
-      { id: "has_mingate", type: "present", node: "mingate", label: "Min-gate on critical criteria (never an average)", critical: true },
-      { id: "unknown_to_human", type: "present", node: "review", label: "Uncertain / failing reports route to human review", critical: true },
-      { id: "has_calibration", type: "present", node: "calibration", label: "Calibration loop with frozen set + seeded defects" },
-      { id: "no_average", type: "absent", node: "avg_score", label: "Didn't collapse criteria into an average" },
-      { id: "judge_not_first", type: "absent", node: "judge_first", label: "Judge reads only the residual, not everything" },
-      { id: "no_default_pass", type: "absent", node: "default_pass", label: "Never default-passes on judge uncertainty" },
-      { id: "pinned_judge", type: "absent", node: "unpinned_judge", label: "Judge is versioned/pinned, not 'latest model'" }
+    skeleton: ["entry", "router", "orchestration", "data", "knowledge", "analysis", "action", "synthesis"],
+    addable: [],
+    stages: {
+      entry: {
+        name: "Entry point", prompt: "How does a query enter the system?", required: true,
+        options: [
+          { id: "sse", label: "Session with streaming (SSE)", verdict: "best", why: `Long research tasks need progressive output and a stable session to checkpoint against.` },
+          { id: "reqresp", label: "Single request/response", verdict: "solid", why: `Fine for lookups, poor for multi-step work that takes several seconds to assemble.` }
+        ],
+        mustMention: ["streaming for long tasks", "session / state to resume against"]
+      },
+      router: {
+        name: "Router / tiering", prompt: "How do you decide the path for a query?", required: true,
+        options: [
+          { id: "tiered", label: "One small classify call → tier (direct / one specialist / orchestrated)", verdict: "best", why: `Keeps the easy 80% on a ~$0.0002 path and only escalates cost when the query actually needs it.` },
+          { id: "alwaysbig", label: "Send everything through the full agent stack", verdict: "weak", why: `Pays orchestration cost on trivial lookups and blows the budget.` }
+        ],
+        mustMention: ["cost tiering", "cheap path for easy queries", "escalation is one-way upward"]
+      },
+      orchestration: {
+        name: "Orchestration", prompt: "What runs the multi-step plans?", required: true,
+        options: [
+          { id: "code", label: "Durable code orchestrator (checkpointed plan DAG)", verdict: "best", why: `Deterministic, replayable and auditable — a regulator can ask 'why did it do that?'. Reserve LLM planning for the open-ended ~5% tail.` },
+          { id: "llm", label: "An LLM orchestrator plans and calls tools freely", verdict: "weak", why: `Flexible but non-deterministic and hard to audit or replay under a compliance regime.` }
+        ],
+        mustMention: ["determinism / auditability", "checkpoint & resume", "LLM planning only for the tail"]
+      },
+      data: {
+        name: "Client-data access", prompt: "How do agents read the systems of record?", required: true,
+        options: [
+          { id: "readonly", label: "Read-only tool via scoped MCP", verdict: "best", why: `Least privilege — the data path physically can't mutate state.` },
+          { id: "readwrite", label: "Read/write access for convenience", verdict: "weak", why: `One prompt injection or bug away from corrupting a system of record.` }
+        ],
+        mustMention: ["least privilege", "read-only by default", "scoped per-agent permissions"]
+      },
+      knowledge: {
+        name: "Knowledge access", prompt: "How do agents get documents into reasoning?", required: true,
+        options: [
+          { id: "packets", label: "Retrieval returns evidence packets (claims + provenance)", verdict: "best", why: `Token-disciplined and citable; every claim carries provenance a downstream judge can verify.` },
+          { id: "rawdocs", label: "Dump raw documents into the context", verdict: "weak", why: `Expensive and uncitable — you can't prove which source backed which claim.` }
+        ],
+        mustMention: ["evidence packets vs raw docs", "provenance / citability", "token budget"]
+      },
+      analysis: {
+        name: "Analysis / reasoning", prompt: "How does the reasoning agent get its data?", required: true,
+        options: [
+          { id: "notools", label: "Analysis agent has NO direct tools (one governed fetch point)", verdict: "best", why: `Costs one latency hop, but buys a single logged, scope-checked fetch and no runaway retrieval loops.` },
+          { id: "tools", label: "Give it tools to fetch what it needs", verdict: "solid", why: `Faster, but scatters retrieval across an agent you can't easily bound or audit.` }
+        ],
+        mustMention: ["single governed fetch point", "no runaway retrieval loops", "latency vs control"]
+      },
+      action: {
+        name: "Write actions", prompt: "How are writes to systems of record handled?", required: true,
+        options: [
+          { id: "gated", label: "Appendix-only, propose → confirm → execute", verdict: "best", why: `No silent writes — a human confirms before the system of record changes.` },
+          { id: "autonomous", label: "Agents write autonomously when confident", verdict: "weak", why: `Unauditable side effects — disqualifying under the no-silent-write constraint.` }
+        ],
+        mustMention: ["no silent writes", "human confirm step", "least-privilege write scope"]
+      },
+      synthesis: {
+        name: "Synthesis", prompt: "How is the final answer assembled?", required: true,
+        options: [
+          { id: "cited", label: "Synthesis with citations; refuse unsupported claims", verdict: "best", why: `Per-step verification plus refusal stops errors compounding into a confident wrong answer.` },
+          { id: "freeform", label: "Free-form summary of everything gathered", verdict: "weak", why: `No provenance and no refusal — hallucinations slip straight through.` }
+        ],
+        mustMention: ["per-step verification", "citations", "refuse, don't guess, on low confidence"]
+      }
+    },
+    grills: [
+      { q: "The CRM dies mid-query. What does the user actually see?", a: `Product answer first: "Live values unavailable — this answer is incomplete, based on retrieved reports only." Never present partial as complete. Checkpoint completed steps and resume from the failed one.` },
+      { q: "How do you manage lots of agents?", a: `Don't have lots. A small capability-bounded set (~4), a durable orchestrator running typed checkpointed plans, and scoped tool permissions per agent. Hundreds of free-running agents are unauditable.` }
     ]
   }
 ];
