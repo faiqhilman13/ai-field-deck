@@ -1584,6 +1584,21 @@
       width: 100%; min-height: 64px; resize: vertical; font-family: var(--sans); font-size: 12.5px;
       background: var(--paper-bright); color: var(--ink); border: 1px solid var(--line-ink); border-radius: var(--radius); padding: 9px;
     }
+    .design-bank { margin-top: 20px; }
+    .bank-intro { margin: 0 0 8px; }
+    .bank-item { border-top: 1px solid var(--line-ink); }
+    .bank-item summary {
+      cursor: pointer; display: flex; align-items: baseline; gap: 8px;
+      padding: 13px 0; font-weight: 600; font-size: 13px; list-style: none;
+    }
+    .bank-item summary::-webkit-details-marker { display: none; }
+    .bank-item summary::before { content: "\26A1"; flex: none; }
+    .bank-item summary::after { content: "\25B8"; margin-left: auto; color: var(--ink-faint); transition: transform .12s ease; }
+    .bank-item[open] summary::after { transform: rotate(90deg); }
+    .bank-item summary:hover { color: var(--accent-bright); }
+    .bank-a { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; padding: 0 0 14px 22px; }
+    .bank-a b { color: var(--green); }
+
     .llm-settings { margin-bottom: 16px; }
     .llm-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
     .llm-row input {
@@ -1766,6 +1781,12 @@
             <div class="grill-out" id="designGrillOut"></div>
           </article>
         </div>
+
+        <article class="panel design-bank">
+          <div class="kicker">Question bank</div>
+          <p class="small bank-intro">Every follow-up this challenge can grill you on, with the answer to beat. Study these before you ask to be grilled — the live grill starts here and pushes further.</p>
+          <div id="bankList"></div>
+        </article>
       </section>
 
       <section class="section" id="flash">
@@ -3751,6 +3772,11 @@
       $("designScore").innerHTML = "Make a call at each stage, then hit <b>Grade my design</b>.";
       $("designRubric").innerHTML = "";
       $("designGrillOut").classList.remove("show"); $("designGrillOut").innerHTML = "";
+      $("bankList").innerHTML = (ch.grills || []).map(g => `
+        <details class="bank-item">
+          <summary>${esc(g.q)}</summary>
+          <div class="bank-a"><b>Answer to beat:</b> ${esc(g.a)}</div>
+        </details>`).join("");
     }
 
     function renderStages() {
@@ -3790,7 +3816,7 @@
 
     function renderDecision() {
       const body = $("decisionBody");
-      if (!selStage) { body.innerHTML = `<p class="small">Click a stage above to choose an approach and defend the trade-off.</p>`; return; }
+      if (!selStage) { body.innerHTML = `<p class="small">Click a stage above to choose an approach and defend the trade-off. The question bank at the bottom holds the follow-ups you'll be grilled on — prep them first.</p>`; return; }
       const ch = curChallenge(), b = curBuild(), st = stageDef(ch, selStage); if (!st) { body.innerHTML = ""; return; }
       const opt = optDef(st, b.picks[selStage]), note = b.notes[selStage] || "";
       let html = `<div class="decision-stage-name">${esc(st.name)}</div><div class="decision-prompt">${esc(st.prompt)}</div>`;
@@ -3906,8 +3932,8 @@
     }
     function extractJson(s) { const a = s.indexOf("{"), b = s.lastIndexOf("}"); if (a < 0 || b < 0) return null; try { return JSON.parse(s.slice(a, b + 1)); } catch (e) { return null; } }
     async function gradeWithLLM(ch, b, defense, llm) {
-      const sys = "You are a ruthless staff/principal engineer running a live system-design interview. The candidate designed a system as a sequence of stages and, at each, chose an approach and justified it. Interrogate their REASONING: for weak or under-justified choices, expose the flaw, name the stronger option, and state the concrete cost of theirs under the stated constraints. Be specific and reference their actual stages and choices. If a prior defense is present, respond to it directly and push harder. Return ONLY minified JSON: {\"verdict\":string(<=2 sentences),\"score\":number 0-100,\"grills\":[{\"question\":string,\"critique\":string,\"better\":string}]} with 3-6 grills.";
-      const payload = { challenge: ch.title, brief: ch.brief, constraints: ch.constraints, decisions: describeBuild(ch, b), priorDefense: defense || null };
+      const sys = "You are a ruthless staff/principal engineer running a live system-design interview. The candidate designed a system as a sequence of stages and, at each, chose an approach and justified it. Interrogate their REASONING: for weak or under-justified choices, expose the flaw, name the stronger option, and state the concrete cost of theirs under the stated constraints. Be specific and reference their actual stages and choices. A questionBank of known follow-ups with reference answers is provided — the candidate can study it, so anchor at least one grill in a bank question (judged against its reference answer applied to THEIR build), then push beyond the bank. If a prior defense is present, respond to it directly and push harder. Return ONLY minified JSON: {\"verdict\":string(<=2 sentences),\"score\":number 0-100,\"grills\":[{\"question\":string,\"critique\":string,\"better\":string}]} with 3-6 grills.";
+      const payload = { challenge: ch.title, brief: ch.brief, constraints: ch.constraints, decisions: describeBuild(ch, b), questionBank: ch.grills || [], priorDefense: defense || null };
       const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + llm.key, "HTTP-Referer": location.origin || "https://localhost", "X-Title": "AI Field Deck" },
