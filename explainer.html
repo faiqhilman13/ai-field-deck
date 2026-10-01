@@ -1,0 +1,1703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Agents in Plain English</title>
+<meta name="description" content="A narrated animated explainer of AI models, tools, APIs, MCP connectors, agent harnesses and AI agents, for people meeting these words for the first time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@500&family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  /* Layout: a 16:9 screen on a dark theatre page, big labelled controls and a chapter list under it, a printed-style cheat sheet below. */
+  :root {
+    --night: #071519;
+    --deep: #0b1f25;
+    --stage: #12313a;
+    --stage-hi: #1f4b56;
+    --paper: #fff6e6;
+    --ink: #13262c;
+    --ink-soft: #4a5f64;
+    --text: #eef5f3;
+    --text-soft: rgba(238, 245, 243, 0.74);
+    --line: rgba(238, 245, 243, 0.16);
+    --amber: #ffb547;
+    --coral: #ff7a5c;
+    --sky: #5cc8ff;
+    --mint: #63e2b7;
+    --lilac: #b9a6ff;
+    --sun: #ffd45c;
+    --ok: #2fb67c;
+    --stop: #ff5d5d;
+    --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Verdana, "Segoe UI", system-ui, sans-serif;
+    --mono: "Atkinson Hyperlegible Mono", ui-monospace, Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(99, 226, 183, 0.08), transparent 60%),
+      var(--night);
+    color: var(--text);
+    font: 18px/1.55 var(--body);
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+
+  .page { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 72px; }
+  .masthead { display: grid; gap: 10px; margin-bottom: 22px; }
+  .eyebrow { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--amber); }
+  h1 {
+    font-family: var(--display); font-weight: 800; letter-spacing: -0.02em;
+    font-size: clamp(2.1rem, 4.6vw, 3.5rem); line-height: 1.02; margin: 0; text-wrap: balance;
+  }
+  .lede { margin: 0; max-width: 64ch; font-size: 1.12rem; color: var(--text-soft); }
+
+  /* ---------- player ---------- */
+  .player {
+    background: var(--deep); border: 1px solid var(--line); border-radius: 16px;
+    padding: 12px; display: grid; gap: 12px;
+  }
+  .stage {
+    position: relative; width: min(100%, calc((100svh - 290px) * 16 / 9)); min-width: min(100%, 320px);
+    margin-inline: auto; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden;
+    container-type: inline-size; cursor: pointer; user-select: none;
+    background: radial-gradient(120% 95% at 50% 36%, var(--stage-hi) 0%, var(--stage) 42%, var(--deep) 78%, var(--night) 100%);
+  }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .bigplay {
+    position: absolute; left: 50%; top: 74%; transform: translate(-50%, -50%); z-index: 5;
+    display: inline-flex; align-items: center; gap: 0.7em; padding: 0.7em 1.4em 0.7em 1.1em;
+    font: 700 clamp(17px, 2.2cqw, 30px)/1 var(--body); color: var(--ink);
+    background: var(--amber); border: 0; border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  }
+  .bigplay svg { width: 1.3em; height: 1.3em; }
+  .bigplay small { font-weight: 600; opacity: 0.7; font-size: 0.75em; }
+  .bigplay:hover { background: var(--sun); }
+  .loadnote {
+    position: absolute; inset: auto 0 0 0; padding: 12px 16px; text-align: center;
+    font-size: 15px; color: var(--text-soft); background: rgba(7, 21, 25, 0.8);
+  }
+
+  .capbelow { display: none; min-height: 3.2em; margin: 0; padding: 10px 14px; border-radius: 10px; background: #04101299; font-size: 1.08rem; font-weight: 600; line-height: 1.4; text-align: center; color: #fff; }
+  .tip { display: none; margin: 0; font-size: 0.95rem; color: var(--text-soft); }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .btn {
+    min-height: 48px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--line);
+    background: rgba(238, 245, 243, 0.06); font-weight: 700; font-size: 1rem;
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+  .btn:hover { background: rgba(238, 245, 243, 0.12); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn.primary { background: var(--amber); color: var(--ink); border-color: transparent; min-width: 120px; justify-content: center; }
+  .btn.primary:hover { background: var(--sun); }
+  .btn[aria-pressed="true"] { background: rgba(99, 226, 183, 0.18); border-color: var(--mint); }
+  .btn .state { font-weight: 600; color: var(--text-soft); }
+  .scrub { flex: 1 1 260px; display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .scrub input { flex: 1; min-width: 0; accent-color: var(--amber); height: 28px; cursor: pointer; }
+  .time { font-variant-numeric: tabular-nums; color: var(--text-soft); font-weight: 600; white-space: nowrap; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .seg button { min-height: 46px; padding: 0 14px; border: 0; background: transparent; font-weight: 700; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed="true"] { background: rgba(255, 181, 71, 0.2); color: var(--sun); }
+  .spacer { flex: 1 0 0; }
+
+  .chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 8px; }
+  .chapters button {
+    text-align: left; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line);
+    background: transparent; display: grid; gap: 2px; min-height: 58px;
+  }
+  .chapters button:hover { background: rgba(238, 245, 243, 0.06); }
+  .chapters .n { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-soft); }
+  .chapters .c { font-weight: 700; }
+  .chapters button[aria-current="true"] { border-color: var(--amber); background: rgba(255, 181, 71, 0.1); }
+  .chapters button[aria-current="true"] .n { color: var(--amber); }
+
+  .player:fullscreen { display: flex; flex-direction: column; justify-content: center; background: #000; padding: 16px; border-radius: 0; }
+  .player:fullscreen .stage { width: min(100%, calc((100vh - 110px) * 16 / 9)); }
+  .player:fullscreen .chapters { display: none; }
+
+  /* ---------- cheat sheet ---------- */
+  .sheet { margin-top: 44px; display: grid; gap: 18px; }
+  .sheet h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0; letter-spacing: -0.01em; }
+  .sheet > p { margin: 0; color: var(--text-soft); max-width: 62ch; }
+  .terms { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+  .term { background: var(--paper); color: var(--ink); border-radius: 12px; padding: 18px 18px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+  .term h3 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em; }
+  .term h3 small { font-family: var(--body); font-weight: 600; font-size: 0.85rem; color: var(--ink-soft); letter-spacing: 0; margin-left: 6px; }
+  .term p { margin: 0; font-size: 1.02rem; }
+  .term .like { font-size: 0.95rem; color: #8a4a12; font-weight: 600; }
+  .habits { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; padding: 0; margin: 0; list-style: none; }
+  .habits li { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+  .habits b { display: block; font-size: 1.05rem; }
+  .habits span { color: var(--text-soft); }
+  .foot { margin-top: 36px; color: var(--text-soft); font-size: 0.95rem; }
+
+  /* ---------- overlay inside the stage (sized in cqw so it scales with the screen) ---------- */
+  .ov { position: absolute; inset: 0; pointer-events: none; font-family: var(--body); color: var(--text); overflow: hidden; }
+  .ov > * { position: absolute; }
+  .fx { opacity: 0; visibility: hidden; will-change: opacity, transform; }
+  .pin { left: 0; top: 0; opacity: 0; visibility: hidden; will-change: transform, opacity; }
+
+  .cap {
+    left: 50%; bottom: 2.6cqw; max-width: 80cqw; width: max-content;
+    font-size: 2.45cqw; line-height: 1.3; font-weight: 600; text-align: center; text-wrap: balance;
+    padding: 0.7cqw 1.6cqw 0.8cqw; background: rgba(4, 13, 16, 0.84); border-radius: 0.8cqw; color: #fff;
+  }
+  .tag {
+    left: 2.2cqw; top: 1.9cqw; font-size: 1.05cqw; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft); display: flex; align-items: center; gap: 0.8cqw;
+  }
+  .tag b { color: var(--amber); }
+  .ccard { left: 50%; top: 42%; text-align: center; width: 80cqw; }
+  .ccard::before {
+    content: ""; position: absolute; inset: -5cqw -4cqw; z-index: -1;
+    background: radial-gradient(closest-side, rgba(7, 21, 25, 0.86), rgba(7, 21, 25, 0));
+  }
+  .ccard .k, .title .k { font-size: 1.3cqw; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); font-weight: 700; }
+  .ccard .t { font-family: var(--display); font-weight: 800; font-size: 6.4cqw; line-height: 1; letter-spacing: -0.02em; margin-top: 0.6cqw; }
+  .ccard .s { font-size: 2.1cqw; color: var(--text-soft); margin-top: 0.8cqw; font-weight: 600; }
+  .title { left: 50%; top: 6.5cqw; text-align: center; width: 80cqw; }
+  .title h2 { margin: 0.8cqw 0 0; font-family: var(--display); font-weight: 800; font-size: 6.6cqw; line-height: 0.98; letter-spacing: -0.025em; }
+  .title h2 em { font-style: normal; color: var(--amber); }
+  .title p { margin: 1.2cqw auto 0; font-size: 1.75cqw; color: var(--text-soft); font-weight: 600; max-width: 52cqw; }
+
+  .lbl {
+    font-size: 1.3cqw; font-weight: 700; white-space: nowrap; color: #fff;
+    padding: 0.32cqw 0.9cqw 0.38cqw; border-radius: 99px;
+    background: rgba(6, 18, 22, 0.86); border: 0.09cqw solid rgba(255, 255, 255, 0.22);
+    --c: var(--text);
+  }
+  .lbl::before { content: ""; display: inline-block; width: 0.62cqw; height: 0.62cqw; border-radius: 50%; background: var(--c); margin-right: 0.55cqw; vertical-align: 0.12cqw; }
+  .lbl.big { font-size: 1.65cqw; padding: 0.45cqw 1.1cqw 0.5cqw; }
+  .lbl.plain::before { display: none; }
+  .lbl.on { background: var(--amber); color: var(--ink); border-color: transparent; }
+  .lbl.on::before { background: var(--ink); }
+  .word {
+    font-family: var(--display); font-weight: 800; font-size: 2.2cqw; white-space: nowrap;
+    padding: 0.35cqw 1.1cqw 0.45cqw; border-radius: 99px; color: var(--ink); background: var(--paper);
+    box-shadow: 0 0.6cqw 1.6cqw rgba(0, 0, 0, 0.35);
+  }
+  .xmark {
+    width: 2.3cqw; height: 2.3cqw; border-radius: 50%; background: var(--stop); color: #fff;
+    display: grid; place-items: center; font-weight: 800; font-size: 1.5cqw; line-height: 1;
+    box-shadow: 0 0 0 0.25cqw rgba(7, 21, 25, 0.7);
+  }
+
+  .panel {
+    background: var(--paper); color: var(--ink); border-radius: 1.1cqw; font-size: 1.32cqw; line-height: 1.35;
+    box-shadow: 0 1.4cqw 3.6cqw rgba(0, 0, 0, 0.5);
+  }
+  .panel .bar {
+    display: flex; align-items: center; gap: 0.7cqw; padding: 0.85cqw 1.3cqw; font-weight: 700; font-size: 1.12cqw;
+    color: var(--ink-soft); border-bottom: 0.09cqw solid rgba(19, 38, 44, 0.12); letter-spacing: 0.04em;
+  }
+  .orbdot { width: 1.15cqw; height: 1.15cqw; border-radius: 50%; flex: none; background: radial-gradient(circle at 35% 35%, #ffe7b8, var(--amber) 55%, #d9822b); }
+  .msg { margin: 1cqw 1.3cqw 0; padding: 0.75cqw 1.1cqw; border-radius: 1cqw; max-width: 86%; width: fit-content; }
+  .msg.me { margin-left: auto; background: #d4ecef; border-bottom-right-radius: 0.25cqw; }
+  .msg.ai { background: #fff; border: 0.09cqw solid rgba(19, 38, 44, 0.14); border-bottom-left-radius: 0.25cqw; min-width: 6cqw; }
+  .msg .who { display: block; font-size: 0.95cqw; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.2cqw; }
+  .dots::after { content: "\2022\2022\2022"; letter-spacing: 0.25em; color: var(--ink-soft); }
+
+  .chat { left: 4.5cqw; top: 9.5cqw; width: 34cqw; padding-bottom: 1.2cqw; }
+  .icard { width: 25cqw; padding: 1.1cqw 1.4cqw 1.2cqw; border-top: 0.5cqw solid var(--mint); }
+  .icard .ih { font: 500 1cqw var(--mono); letter-spacing: 0.06em; color: var(--ink-soft); text-transform: uppercase; }
+  .icard .it { font-family: var(--display); font-weight: 800; font-size: 2.2cqw; line-height: 1.1; margin-top: 0.3cqw; }
+  .icard .id { margin-top: 0.4cqw; }
+  .icard .in { margin-top: 0.7cqw; padding-top: 0.7cqw; border-top: 0.09cqw dashed rgba(19, 38, 44, 0.3); }
+
+  .menu { width: 21cqw; padding: 1cqw 1.3cqw 1.1cqw; background: #0e2329; color: var(--text); border: 0.25cqw solid var(--coral); border-radius: 0.8cqw; font-size: 1.25cqw; box-shadow: 0 1cqw 2.4cqw rgba(0,0,0,.45); }
+  .menu .mh { font-family: var(--display); font-weight: 800; font-size: 1.7cqw; color: var(--coral); }
+  .menu .ms { font-size: 0.95cqw; color: var(--text-soft); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-bottom: 0.5cqw; }
+  .menu li { display: flex; gap: 0.6cqw; align-items: baseline; padding: 0.22cqw 0; }
+  .menu ul { list-style: none; margin: 0; padding: 0; }
+  .menu li::before { content: ""; width: 0.55cqw; height: 0.55cqw; border-radius: 50%; background: var(--coral); flex: none; transform: translateY(-0.12cqw); }
+  .menu .no { color: var(--text-soft); text-decoration: line-through; }
+  .menu .no::before { background: var(--text-soft); }
+
+  .defcard { left: 50%; top: 3.6cqw; text-align: center; padding: 1.2cqw 2.4cqw 1.4cqw; width: max-content; max-width: 70cqw; }
+  .defcard .big { font-family: var(--display); font-weight: 800; font-size: 4.4cqw; line-height: 1; }
+  .defcard .big span { color: var(--coral); }
+  .defcard .sm { margin-top: 0.5cqw; font-size: 1.6cqw; font-weight: 600; color: var(--ink-soft); }
+
+  .note { left: 50%; top: 4cqw; font-size: 1.7cqw; font-weight: 700; padding: 0.6cqw 1.5cqw; border-radius: 99px; background: rgba(255, 93, 93, 0.16); border: 0.12cqw solid var(--stop); color: #ffd9d9; white-space: nowrap; }
+  .note.good { background: rgba(255, 212, 92, 0.14); border-color: var(--sun); color: #fff1c4; }
+
+  .conn { left: 53cqw; top: 6.5cqw; width: 41cqw; }
+  .conn .row { display: grid; grid-template-columns: 3.2cqw 1fr auto; gap: 1.1cqw; align-items: center; padding: 0.9cqw 1.3cqw; border-bottom: 0.09cqw solid rgba(19, 38, 44, 0.1); }
+  .conn .ic { width: 3.2cqw; height: 3.2cqw; border-radius: 0.7cqw; display: grid; place-items: center; }
+  .conn .ic img { width: 75%; height: 75%; }
+  .conn .row b { display: block; font-size: 1.4cqw; }
+  .conn .row small { display: block; font-size: 1.05cqw; color: var(--ink-soft); font-weight: 600; }
+  .conn .row small.ok { color: var(--ok); }
+  .tog { width: 4.4cqw; height: 2.4cqw; border-radius: 99px; background: #c4cfd1; position: relative; transition: none; }
+  .tog::after { content: ""; position: absolute; top: 0.25cqw; left: 0.25cqw; width: 1.9cqw; height: 1.9cqw; border-radius: 50%; background: #fff; box-shadow: 0 0.1cqw 0.3cqw rgba(0,0,0,.3); }
+  .tog.on { background: var(--ok); }
+  .tog.on::after { left: 2.25cqw; }
+  .adds { padding: 0.9cqw 1.3cqw 1.2cqw; display: flex; flex-wrap: wrap; gap: 0.6cqw; align-items: center; font-weight: 700; font-size: 1.15cqw; color: var(--ink-soft); }
+  .chipx { padding: 0.3cqw 0.8cqw; border-radius: 99px; background: #ffe2d9; color: #8e2f17; font-weight: 700; opacity: 0; }
+  .signin { left: 58cqw; top: 13cqw; width: 30cqw; padding: 1.3cqw 1.5cqw; border: 0.12cqw solid rgba(19,38,44,.18); }
+  .signin .url { font: 500 1cqw var(--mono); color: var(--ink-soft); display: flex; align-items: center; gap: 0.5cqw; }
+  .signin .url::before { content: ""; width: 0.8cqw; height: 0.8cqw; border-radius: 50%; background: var(--ok); }
+  .signin h4 { margin: 0.7cqw 0 0.3cqw; font-size: 1.7cqw; }
+  .signin p { margin: 0; }
+  .btnrow { display: flex; justify-content: flex-end; gap: 0.8cqw; margin-top: 1.1cqw; }
+  .ub { padding: 0.55cqw 1.4cqw; border-radius: 0.6cqw; font-weight: 700; border: 0.12cqw solid rgba(19,38,44,.25); }
+  .ub.go { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .ub.pressed { transform: scale(0.94); background: var(--ok); border-color: var(--ok); }
+  .cursor { left: 0; top: 0; width: 2.4cqw; height: 2.4cqw; opacity: 0; filter: drop-shadow(0 0.2cqw 0.3cqw rgba(0,0,0,.5)); }
+  .ripple { left: 0; top: 0; width: 4cqw; height: 4cqw; border-radius: 50%; border: 0.3cqw solid var(--sun); opacity: 0; }
+
+  .hx { left: 50%; top: 4.2cqw; display: flex; gap: 1.2cqw; }
+  .hx .panel { width: 22cqw; padding: 1cqw 1.3cqw 1.2cqw; }
+  .hx b { display: block; font-family: var(--display); font-weight: 800; font-size: 1.9cqw; }
+  .hx span { font-size: 1.15cqw; color: var(--ink-soft); font-weight: 600; }
+  .hx .panel::before { content: "Harness"; display: block; font-size: 0.9cqw; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: #1f7a5a; }
+
+  .ask { left: 3cqw; top: 5.2cqw; width: 30cqw; padding-bottom: 1cqw; }
+  .ask .msg { max-width: 92%; }
+  .typed::after { content: ""; display: inline-block; width: 0.12cqw; height: 1.4cqw; background: var(--ink); vertical-align: -0.2cqw; margin-left: 0.1cqw; }
+  .log { left: 67cqw; top: 5.2cqw; width: 30cqw; padding-bottom: 0.8cqw; }
+  .log .ln { display: grid; grid-template-columns: 1.9cqw 1fr; gap: 0.7cqw; padding: 0.65cqw 1.2cqw 0; align-items: start; font-size: 1.22cqw; }
+  .log .ln i { width: 1.9cqw; height: 1.9cqw; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: 1.1cqw; background: #e3e9ea; color: var(--ink-soft); }
+  .log .ln.done i { background: var(--ok); color: #fff; }
+  .log .ln.wait i { background: var(--amber); color: var(--ink); }
+  .log .ln small { display: block; color: var(--ink-soft); font-weight: 600; font-size: 1.05cqw; }
+  .dlg { left: 50%; top: 13cqw; width: 32cqw; padding: 1.4cqw 1.6cqw; border-top: 0.5cqw solid var(--amber); }
+  .dlg .k { font-size: 1cqw; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: #a8650c; }
+  .dlg h4 { margin: 0.3cqw 0 0.8cqw; font-family: var(--display); font-weight: 800; font-size: 2.2cqw; line-height: 1.1; }
+  .dlg dl { display: grid; grid-template-columns: auto 1fr; gap: 0.3cqw 1cqw; margin: 0; }
+  .dlg dt { color: var(--ink-soft); font-weight: 700; }
+  .dlg dd { margin: 0; font-weight: 600; }
+  .cmp { left: 50%; top: 5cqw; display: grid; grid-template-columns: 1fr 1fr; gap: 1.4cqw; width: 58cqw; }
+  .cmp .panel { padding: 1.4cqw 1.6cqw; }
+  .cmp .k { font-size: 1cqw; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
+  .cmp b { display: block; font-family: var(--display); font-weight: 800; font-size: 2.6cqw; line-height: 1.05; margin-top: 0.3cqw; }
+  .cmp .agent { border-top: 0.5cqw solid var(--mint); }
+  .cmp .bot { border-top: 0.5cqw solid #c4cfd1; }
+  .cmp p { margin: 0.6cqw 0 0; font-size: 1.25cqw; color: var(--ink-soft); font-weight: 600; }
+
+  .habs { left: 3.6cqw; top: 6cqw; width: 45cqw; display: grid; gap: 0.9cqw; }
+  .habs .hd { font-family: var(--display); font-weight: 800; font-size: 3cqw; line-height: 1; margin-bottom: 0.3cqw; }
+  .hab { display: grid; grid-template-columns: 3.4cqw 1fr; gap: 1.1cqw; align-items: center; padding: 0.9cqw 1.2cqw; border-radius: 1cqw; background: rgba(255, 246, 230, 0.1); border: 0.12cqw solid rgba(255,255,255,.12); opacity: 0; }
+  .hab .hi { width: 3.4cqw; height: 3.4cqw; border-radius: 0.8cqw; display: grid; place-items: center; }
+  .hab .hi img { width: 72%; height: 72%; }
+  .hab b { display: block; font-size: 1.6cqw; line-height: 1.2; }
+  .hab span { display: block; font-size: 1.2cqw; color: var(--text-soft); font-weight: 600; }
+  .hab.on { background: var(--paper); color: var(--ink); border-color: transparent; }
+  .hab.on span { color: var(--ink-soft); }
+
+  .bracket { left: 0; top: 0; width: 1.4cqw; border: 0.35cqw solid var(--mint); border-left: 0; border-radius: 0 1cqw 1cqw 0; opacity: 0; }
+  .bracket b { position: absolute; left: 2.4cqw; top: 50%; transform: translateY(-50%); white-space: nowrap; font-family: var(--display); font-weight: 800; font-size: 2.6cqw; color: var(--mint); }
+  .bracket b small { display: block; font-family: var(--body); font-size: 1.15cqw; color: var(--text-soft); font-weight: 600; }
+
+  .steps { left: 3.6cqw; top: 6cqw; width: 46cqw; display: grid; gap: 1cqw; }
+  .step { display: grid; grid-template-columns: 4cqw 1fr; gap: 1.2cqw; align-items: start; padding: 1.1cqw 1.3cqw; border-radius: 1cqw; background: rgba(255, 246, 230, 0.1); border: 0.12cqw solid rgba(255,255,255,.12); opacity: 0; }
+  .step .num { width: 4cqw; height: 4cqw; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 2.2cqw; background: var(--amber); color: var(--ink); }
+  .step b { display: block; font-size: 1.75cqw; line-height: 1.2; }
+  .step span { display: block; font-size: 1.25cqw; color: var(--text-soft); font-weight: 600; margin-top: 0.2cqw; }
+  .step.on { background: var(--paper); color: var(--ink); border-color: transparent; }
+  .step.on span { color: var(--ink-soft); }
+  .endc { left: 50%; top: 32%; text-align: center; width: 84cqw; }
+  .endc::before { content: ""; position: absolute; inset: -6cqw -4cqw; z-index: -1; background: radial-gradient(closest-side, rgba(7, 21, 25, 0.9), rgba(7, 21, 25, 0)); }
+  .endc h3 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 5.2cqw; line-height: 1; letter-spacing: -0.02em; }
+  .endc .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8cqw; margin-top: 2cqw; }
+  .endc .row span { font-size: 1.45cqw; font-weight: 700; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--paper); color: var(--ink); }
+  .endc p { margin: 1.8cqw 0 0; font-size: 1.7cqw; color: var(--text-soft); font-weight: 600; }
+
+  /* render mode: the stage fills the window exactly, nothing else on the page */
+  body.render { background: #000; }
+  body.render .masthead, body.render .controls, body.render .chapters, body.render .sheet, body.render .foot, body.render .bigplay { display: none !important; }
+  body.render .page { padding: 0; max-width: none; }
+  body.render .player { padding: 0; border: 0; border-radius: 0; background: none; }
+  body.render .stage { width: 100vw; height: 100vh; aspect-ratio: auto; border-radius: 0; }
+
+  @media (max-height: 560px) {
+    .stage { width: min(100%, calc(100svh * 16 / 9)); }
+  }
+  /* small screens: the in-picture captions get too small to read, so show them under the picture */
+  @media (max-width: 700px) {
+    body:not(.render) .ov .cap { display: none; }
+    .capbelow:not([hidden]) { display: block; }
+  }
+  @media (max-width: 640px) and (orientation: portrait) {
+    .tip { display: block; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 17px; }
+    .btn { padding: 0 12px; }
+    .btn .hide-sm { display: none; }
+    .player { padding: 8px; border-radius: 12px; }
+    .stage { border-radius: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <div class="eyebrow">A narrated animation &middot; about seven minutes</div>
+    <h1>AI agents in plain English</h1>
+    <p class="lede">The new AI words, explained one at a time: models, tools, APIs, MCP, connectors, harnesses and agents. Press Play to watch. Switch on Voice if you'd like it read aloud, and use the chapter buttons to jump back to anything you want to see again.</p>
+  </header>
+
+  <section class="player" id="player" aria-label="Explainer video">
+    <div class="stage" id="stage">
+      <canvas id="gl" aria-hidden="true"></canvas>
+      <div class="ov" id="ov" aria-hidden="true">
+        <!-- intro -->
+        <div class="title fx" id="title" data-tf="translateX(-50%)">
+          <div class="k">A plain-English guide</div>
+          <h2>AI agents, <em>explained</em></h2>
+          <p>What the new words mean, and how the pieces fit together.</p>
+        </div>
+
+        <!-- the brain -->
+        <div class="panel chat fx" id="chat">
+          <div class="bar"><span class="orbdot"></span>AI chat app</div>
+          <div class="msg me"><span class="who">You</span>What's a good gift for a 10-year-old who loves space?</div>
+          <div class="msg ai"><span class="who">AI</span><span id="chatA"></span></div>
+        </div>
+
+        <!-- tools -->
+        <div class="panel icard pin" id="icard">
+          <div class="ih">Tool card</div>
+          <div class="it">Send email</div>
+          <div class="id">Sends an email for you.</div>
+          <div class="in"><b>Needs:</b> who it's to, a subject, and the message.</div>
+        </div>
+
+        <!-- APIs -->
+        <div class="menu pin" id="menu">
+          <div class="mh">Menu</div>
+          <div class="ms">Calendar service</div>
+          <ul><li>List my events</li><li>Find free time</li><li>Create an event</li><li class="no">Cook me dinner</li></ul>
+        </div>
+        <div class="panel defcard fx" id="apidef" data-tf="translateX(-50%)">
+          <div class="big"><span>API</span> = Application Programming Interface</div>
+          <div class="sm">A service counter between programs.</div>
+        </div>
+
+        <!-- MCP -->
+        <div class="note fx" id="tangle" data-tf="translateX(-50%)">3 apps &times; 5 services = 15 custom cables</div>
+        <div class="panel conn fx" id="conn">
+          <div class="bar"><span class="orbdot"></span>Settings &rsaquo; Connectors</div>
+          <div class="row" id="rowCal"><span class="ic" style="background:var(--coral)"><img alt="" data-icon="calendar"></span><div><b>Calendar</b><small id="calState">Not connected</small></div><span class="tog" id="calTog"></span></div>
+          <div class="row"><span class="ic" style="background:var(--mint)"><img alt="" data-icon="mail"></span><div><b>Email</b><small>Not connected</small></div><span class="tog"></span></div>
+          <div class="row"><span class="ic" style="background:var(--sun)"><img alt="" data-icon="folder"></span><div><b>Files</b><small>Not connected</small></div><span class="tog"></span></div>
+          <div class="row"><span class="ic" style="background:var(--sky)"><img alt="" data-icon="cloud"></span><div><b>Weather</b><small>Not connected</small></div><span class="tog"></span></div>
+          <div class="adds" id="adds">New tools: <span class="chipx">Find free time</span><span class="chipx">List events</span><span class="chipx">Create event</span></div>
+        </div>
+        <div class="panel signin fx" id="signin">
+          <div class="url">accounts.calendar.example</div>
+          <h4>Allow access?</h4>
+          <p>Your AI app would like to see your calendar and add events to it.</p>
+          <div class="btnrow"><span class="ub">Cancel</span><span class="ub go" id="allowBtn">Allow</span></div>
+        </div>
+
+        <!-- harness -->
+        <div class="hx fx" id="hx" data-tf="translateX(-50%)">
+          <div class="panel"><b>Claude app</b><span>Everyday chat, documents and connectors</span></div>
+          <div class="panel"><b>ChatGPT</b><span>Everyday chat, search and connectors</span></div>
+          <div class="panel"><b>Claude Code</b><span>Built for writing and fixing software</span></div>
+        </div>
+
+        <!-- agent -->
+        <div class="panel ask fx" id="ask">
+          <div class="bar"><span class="orbdot"></span>AI agent</div>
+          <div class="msg me"><span class="who">You</span><span id="askT"></span></div>
+          <div class="msg ai" id="askR"><span class="who">Agent</span>Done! Lunch with Sue is set for Tuesday at noon, and she has the invite.</div>
+        </div>
+        <div class="panel log fx" id="log">
+          <div class="bar">What the agent is doing</div>
+          <div class="ln" id="ln0"><i></i><div></div></div>
+          <div class="ln" id="ln1"><i></i><div></div></div>
+          <div class="ln" id="ln2"><i></i><div></div></div>
+          <div class="ln" id="ln3"><i></i><div></div></div>
+        </div>
+        <div class="panel dlg fx" id="dlg" data-tf="translateX(-50%)">
+          <div class="k">The harness is asking you</div>
+          <h4>Send this invitation?</h4>
+          <dl><dt>To</dt><dd>Sue Miller</dd><dt>What</dt><dd>Lunch together</dd><dt>When</dt><dd>Tuesday, 12:00 noon</dd></dl>
+          <div class="btnrow"><span class="ub">Not yet</span><span class="ub go" id="sendBtn">Send</span></div>
+        </div>
+        <div class="cmp fx" id="cmp" data-tf="translateX(-50%)">
+          <div class="panel bot"><div class="k">Chatbot</div><b>Tells you how</b><p>"Open your calendar, find a free slot, then write Sue an email..."</p></div>
+          <div class="panel agent"><div class="k">AI agent</div><b>Gets it done</b><p>Checked, wrote, asked you, sent. Lunch is booked.</p></div>
+        </div>
+
+        <!-- habits -->
+        <div class="habs fx" id="habs">
+          <div class="hd">Good habits</div>
+          <div class="hab"><span class="hi" style="background:var(--mint)"><img alt="" data-icon="shield"></span><div><b>Keep "ask before acting" on</b><span>You approve anything that sends, buys or deletes.</span></div></div>
+          <div class="hab"><span class="hi" style="background:var(--sun)"><img alt="" data-icon="plug"></span><div><b>Connect only what you need</b><span>Each connector is a door. Open the ones you use.</span></div></div>
+          <div class="hab"><span class="hi" style="background:var(--sky)"><img alt="" data-icon="check"></span><div><b>Check its work</b><span>It can sound completely sure and still be wrong.</span></div></div>
+          <div class="hab"><span class="hi" style="background:var(--coral)"><img alt="" data-icon="key"></span><div><b>No passwords in the chat</b><span>Connectors use the real company's sign-in page.</span></div></div>
+        </div>
+
+        <!-- recap -->
+        <div class="bracket" id="bracket"><b>AI agent<small>all of this, working for you</small></b></div>
+
+        <!-- getting started -->
+        <div class="steps fx" id="steps">
+          <div class="step"><span class="num">1</span><div><b>Pick one app</b><span>Claude or ChatGPT. Chat with it for a week.</span></div></div>
+          <div class="step"><span class="num">2</span><div><b>Talk to it like a new assistant</b><span>Say who you are and what you need. Detail helps.</span></div></div>
+          <div class="step"><span class="num">3</span><div><b>Switch on one connector</b><span>Your calendar, say. Give it one small, real job.</span></div></div>
+        </div>
+        <div class="endc fx" id="endc" data-tf="translate(-50%,-50%)">
+          <h3>Now you know the words.</h3>
+          <div class="row"><span>Model</span><span>Tools</span><span>API</span><span>MCP</span><span>Connectors</span><span>Harness</span><span>Agent</span></div>
+          <p>Thanks for watching.</p>
+        </div>
+
+        <!-- shared -->
+        <div class="ripple" id="ripple"></div>
+        <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M4 2.5 L4 19 L8.6 14.9 L11.6 21.4 L14.6 20 L11.7 13.7 L17.8 13.4 Z" fill="#fff" stroke="#13262c" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <div class="tag fx" id="tag"></div>
+        <div class="ccard fx" id="ccard" data-tf="translate(-50%,-50%)"><div class="k" id="ccK"></div><div class="t" id="ccT"></div><div class="s" id="ccS"></div></div>
+        <div class="cap fx" id="cap" data-tf="translateX(-50%)"></div>
+      </div>
+      <button class="bigplay" id="bigplay" type="button" aria-label="Play the video">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>
+        <span id="bigplayLabel">Play</span> <small id="bigplayDur"></small>
+      </button>
+      <div class="loadnote" id="loadnote" hidden>The animation needs an internet connection to load. Please check your connection and reload the page.</div>
+    </div>
+
+    <p class="capbelow" id="capBelow" aria-live="off"></p>
+    <div class="controls">
+      <button class="btn primary" id="play" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true" id="playIcon"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>
+        <span id="playLabel">Play</span>
+      </button>
+      <button class="btn" id="back" type="button" aria-label="Back 10 seconds">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1.5L7 6l5 4.5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" fill="currentColor"/></svg>
+        <span>Back <span class="hide-sm">10 sec</span></span>
+      </button>
+      <div class="scrub">
+        <input type="range" id="seek" min="0" max="100" step="0.1" value="0" aria-label="Position in the video">
+        <span class="time" id="time">0:00</span>
+      </div>
+      <button class="btn" id="voice" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" fill="currentColor"/></svg>
+        Voice <span class="state" id="voiceState">off</span>
+      </button>
+      <button class="btn" id="caps" type="button" aria-pressed="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3zM5 7v10h14V7zm2 6h4v2H7zm6 0h4v2h-4zm-6-3h10v2H7z" fill="currentColor"/></svg>
+        Captions <span class="state" id="capsState">on</span>
+      </button>
+      <div class="seg" role="group" aria-label="Playback speed">
+        <button type="button" data-speed="0.8" aria-pressed="false">Slower</button>
+        <button type="button" data-speed="1" aria-pressed="true">Normal</button>
+        <button type="button" data-speed="1.25" aria-pressed="false">Faster</button>
+      </div>
+      <button class="btn" id="fs" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z" fill="currentColor"/></svg>
+        <span class="hide-sm">Full screen</span>
+      </button>
+    </div>
+    <nav class="chapters" id="chapters" aria-label="Chapters"></nav>
+    <p class="tip">Tip: turn your phone sideways for a bigger picture.</p>
+  </section>
+
+  <section class="sheet" aria-labelledby="sheetTitle">
+    <h2 id="sheetTitle">Cheat sheet</h2>
+    <p>The same words from the video, in one place. Each card says what the thing is, then gives you a picture to remember it by.</p>
+    <div class="terms">
+      <article class="term"><h3>AI model <small>also called an LLM</small></h3><p>The brain. A program that has read an enormous amount of text, so it can write, explain and reason.</p><p class="like">Think of: a brilliant expert in a room with no phone.</p></article>
+      <article class="term"><h3>Chatbot</h3><p>An AI model you talk to in a chat window. It answers questions, but it can't do things for you.</p><p class="like">Think of: passing notes through a mail slot.</p></article>
+      <article class="term"><h3>Tool</h3><p>One specific job the AI may ask for: search the web, check a calendar, send an email. Each comes with an instruction card.</p><p class="like">Think of: a pair of hands for one task.</p></article>
+      <article class="term"><h3>API <small>Application Programming Interface</small></h3><p>The official way one program asks another for something, using a fixed menu of requests and a key.</p><p class="like">Think of: a waiter taking orders from a menu.</p></article>
+      <article class="term"><h3>MCP <small>Model Context Protocol</small></h3><p>A shared standard for plugging services into AI apps. Build the plug once and any AI app that speaks MCP can use it.</p><p class="like">Think of: USB-C, but for AI.</p></article>
+      <article class="term"><h3>Connector</h3><p>An MCP plug you switch on in your AI app's settings, such as Calendar or Email. Each one adds new tools.</p><p class="like">Think of: plugging in a new appliance.</p></article>
+      <article class="term"><h3>Harness</h3><p>The app wrapped around the model. It passes on instructions, keeps notes, holds the tools, runs the steps and asks your permission.</p><p class="like">Think of: the rest of the car around the engine.</p></article>
+      <article class="term"><h3>AI agent</h3><p>A model, inside a harness, with tools, working through a goal you set, one step at a time.</p><p class="like">Think of: a capable assistant who gets it done.</p></article>
+      <article class="term"><h3>The agent loop</h3><p>Think about the next step, do it with a tool, check the result. Repeat until the job is finished.</p><p class="like">Think of: how you'd tackle a chore yourself.</p></article>
+    </div>
+    <h2>Good habits</h2>
+    <ul class="habits">
+      <li><b>Keep "ask before acting" on.</b><span>Nothing gets sent, bought or deleted without your OK.</span></li>
+      <li><b>Connect only what you need.</b><span>Each connector is a door into your things.</span></li>
+      <li><b>Check its work.</b><span>AI can sound completely sure and still be wrong.</span></li>
+      <li><b>Never type passwords into a chat.</b><span>Connectors use the real company's sign-in page instead.</span></li>
+    </ul>
+  </section>
+  <p class="foot">Voice uses the reading voice built into your device, so it sounds different on a phone, a Mac or a Windows computer.</p>
+</div>
+
+<script>
+  /* if the 3D library can't load (offline, blocked), say so instead of showing an empty screen */
+  setTimeout(function () { if (!window.__explainerBooted) { var n = document.getElementById('loadnote'); if (n) n.hidden = false; } }, 9000);
+</script>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js';
+
+const RENDER = new URLSearchParams(location.search).has('render');
+if (RENDER) document.body.classList.add('render');
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+/* =====================================================================
+   SCRIPT. Each chapter is a list of narration beats. A beat is one caption
+   and one spoken line; its length comes from its word count.
+   ===================================================================== */
+const CHAPTERS = [
+  { short: 'Welcome', title: 'AI agents, explained', sub: '', beats: [
+    'AI agent. Model. Tools. API. MCP. Connectors. Harness. You keep hearing these words.',
+    "In the next few minutes, we'll explain every one of them in plain English, one piece at a time." ] },
+  { short: 'The brain', title: 'The brain', sub: 'What an AI model is', beats: [
+    "Let's start with the part you may already know: a chat app, like ChatGPT or Claude.",
+    'Inside every one of these apps is an AI model. Think of it as a brain.',
+    'It has read a huge amount: books, websites, manuals, recipes. So it writes and explains remarkably well.',
+    "But on its own, it's like a brilliant expert locked in a room. No phone. No computer. No window.",
+    'You pass a note through the mail slot, and it passes an answer back. That is all a chatbot does.',
+    "It can talk, but it can't act. It can't check your calendar, send an email, or look up today's weather.",
+    "You'll also hear it called an LLM, a large language model. Same thing: the brain." ] },
+  { short: 'Tools', title: 'Tools', sub: 'Giving the brain hands', beats: [
+    "So we give the brain tools. A tool is one specific job it's allowed to ask for.",
+    'Search the web. Check a calendar. Look up a contact. Send an email. Do some sums.',
+    'Each tool comes with a short instruction card: what it does, and what it needs.',
+    "Here's the key idea: the brain never presses the buttons itself. It writes a request.",
+    'The app carries that request to the tool, and brings the answer back: Tuesday at noon is free.',
+    "Now the brain knows something it couldn't have known on its own." ] },
+  { short: 'APIs', title: 'APIs', sub: 'The service counter', beats: [
+    'But how does the calendar tool reach your actual calendar? Through an API.',
+    "Think of a restaurant. You don't walk into the kitchen. You order from the menu, and a waiter brings your food.",
+    'An API is that waiter, for software. It is how one program asks another program for something.',
+    'Gmail, your bank, the weather service: each has its own menu of requests, and a strict way to ask.',
+    "Ask properly, with a key that proves you're allowed, and you get exactly what you asked for.",
+    'API stands for Application Programming Interface. Just remember: a service counter between programs.' ] },
+  { short: 'MCP & connectors', title: 'MCP & connectors', sub: 'One standard plug', beats: [
+    'There are thousands of services, and plenty of AI apps. Linking each pair used to need its own custom cable.',
+    'Remember the drawer full of phone chargers, where nothing fit anything?',
+    "MCP fixes that. It stands for Model Context Protocol, and it's simply a standard plug.",
+    'Think of it as USB-C for AI. A service builds one MCP plug, and any AI app that speaks MCP can use it.',
+    'Inside the apps, these plugs are called connectors.',
+    "You open settings, pick one, sign in on the real company's page, and switch it on.",
+    'Each connector you switch on hands the AI a new set of tools.' ] },
+  { short: 'The harness', title: 'The harness', sub: 'The rest of the car', beats: [
+    'So we have a brain, tools, and connectors. What holds it all together? The harness.',
+    'Picture the AI model as a powerful engine. On its own, an engine just sits on the garage floor.',
+    'To go anywhere, it needs the rest of the car: wheels, steering, a dashboard, and brakes.',
+    "The harness is the rest of the car. It's the software wrapped around the model: the app you actually use.",
+    'It hands the brain its instructions, along with your request.',
+    'It keeps notes, so nothing gets lost along the way.',
+    'It holds the toolbox, and carries every request to the right tool and back.',
+    'And it has brakes. Before anything risky, like sending or buying, it stops and asks you.',
+    'The Claude app, ChatGPT, and Claude Code are all harnesses. Similar engines, different cars, built for different trips.' ] },
+  { short: 'The agent', title: 'The agent', sub: 'Putting it all together', beats: [
+    'Put it all together and you have an AI agent: a brain, in a harness, with tools, working on a goal you set.',
+    'It works in a loop. Think about the next step. Do it with a tool. Check the result. Repeat until done.',
+    'Say you type: find a time next week for lunch with my sister Sue, and send her an invite.',
+    'It thinks: first, I need your free times. It checks your calendar. Tuesday at noon is open.',
+    "Next, it needs Sue's email address, so it looks in your contacts.",
+    'Then it writes the invitation. Sending is a real action, so the harness stops and asks you first.',
+    'You click Send. It sends the invite, and reports back: done.',
+    'A chatbot would have told you how. An agent actually did it.' ] },
+  { short: 'Good habits', title: 'Good habits', sub: 'Staying safe and in charge', beats: [
+    'A few good habits as you get started.',
+    "Keep 'ask before acting' turned on. You stay the boss: nothing is sent or bought without your OK.",
+    "Only connect what you need. Each connector is a door into your things, so open only the ones you'll use.",
+    'Check its work. AI can sound completely sure and still be wrong, so double-check anything that matters.',
+    "Never type passwords or bank details into a chat. Connectors use the real company's sign-in page instead." ] },
+  { short: 'Recap', title: 'Recap', sub: 'The whole picture', beats: [
+    "Let's recap, from the bottom up.",
+    'At the bottom are your services and their APIs: the counters where requests get handled.',
+    'Connectors plug those services into your AI app, using the standard MCP plug.',
+    'Each connector brings tools: the specific jobs the AI can ask for.',
+    'The model is the brain. It decides which tool to use, and when.',
+    'The harness is the app around it all. It runs the loop and asks your permission.',
+    'And at the top is you, setting the goal. All of it together, working for you, is an AI agent.' ] },
+  { short: 'Get started', title: 'Getting started', sub: 'Your first steps', beats: [
+    'Ready to try it? Start small.',
+    'Pick one app, like Claude or ChatGPT, and simply chat with it for a week.',
+    'Talk to it like a capable new assistant. Tell it who you are and what you need. Detail helps.',
+    'Then switch on one connector, like your calendar, and give it one small, real job.',
+    "That's it. Now you know what all those words mean." ] },
+];
+
+/* ---------- timeline ---------- */
+const WPS = 2.75, PAD = 0.7, LEAD = 1.7, FIRST_LEAD = 2.6, TAIL = 5;
+let T = 0;
+CHAPTERS.forEach((ch, ci) => {
+  ch.s = T;
+  T += ci === 0 ? FIRST_LEAD : LEAD;
+  ch.beats = ch.beats.map(text => {
+    const words = text.split(/\s+/).length;
+    const d = Math.max(3, words / WPS + PAD);
+    const b = { text, s: T, e: T + d, ci };
+    T += d;
+    return b;
+  });
+  ch.e = T;
+});
+const DURATION = T + TAIL;
+CHAPTERS[CHAPTERS.length - 1].e = DURATION;
+const BEATS = CHAPTERS.flatMap(c => c.beats);
+const cs = c => CHAPTERS[c].s;
+const S = (c, i) => CHAPTERS[c].beats[i].s;
+const BD = (c, i) => CHAPTERS[c].beats[i].e - CHAPTERS[c].beats[i].s;
+const chAt = t => { let i = 0; while (i < CHAPTERS.length - 1 && t >= CHAPTERS[i + 1].s) i++; return i; };
+const beatAt = t => { for (let i = 0; i < BEATS.length; i++) if (t >= BEATS[i].s && t < BEATS[i].e) return i; return -1; };
+
+/* ---------- easing ---------- */
+const clamp01 = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const lerp = (a, b, u) => a + (b - a) * u;
+const ease = x => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const eOut = x => 1 - Math.pow(1 - clamp01(x), 3);
+const eBack = x => { x = clamp01(x); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const rp = (t, a, d) => clamp01((t - a) / d);
+const win = (t, a, b, i = 0.6, o = 0.6) => Math.min(eOut(rp(t, a, i)), 1 - ease(rp(t, b - o, o)));
+const bump = (t, a, d) => Math.sin(clamp01((t - a) / d) * Math.PI);
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; }; }
+
+/* =====================================================================
+   DRAWING: icons and paper cards, drawn once onto canvases
+   ===================================================================== */
+const FONT_B = '"Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Verdana, sans-serif';
+const FONT_M = '"Atkinson Hyperlegible Mono", Menlo, Consolas, monospace';
+const FONT_D = '"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif';
+const INK = '#13262c';
+try {
+  await Promise.race([
+    Promise.all([`700 40px ${FONT_B}`, `600 40px ${FONT_B}`, `500 30px ${FONT_M}`, `800 60px ${FONT_D}`].map(f => document.fonts.load(f))),
+    new Promise(r => setTimeout(r, 4000)),
+  ]);
+} catch (e) { /* fall back to system fonts */ }
+const cnv = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+function tex(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; }
+const rr = (g, x, y, w, h, r) => { g.beginPath(); g.roundRect(x, y, w, h, r); };
+const ICONS = {
+  search(g) { g.beginPath(); g.arc(0.43, 0.43, 0.21, 0, 7); g.stroke(); g.lineWidth = 0.1; g.beginPath(); g.moveTo(0.6, 0.6); g.lineTo(0.8, 0.8); g.stroke(); },
+  calendar(g) { rr(g, 0.17, 0.22, 0.66, 0.6, 0.08); g.stroke(); g.beginPath(); g.moveTo(0.17, 0.4); g.lineTo(0.83, 0.4); g.moveTo(0.35, 0.13); g.lineTo(0.35, 0.28); g.moveTo(0.65, 0.13); g.lineTo(0.65, 0.28); g.stroke(); for (let r = 0; r < 2; r++) for (let c = 0; c < 3; c++) g.fillRect(0.28 + c * 0.16, 0.5 + r * 0.15, 0.11, 0.09); },
+  contacts(g) { g.beginPath(); g.arc(0.5, 0.37, 0.14, 0, 7); g.stroke(); g.beginPath(); g.arc(0.5, 0.88, 0.28, Math.PI * 1.1, Math.PI * 1.9); g.stroke(); },
+  mail(g) { rr(g, 0.15, 0.26, 0.7, 0.5, 0.07); g.stroke(); g.beginPath(); g.moveTo(0.19, 0.31); g.lineTo(0.5, 0.55); g.lineTo(0.81, 0.31); g.stroke(); },
+  calc(g) { rr(g, 0.25, 0.13, 0.5, 0.74, 0.07); g.stroke(); g.fillRect(0.33, 0.22, 0.34, 0.13); for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) { g.beginPath(); g.arc(0.37 + c * 0.13, 0.48 + r * 0.115, 0.035, 0, 7); g.fill(); } },
+  cloud(g) { g.beginPath(); g.arc(0.35, 0.35, 0.11, 0, 7); g.stroke(); for (let k = 0; k < 6; k++) { const a = k / 6 * Math.PI * 2 + 0.3; g.beginPath(); g.moveTo(0.35 + Math.cos(a) * 0.17, 0.35 + Math.sin(a) * 0.17); g.lineTo(0.35 + Math.cos(a) * 0.23, 0.35 + Math.sin(a) * 0.23); g.stroke(); } g.beginPath(); g.arc(0.45, 0.63, 0.13, Math.PI * 0.5, Math.PI * 1.5); g.arc(0.6, 0.52, 0.17, Math.PI * 1.08, Math.PI * 1.92); g.arc(0.73, 0.64, 0.12, Math.PI * 1.5, Math.PI * 0.5); g.closePath(); g.fill(); },
+  bank(g) { g.beginPath(); g.moveTo(0.15, 0.38); g.lineTo(0.5, 0.16); g.lineTo(0.85, 0.38); g.closePath(); g.stroke(); g.beginPath(); for (const x of [0.27, 0.42, 0.58, 0.73]) { g.moveTo(x, 0.47); g.lineTo(x, 0.72); } g.moveTo(0.15, 0.82); g.lineTo(0.85, 0.82); g.stroke(); },
+  folder(g) { g.beginPath(); g.moveTo(0.15, 0.27); g.lineTo(0.4, 0.27); g.lineTo(0.47, 0.36); g.lineTo(0.85, 0.36); g.lineTo(0.85, 0.78); g.lineTo(0.15, 0.78); g.closePath(); g.stroke(); },
+  chat(g) { rr(g, 0.14, 0.18, 0.72, 0.5, 0.1); g.stroke(); g.beginPath(); g.moveTo(0.3, 0.68); g.lineTo(0.25, 0.85); g.lineTo(0.47, 0.68); g.stroke(); for (const x of [0.36, 0.5, 0.64]) { g.beginPath(); g.arc(x, 0.43, 0.04, 0, 7); g.fill(); } },
+  app(g) { rr(g, 0.16, 0.16, 0.68, 0.68, 0.16); g.stroke(); g.beginPath(); g.arc(0.5, 0.5, 0.15, 0, 7); g.fill(); },
+  code(g) { g.beginPath(); g.moveTo(0.36, 0.3); g.lineTo(0.17, 0.5); g.lineTo(0.36, 0.7); g.moveTo(0.64, 0.3); g.lineTo(0.83, 0.5); g.lineTo(0.64, 0.7); g.moveTo(0.56, 0.24); g.lineTo(0.44, 0.76); g.stroke(); },
+  clipboard(g) { rr(g, 0.24, 0.18, 0.52, 0.68, 0.06); g.stroke(); rr(g, 0.37, 0.11, 0.26, 0.13, 0.04); g.fill(); g.beginPath(); for (const y of [0.42, 0.54, 0.66]) { g.moveTo(0.34, y); g.lineTo(0.66, y); } g.stroke(); },
+  notebook(g) { rr(g, 0.3, 0.14, 0.48, 0.72, 0.06); g.stroke(); g.beginPath(); for (const y of [0.27, 0.42, 0.57, 0.72]) { g.moveTo(0.2, y); g.lineTo(0.36, y); } g.moveTo(0.46, 0.36); g.lineTo(0.68, 0.36); g.moveTo(0.46, 0.5); g.lineTo(0.68, 0.5); g.stroke(); },
+  toolbox(g) { rr(g, 0.14, 0.4, 0.72, 0.42, 0.06); g.stroke(); g.beginPath(); g.moveTo(0.36, 0.4); g.lineTo(0.36, 0.25); g.lineTo(0.64, 0.25); g.lineTo(0.64, 0.4); g.moveTo(0.14, 0.57); g.lineTo(0.86, 0.57); g.stroke(); g.fillRect(0.44, 0.52, 0.12, 0.11); },
+  shield(g) { g.beginPath(); g.moveTo(0.5, 0.12); g.lineTo(0.8, 0.24); g.quadraticCurveTo(0.8, 0.66, 0.5, 0.88); g.quadraticCurveTo(0.2, 0.66, 0.2, 0.24); g.closePath(); g.stroke(); g.beginPath(); g.moveTo(0.37, 0.5); g.lineTo(0.47, 0.6); g.lineTo(0.65, 0.4); g.stroke(); },
+  key(g) { g.beginPath(); g.arc(0.31, 0.5, 0.14, 0, 7); g.stroke(); g.beginPath(); g.moveTo(0.45, 0.5); g.lineTo(0.85, 0.5); g.moveTo(0.7, 0.5); g.lineTo(0.7, 0.64); g.moveTo(0.81, 0.5); g.lineTo(0.81, 0.61); g.stroke(); },
+  plug(g) { rr(g, 0.32, 0.36, 0.36, 0.3, 0.06); g.stroke(); g.beginPath(); g.moveTo(0.43, 0.36); g.lineTo(0.43, 0.17); g.moveTo(0.57, 0.36); g.lineTo(0.57, 0.17); g.moveTo(0.5, 0.66); g.lineTo(0.5, 0.87); g.stroke(); },
+  check(g) { g.beginPath(); g.arc(0.5, 0.5, 0.32, 0, 7); g.stroke(); g.beginPath(); g.moveTo(0.35, 0.51); g.lineTo(0.46, 0.62); g.lineTo(0.66, 0.4); g.stroke(); },
+  question(g) { g.lineWidth = 0.1; g.beginPath(); g.arc(0.5, 0.36, 0.15, Math.PI * 1.05, Math.PI * 2.35); g.lineTo(0.5, 0.6); g.stroke(); g.beginPath(); g.arc(0.5, 0.76, 0.055, 0, 7); g.fill(); },
+};
+const iconCache = {};
+function iconCanvas(name, color = INK, size = 256) {
+  const k = name + color + size;
+  if (iconCache[k]) return iconCache[k];
+  const c = cnv(size, size), g = c.getContext('2d');
+  g.scale(size, size); g.strokeStyle = g.fillStyle = color; g.lineWidth = 0.075; g.lineCap = 'round'; g.lineJoin = 'round';
+  ICONS[name](g);
+  return (iconCache[k] = c);
+}
+function wrapText(g, text, maxW) {
+  const out = []; let line = '';
+  for (const w of text.split(' ')) { const test = line ? line + ' ' + w : w; if (line && g.measureText(test).width > maxW) { out.push(line); line = w; } else line = test; }
+  if (line) out.push(line);
+  return out;
+}
+function cardCanvas({ head, headColor = '#b4472a', body, mono, w = 720, size = 54, icon }) {
+  const pad = 46, inner = w - pad * 2 - (icon ? 120 : 0);
+  const m = cnv(4, 4).getContext('2d');
+  m.font = `700 ${size}px ${FONT_B}`; const lines = wrapText(m, body, inner);
+  let ml = []; if (mono) { m.font = `500 30px ${FONT_M}`; ml = wrapText(m, mono, w - pad * 2); }
+  const h = Math.ceil(pad + (head ? 50 : 0) + lines.length * size * 1.16 + (mono ? 20 + ml.length * 38 : 0) + pad - 6);
+  const c = cnv(w, h), g = c.getContext('2d');
+  g.fillStyle = '#fff6e6'; rr(g, 4, 4, w - 8, h - 8, 30); g.fill(); g.lineWidth = 4; g.strokeStyle = 'rgba(19,38,44,.18)'; g.stroke();
+  g.textBaseline = 'top'; let y = pad - 4;
+  if (head) { g.fillStyle = headColor; g.font = `700 30px ${FONT_B}`; if ('letterSpacing' in g) g.letterSpacing = '4px'; g.fillText(head.toUpperCase(), pad, y); if ('letterSpacing' in g) g.letterSpacing = '0px'; y += 50; }
+  if (icon) g.drawImage(iconCanvas(icon, headColor, 200), w - pad - 100, pad - 6, 100, 100);
+  g.fillStyle = INK; g.font = `700 ${size}px ${FONT_B}`;
+  for (const l of lines) { g.fillText(l, pad, y); y += size * 1.16; }
+  if (mono) { y += 20; g.fillStyle = '#4a5f64'; g.font = `500 30px ${FONT_M}`; for (const l of ml) { g.fillText(l, pad, y); y += 38; } }
+  return c;
+}
+function signCanvas(text, color, icon) {
+  const c = cnv(640, 150), g = c.getContext('2d');
+  g.fillStyle = color; rr(g, 4, 4, 632, 142, 26); g.fill();
+  g.drawImage(iconCanvas(icon, INK, 160), 26, 15, 120, 120);
+  g.fillStyle = INK; g.font = `800 72px ${FONT_D}`; g.textBaseline = 'middle'; g.fillText(text.toUpperCase(), 160, 80);
+  return c;
+}
+function radialTex(stops, size = 256) {
+  const c = cnv(size, size), g = c.getContext('2d');
+  const gr = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  stops.forEach(([o, col]) => gr.addColorStop(o, col)); g.fillStyle = gr; g.fillRect(0, 0, size, size);
+  return tex(c);
+}
+
+/* =====================================================================
+   THREE.JS SETUP
+   ===================================================================== */
+const stage = $('stage');
+const renderer = new THREE.WebGLRenderer({ canvas: $('gl'), antialias: true, alpha: true, preserveDrawingBuffer: RENDER });
+renderer.setPixelRatio(RENDER ? 1 : Math.min(devicePixelRatio || 1, 2));
+renderer.setClearColor(0x000000, 0);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x0f2a32, 22, 52);
+const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.1, 200);
+scene.add(new THREE.HemisphereLight(0xd6f1ff, 0x0b2228, 1.35));
+const keyLight = new THREE.DirectionalLight(0xfff0dc, 2.1); keyLight.position.set(5, 10, 7); scene.add(keyLight);
+const rimLight = new THREE.DirectionalLight(0x7fd6ff, 1.0); rimLight.position.set(-7, 5, -8); scene.add(rimLight);
+
+let W = 1280, H = 720, U = 12.8;
+function resize() {
+  const w = RENDER ? innerWidth : stage.clientWidth, h = RENDER ? innerHeight : stage.clientHeight;
+  if (!w || !h) return;
+  W = w; H = h; U = w / 100;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+
+/* ---------- builders ---------- */
+function rrShape(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + h - r);
+  s.quadraticCurveTo(x + w, y + h, x + w - r, y + h); s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s;
+}
+function roundedBox(w, h, d, r) {
+  const b = Math.min(r * 0.6, d * 0.35);
+  const g = new THREE.ExtrudeGeometry(rrShape(w - 2 * b, h - 2 * b, Math.max(0.001, Math.min(r - b, (Math.min(w, h) - 2 * b) / 2 - 0.001))), { depth: Math.max(0.001, d - 2 * b), bevelEnabled: true, bevelThickness: b, bevelSize: b, bevelSegments: 3, curveSegments: 8 });
+  g.center(); return g;
+}
+const mat = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0.04, ...o });
+const basic = (o) => new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, ...o });
+
+function prep(obj) { const mats = []; obj.traverse(o => { if (o.material) for (const m of [].concat(o.material)) { if (m.userData.base === undefined) { m.userData.base = m.opacity; m.userData.baseT = m.transparent; } mats.push(m); } }); obj.userData.mats = mats; }
+function fade(obj, p) {
+  if (!obj.userData.mats) prep(obj);
+  obj.visible = p > 0.003;
+  for (const m of obj.userData.mats) { m.opacity = m.userData.base * p; m.transparent = m.userData.baseT || p < 0.999; }
+}
+
+function tile(icon, color, size = 1.1) {
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(roundedBox(size, size, 0.3, size * 0.18), mat(color, { roughness: 0.42, emissive: color, emissiveIntensity: 0 }));
+  const face = new THREE.Mesh(new THREE.PlaneGeometry(size * 0.72, size * 0.72), basic({ map: tex(iconCanvas(icon)) }));
+  face.position.z = 0.156;
+  g.add(body, face);
+  g.userData = { body, face, size };
+  return g;
+}
+const blobTex = radialTex([[0, 'rgba(0,0,0,.5)'], [0.55, 'rgba(0,0,0,.22)'], [1, 'rgba(0,0,0,0)']], 128);
+function blob(sx, sz) { const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), basic({ map: blobTex })); m.rotation.x = -Math.PI / 2; m.scale.set(sx, sz, 1); m.position.y = 0.012; return m; }
+function card(canvas, width) {
+  const h = width * canvas.height / canvas.width;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(width, h), basic({ map: tex(canvas), side: THREE.DoubleSide }));
+  m.renderOrder = 10; m.material.depthTest = false; return m;
+}
+function cable(points, color, r = 0.045) {
+  const curve = new THREE.CatmullRomCurve3(points);
+  const geo = new THREE.TubeGeometry(curve, 120, r, 8, false);
+  const m = new THREE.Mesh(geo, mat(color, { emissive: color, emissiveIntensity: 0.35 }));
+  m.userData.curve = curve; m.userData.per = 8 * 6;
+  return m;
+}
+function grow(m, p) { m.geometry.setDrawRange(0, Math.round(120 * clamp01(p)) * m.userData.per); }
+function faceToward(obj, x, z) { obj.rotation.y = Math.atan2(x - obj.position.x, z - obj.position.z); }
+
+/* ---------- floor ---------- */
+const world = new THREE.Group(); scene.add(world);
+{
+  const c = cnv(1024, 1024), g = c.getContext('2d');
+  const gr = g.createRadialGradient(512, 512, 0, 512, 512, 512);
+  gr.addColorStop(0, 'rgba(120,200,205,.20)'); gr.addColorStop(0.45, 'rgba(90,170,180,.10)'); gr.addColorStop(1, 'rgba(90,170,180,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 1024, 1024);
+  for (let r = 40; r < 512; r += 40) { g.beginPath(); g.arc(512, 512, r, 0, 7); g.strokeStyle = `rgba(200,240,240,${0.07 * (1 - r / 512)})`; g.lineWidth = 2; g.stroke(); }
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(26, 96), basic({ map: tex(c) }));
+  floor.rotation.x = -Math.PI / 2; world.add(floor);
+}
+
+/* ---------- the brain ---------- */
+const glowTex = radialTex([[0, 'rgba(255,255,255,1)'], [0.25, 'rgba(255,255,255,.45)'], [1, 'rgba(255,255,255,0)']]);
+const brain = new THREE.Group(); world.add(brain);
+const bCore = new THREE.Mesh(new THREE.SphereGeometry(0.5, 48, 32), mat(0xffb547, { emissive: 0xff8a1f, emissiveIntensity: 0.8, roughness: 0.3 }));
+const shellGeo = new THREE.IcosahedronGeometry(0.82, 1);
+const bShell = new THREE.LineSegments(new THREE.EdgesGeometry(shellGeo), new THREE.LineBasicMaterial({ color: 0xffe0a8, transparent: true, opacity: 0.6 }));
+const bNodes = new THREE.Points(shellGeo, new THREE.PointsMaterial({ color: 0xfff3dc, size: 0.075, transparent: true, opacity: 0.95 }));
+const bInner = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(0.66, 0)), new THREE.LineBasicMaterial({ color: 0xffc977, transparent: true, opacity: 0.45 }));
+const bGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffb547, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
+bGlow.scale.set(3.4, 3.4, 1);
+const bLight = new THREE.PointLight(0xffb547, 10, 0, 2);
+brain.add(bCore, bShell, bNodes, bInner, bGlow, bLight);
+const brainShadow = blob(2.0, 2.0); world.add(brainShadow);
+
+/* ---------- chapter 1: room, books, mail slot, notes ---------- */
+const room = new THREE.Group(); world.add(room);
+{
+  const g = new THREE.BoxGeometry(3.4, 2.75, 3.4); g.translate(0, 1.375, 0);
+  room.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0x9fe3ff, transparent: true, opacity: 0.1, roughness: 0.1, side: THREE.DoubleSide, depthWrite: false })));
+  room.add(new THREE.LineSegments(new THREE.EdgesGeometry(g), new THREE.LineBasicMaterial({ color: 0xbdefff, transparent: true, opacity: 0.8 })));
+  const door = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 2.1), new THREE.MeshStandardMaterial({ color: 0x5fb3c4, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false }));
+  door.position.set(0, 1.05, 1.705); room.add(door);
+  const dg = new THREE.EdgesGeometry(new THREE.PlaneGeometry(1.1, 2.1));
+  const frame = new THREE.LineSegments(dg, new THREE.LineBasicMaterial({ color: 0xffd45c, transparent: true, opacity: 0.9 }));
+  frame.position.copy(door.position); frame.position.z += 0.01; room.add(frame);
+  const slot = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.09, 0.05), mat(0xffd45c, { emissive: 0xffb547, emissiveIntensity: 0.4 }));
+  slot.position.set(0, 1.25, 1.72); room.add(slot);
+  const knob = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 12), mat(0xffd45c)); knob.position.set(0.38, 0.95, 1.74); room.add(knob);
+}
+const books = [];
+{
+  const R = rng(7), cols = [0xff7a5c, 0x5cc8ff, 0x63e2b7, 0xb9a6ff, 0xffd45c, 0xfff6e6];
+  for (let i = 0; i < 16; i++) {
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.46, 0.09), mat(cols[i % cols.length]));
+    const a = R() * Math.PI * 2;
+    b.userData = { from: V(Math.cos(a) * (6 + R() * 3), 0.6 + R() * 3.6, Math.sin(a) * (5 + R() * 3)), spin: V(R() * 4, R() * 4, R() * 4), delay: i * 0.28 };
+    world.add(b); books.push(b);
+  }
+}
+const noteQ = card(cardCanvas({ head: 'Your note', body: "What's a good gift for a 10-year-old who loves space?", size: 58 }), 1.5); world.add(noteQ);
+const noteA = card(cardCanvas({ head: 'Answer', headColor: '#1f7a5a', body: 'A beginner telescope, or a glow-in-the-dark star map!', size: 58 }), 1.5); world.add(noteA);
+const cant = [['calendar', 'Calendar'], ['mail', 'Email'], ['cloud', 'Weather']].map(([ic], i) => {
+  const tl = tile(ic, 0x6f8a90, 0.95); tl.position.set([2.7, 3.95, 5.2][i], 0.75, [1.7, 1.2, 0.7][i]); faceToward(tl, 3, 12);
+  world.add(tl); return tl;
+});
+
+/* ---------- tools ---------- */
+const TOOLS = [
+  { icon: 'search', color: 0x5cc8ff, label: 'Web search', css: 'var(--sky)' },
+  { icon: 'calendar', color: 0xff7a5c, label: 'Calendar', css: 'var(--coral)' },
+  { icon: 'contacts', color: 0xb9a6ff, label: 'Contacts', css: 'var(--lilac)' },
+  { icon: 'mail', color: 0x63e2b7, label: 'Email', css: 'var(--mint)' },
+  { icon: 'calc', color: 0xffd45c, label: 'Calculator', css: 'var(--sun)' },
+];
+// tools stand in a gently curved row in front of the brain; the later (agent) layout is wider and further out
+const R_EARLY = 1, T6 = 2;
+const toolPos = (i, R) => { const x = (i - 2) * (R === T6 ? 2.25 : 1.85); return V(x, 0.85, R === T6 ? 4.3 - 0.06 * x * x : 2.7 - 0.09 * x * x); };
+const toolTiles = TOOLS.map(tl => { const m = tile(tl.icon, tl.color, 1.1); world.add(m); return m; });
+const toolShadows = TOOLS.map(() => { const b = blob(1.6, 0.9); world.add(b); return b; });
+const reqCard = card(cardCanvas({ head: 'Request', body: "Calendar: what's free next week?", mono: 'calendar.find_free_time(week="next")' }), 2.8); world.add(reqCard);
+const resCard = card(cardCanvas({ head: 'Answer', headColor: '#1f7a5a', body: 'Tuesday 12:00 is free. Thursday 1:00 is free.', mono: '{ "free": ["Tue 12:00", "Thu 13:00"] }' }), 2.8); world.add(resCard);
+
+/* ---------- services (buildings) ---------- */
+const BZ = -5.4;
+const BLD = [
+  { name: 'Weather', icon: 'cloud', color: 0x5cc8ff, css: '#5cc8ff', x: -5.6 },
+  { name: 'Calendar', icon: 'calendar', color: 0xff7a5c, css: '#ff7a5c', x: -1.95 },
+  { name: 'Email', icon: 'mail', color: 0x63e2b7, css: '#63e2b7', x: 1.95 },
+  { name: 'Bank', icon: 'bank', color: 0xffd45c, css: '#ffd45c', x: 5.6 },
+];
+const buildings = BLD.map(b => {
+  const g = new THREE.Group();
+  const wall = new THREE.Color(b.color).lerp(new THREE.Color(0xf4f1ea), 0.72);
+  const body = new THREE.Mesh(roundedBox(2.3, 2.6, 1.7, 0.12), mat(wall)); body.position.y = 1.3;
+  const roof = new THREE.Mesh(roundedBox(2.5, 0.2, 1.9, 0.06), mat(0x24505b)); roof.position.y = 2.68;
+  const win = new THREE.Mesh(new THREE.PlaneGeometry(1.35, 0.8), new THREE.MeshStandardMaterial({ color: 0x0c1e23, emissive: b.color, emissiveIntensity: 0 }));
+  win.position.set(0, 1.05, 0.856);
+  const counter = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.08, 0.32), mat(0x24505b)); counter.position.set(0, 0.64, 0.98);
+  const awning = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.06, 0.55), mat(b.color)); awning.position.set(0, 1.58, 1.08); awning.rotation.x = 0.35;
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(1.95, 0.457), basic({ map: tex(signCanvas(b.name, b.css, b.icon)) }));
+  sign.position.set(0, 2.15, 0.858);
+  const base = blob(3.4, 2.6); base.position.set(0, 0.012, 0.2);
+  g.add(base, body, roof, win, counter, awning, sign);
+  g.position.set(b.x, 0, BZ); g.userData = { win };
+  world.add(g); return g;
+});
+const winPt = i => V(BLD[i].x, 1.05, BZ + 0.95);
+const calCable = cable([V(-1.85, 1.0, 2.15), V(-2.05, 2.3, 0.4), V(-2.05, 2.2, -2.6), V(-1.95, 1.05, BZ + 0.9)], 0xff7a5c); world.add(calCable);
+const orderCard = card(cardCanvas({ head: 'Order', body: 'Find free time next week', mono: 'GET /calendar/free-time', icon: 'key', w: 640 }), 1.7); world.add(orderCard);
+const replyCard = card(cardCanvas({ head: 'Reply', headColor: '#1f7a5a', body: 'Tue 12:00 and Thu 1:00', mono: '200 OK', w: 640 }), 1.7); world.add(replyCard);
+
+/* ---------- chapter 4: MCP ---------- */
+const mcp = new THREE.Group(); world.add(mcp);
+const APPS = [{ icon: 'chat', color: 0xffb547, label: 'Chat app' }, { icon: 'app', color: 0xb9a6ff, label: 'Assistant app' }, { icon: 'code', color: 0x5cc8ff, label: 'Coding helper' }];
+const SRV = [{ icon: 'calendar', color: 0xff7a5c, label: 'Calendar' }, { icon: 'mail', color: 0x63e2b7, label: 'Email' }, { icon: 'folder', color: 0xffd45c, label: 'Files' }, { icon: 'cloud', color: 0x5cc8ff, label: 'Weather' }, { icon: 'bank', color: 0xe9eef0, label: 'Bank' }];
+const APPZ = [-2.4, 0, 2.4], SRVZ = [-3.6, -1.8, 0, 1.8, 3.6], AX = -4.4, SX = 4.4;
+const appTiles = APPS.map((a, i) => { const m = tile(a.icon, a.color, 1.0); m.position.set(AX, 0.8, APPZ[i]); faceToward(m, -2, 14); mcp.add(m); return m; });
+const srvTiles = SRV.map((a, i) => { const m = tile(a.icon, a.color, 1.0); m.position.set(SX, 0.8, SRVZ[i]); faceToward(m, 2, 14); mcp.add(m); return m; });
+const tangle = [];
+{
+  const R = rng(42), cols = [0xff7a5c, 0x5cc8ff, 0x63e2b7, 0xb9a6ff, 0xffd45c, 0xff9fd0];
+  let k = 0;
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 5; j++, k++) {
+    const a = V(AX + 0.6, 0.75, APPZ[i]), b = V(SX - 0.6, 0.75, SRVZ[j]);
+    const pts = [a, V(-1.8, 0.25 + R() * 1.8, APPZ[i] + (R() - 0.5) * 4), V(0, 0.3 + R() * 2.2, (R() - 0.5) * 6), V(1.8, 0.25 + R() * 1.8, SRVZ[j] + (R() - 0.5) * 4), b];
+    const col = cols[k % cols.length];
+    const c = cable(pts, col, 0.035);
+    const shapes = [new THREE.BoxGeometry(0.22, 0.16, 0.16), new THREE.CylinderGeometry(0.09, 0.09, 0.24, 14), new THREE.ConeGeometry(0.12, 0.24, 3), new THREE.TorusGeometry(0.09, 0.035, 8, 16)];
+    const plug = new THREE.Mesh(shapes[k % 4], mat(col)); plug.position.copy(b).add(V(-0.12, 0, 0)); plug.rotation.set(R() * 3, R() * 3, R() * 3);
+    const grp = new THREE.Group(); grp.add(c, plug); grp.userData = { c, delay: k * 0.17 };
+    mcp.add(grp); tangle.push(grp);
+  }
+}
+const hub = new THREE.Group(); mcp.add(hub);
+{
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 1.05, 0.5, 48), mat(0x24505b, { roughness: 0.4 }));
+  body.position.y = 0.25;
+  const c = cnv(512, 512), g = c.getContext('2d');
+  g.fillStyle = '#ffd45c'; g.beginPath(); g.arc(256, 256, 250, 0, 7); g.fill();
+  g.fillStyle = INK; g.font = `800 150px ${FONT_D}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('MCP', 256, 270);
+  const top = new THREE.Mesh(new THREE.CircleGeometry(0.93, 48), new THREE.MeshStandardMaterial({ map: tex(c), roughness: 0.5 }));
+  top.rotation.x = -Math.PI / 2; top.position.y = 0.505;
+  hub.add(body, top);
+  for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2; const p = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.16, 0.1), mat(0x0c1e23)); p.position.set(Math.cos(a) * 1.0, 0.25, Math.sin(a) * 1.0); p.lookAt(0, 0.25, 0); hub.add(p); }
+}
+const clean = [];
+{
+  const make = (from, side) => {
+    const hubPt = V(side * 1.02, 0.28, from.z * 0.22);
+    const pts = [from, V(from.x * 0.55, 0.42, from.z * 0.75), V(side * 1.7, 0.32, from.z * 0.35), hubPt];
+    const c = cable(pts, 0xffd45c, 0.05);
+    const plug = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.14, 0.24), mat(0xffd45c, { emissive: 0xffb547, emissiveIntensity: 0.3 }));
+    const tan = c.userData.curve.getTangentAt(1); plug.position.copy(hubPt).addScaledVector(tan, -0.12); plug.lookAt(hubPt.clone().add(tan));
+    const grp = new THREE.Group(); grp.add(c, plug); mcp.add(grp); clean.push(grp);
+  };
+  APPZ.forEach(z => make(V(AX + 0.55, 0.75, z), -1));
+  SRVZ.forEach(z => make(V(SX - 0.55, 0.75, z), 1));
+}
+
+/* ---------- chapter 5: the car, then the harness ring ---------- */
+const car = new THREE.Group(); world.add(car);
+const carParts = [];
+function part(mesh, at, from, delay) { Object.assign(mesh.userData, { at: at.clone(), from: from.clone(), delay }); mesh.position.copy(at); car.add(mesh); carParts.push(mesh); return mesh; }
+part(new THREE.Mesh(roundedBox(4.8, 0.62, 2.3, 0.26), mat(0x5cc8ff, { roughness: 0.35 })), V(0, 0.82, 0), V(0, -1.8, 0), 0.0);
+part(new THREE.Mesh(roundedBox(1.9, 0.8, 2.0, 0.3), mat(0x3a9fd6, { roughness: 0.35 })), V(-0.95, 1.45, 0), V(-0.95, 4.5, 0), 0.5);
+const wheels = [];
+for (const [x, z] of [[1.55, 1.2], [1.55, -1.2], [-1.55, 1.2], [-1.55, -1.2]]) {
+  const w = new THREE.Group();
+  const tyre = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.36, 28), mat(0x1d2b30, { roughness: 0.8 })); tyre.rotation.x = Math.PI / 2;
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.38, 20), mat(0xdfe9ea)); cap.rotation.x = Math.PI / 2;
+  const brake = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.28, 0.08), mat(0xff5d5d, { emissive: 0xff3b3b, emissiveIntensity: 0.3 })); brake.position.set(0.22, 0.12, Math.sign(z) * 0.2);
+  w.add(tyre, cap, brake); w.userData.brake = brake;
+  part(w, V(x, 0.5, z), V(x + Math.sign(x) * 4, 0.5, z * 1.6), 0);
+  wheels.push(w);
+}
+const steer = part(new THREE.Mesh(new THREE.TorusGeometry(0.27, 0.05, 10, 30), mat(0x24505b)), V(0.1, 1.55, 0.5), V(0.1, 4.2, 0.5), 0);
+steer.rotation.set(0, Math.PI / 2, 0.35);
+const dash = part(new THREE.Mesh(roundedBox(0.34, 0.3, 1.8, 0.08), mat(0x24505b, { emissive: 0x63e2b7, emissiveIntensity: 0.25 })), V(0.25, 1.25, 0), V(0.25, 4, 0), 0);
+const lamps = [];
+for (const z of [0.75, -0.75]) { const l = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 12), mat(0xfff1c4, { emissive: 0xffd45c, emissiveIntensity: 1.2 })); l.position.set(2.4, 0.86, z); car.add(l); lamps.push(l); }
+const carShadow = blob(6.5, 3.4); world.add(carShadow);
+
+const harness = new THREE.Group(); world.add(harness);
+const RING_R = 2.7;
+const ringMat = mat(0x63e2b7, { emissive: 0x63e2b7, emissiveIntensity: 0.5 });
+const ring = new THREE.Mesh(new THREE.TorusGeometry(RING_R, 0.075, 14, 160), ringMat); ring.rotation.x = Math.PI / 2; ring.position.y = 0.5;
+const disc = new THREE.Mesh(new THREE.CircleGeometry(RING_R, 96), basic({ color: 0x63e2b7, opacity: 0.08 })); disc.rotation.x = -Math.PI / 2; disc.position.y = 0.49;
+harness.add(ring, disc);
+const PODS = [
+  { icon: 'clipboard', color: 0xffd45c, label: 'Instructions', ang: -55 },
+  { icon: 'notebook', color: 0xb9a6ff, label: 'Notes', ang: -140 },
+  { icon: 'toolbox', color: 0xff7a5c, label: 'Toolbox', ang: 140 },
+  { icon: 'shield', color: 0x63e2b7, label: 'Permission (the brakes)', ang: 55 },
+];
+const pods = PODS.map(p => { const a = p.ang * Math.PI / 180; const m = tile(p.icon, p.color, 0.95); m.position.set(RING_R * Math.sin(a), 1.05, RING_R * Math.cos(a)); faceToward(m, 0, 12); world.add(m); return m; });
+const instrCard = card(cardCanvas({ head: 'Instructions', body: 'Be helpful. Be careful. Ask before acting.', size: 56 }), 3.0); world.add(instrCard);
+const askCard = card(cardCanvas({ head: 'Your request', headColor: '#1f7a5a', body: 'Plan lunch with Sue.', size: 56 }), 2.6); world.add(askCard);
+const noteCard = card(cardCanvas({ head: 'Notes so far', headColor: '#6a52d8', body: 'Tue 12:00 is free. Sue likes Italian.', size: 54 }), 2.8); world.add(noteCard);
+const miniReq = card(cardCanvas({ head: 'Request', body: 'Send email', size: 56, w: 520 }), 1.8); world.add(miniReq);
+
+/* ---------- chapter 6: the loop ---------- */
+const bead = new THREE.Group(); world.add(bead);
+bead.add(new THREE.Mesh(new THREE.SphereGeometry(0.16, 20, 14), mat(0xffffff, { emissive: 0xffd45c, emissiveIntensity: 1.4 })));
+{ const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffd45c, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false })); s.scale.set(1.3, 1.3, 1); bead.add(s); }
+const STATION_U = ['Think', 'Act', 'Check'];
+const loopAng = u => -Math.PI / 2 + u * (2 * Math.PI / 3);
+const ringPt = (a, y = 0.5) => V(RING_R * Math.cos(a), y, RING_R * Math.sin(a));
+const arrows = [];
+for (let k = 0; k < 3; k++) {
+  const a = loopAng(k + 0.5);
+  const cone = new THREE.Mesh(new THREE.ConeGeometry(0.17, 0.4, 16), mat(0x63e2b7, { emissive: 0x63e2b7, emissiveIntensity: 0.6 }));
+  cone.position.copy(ringPt(a));
+  const tan = V(-Math.sin(a), 0, Math.cos(a));
+  cone.quaternion.setFromUnitVectors(V(0, 1, 0), tan);
+  world.add(cone); arrows.push(cone);
+}
+const cab6 = [
+  cable([V(-2.25, 1.0, 3.75), V(-2.3, 2.7, 1.3), V(-2.1, 2.6, -2.6), V(-1.95, 1.05, BZ + 0.9)], 0xff7a5c),
+  cable([V(0, 1.0, 4.05), V(0.4, 3.3, 1.5), V(1.6, 3.1, -2.6), V(1.85, 1.05, BZ + 0.9)], 0xb9a6ff),
+  cable([V(2.25, 1.0, 3.75), V(2.4, 2.7, 1.3), V(2.2, 2.6, -2.6), V(2.05, 1.05, BZ + 0.9)], 0x63e2b7),
+];
+cab6.forEach(c => world.add(c));
+const PKT = [['Request', 'Free times?', 'Reply', 'Tue 12:00'], ['Request', 'Find Sue', 'Reply', 'Sue Miller'], ['Send', 'Invite to Sue', '', '']];
+const pkt = PKT.map(([h1, b1, h2, b2]) => { const q = card(cardCanvas({ head: h1, body: b1, size: 60, w: 560 }), 1.25); world.add(q); const r = card(cardCanvas({ head: h2 || 'Reply', headColor: '#1f7a5a', body: b2 || 'OK', size: 60, w: 560 }), 1.25); world.add(r); return [q, r]; });
+
+/* ---------- chapter 8: the stack ---------- */
+const LAYERS = [
+  { label: 'Services & APIs', sub: 'the service counters', color: 0x5cc8ff },
+  { label: 'Connectors (MCP)', sub: 'the standard plugs', color: 0xffd45c },
+  { label: 'Tools', sub: 'jobs it can ask for', color: 0xff7a5c },
+  { label: 'Model', sub: 'the brain', color: 0xffb547 },
+  { label: 'Harness', sub: 'the app that runs it all', color: 0x63e2b7 },
+  { label: 'You', sub: 'set the goal, say yes or no', color: 0xb9a6ff },
+];
+const slabY = i => 0.35 + i * 1.0;
+const slabs = LAYERS.map((L, i) => {
+  const g = new THREE.Group();
+  const col = new THREE.Color(L.color);
+  const slab = new THREE.Mesh(roundedBox(4.6, 0.3, 2.8, 0.12), mat(col.clone().lerp(new THREE.Color(0x12313a), 0.45), { emissive: L.color, emissiveIntensity: 0 }));
+  const edge = new THREE.Mesh(new THREE.BoxGeometry(4.3, 0.08, 0.04), basic({ color: L.color, opacity: 1 })); edge.position.set(0, 0, 1.41);
+  g.add(slab, edge);
+  const on = 0.15;
+  if (i === 0) [-1.5, -0.5, 0.5, 1.5].forEach((x, k) => { const b = new THREE.Mesh(roundedBox(0.6, 0.62, 0.55, 0.06), mat([0x5cc8ff, 0xff7a5c, 0x63e2b7, 0xffd45c][k])); b.position.set(x, on + 0.31, 0); g.add(b); });
+  if (i === 1) { const h = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.46, 0.22, 32), mat(0xffd45c)); h.position.y = on + 0.11; g.add(h); [-1.4, 1.4].forEach(x => { const c = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.06, 0.06), mat(0xffd45c)); c.position.set(x * 0.72, on + 0.08, 0); g.add(c); }); }
+  if (i === 2) TOOLS.forEach((tl, k) => { const m = tile(tl.icon, tl.color, 0.5); m.position.set(-1.6 + k * 0.8, on + 0.27, 0); g.add(m); });
+  if (i === 4) { const r = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.05, 10, 80), mat(0x63e2b7, { emissive: 0x63e2b7, emissiveIntensity: 0.5 })); r.rotation.x = Math.PI / 2; r.position.y = on + 0.06; g.add(r); }
+  if (i === 5) { const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.2, 0.3, 6, 14), mat(0xb9a6ff)); body.position.y = on + 0.38; const head = new THREE.Mesh(new THREE.SphereGeometry(0.17, 20, 14), mat(0xffe7d1)); head.position.y = on + 0.86; g.add(body, head); }
+  g.position.y = slabY(i); g.userData = { slab };
+  world.add(g); return g;
+});
+
+/* =====================================================================
+   OVERLAY ELEMENTS (labels pinned to 3D points)
+   ===================================================================== */
+const ov = $('ov');
+const ALIGN = { c: '-50%,-50%', b: '-50%,-100%', t: '-50%,0', l: '0,-50%', r: '-100%,-50%', bl: '0,-100%', br: '-100%,-100%' };
+function mkLabel(text, color = 'var(--text)', cls = '') { const d = document.createElement('div'); d.className = 'lbl pin ' + cls; d.style.setProperty('--c', color); d.innerHTML = text; ov.insertBefore(d, ov.firstChild); return d; }
+const _v = new THREE.Vector3();
+function pin(el, p, at, align = 'c', ox = 0, oy = 0) {
+  if (p <= 0.003) { if (el._o !== 0) { el.style.opacity = 0; el.style.visibility = 'hidden'; el._o = 0; } return; }
+  _v.copy(at).project(camera);
+  if (_v.z > 1) { el.style.visibility = 'hidden'; el._o = -1; return; }
+  const x = (_v.x * 0.5 + 0.5) * W + ox * U, y = (-_v.y * 0.5 + 0.5) * H + oy * U;
+  el.style.opacity = p.toFixed(3); el.style.visibility = 'visible'; el._o = p;
+  el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(${ALIGN[align]}) scale(${(0.88 + 0.12 * p).toFixed(3)})`;
+}
+function show(el, p, dy = 1.2) {
+  const v = p <= 0.003 ? 0 : p;
+  if (el._o !== v) { el.style.opacity = v; el.style.visibility = v ? 'visible' : 'hidden'; el._o = v; }
+  if (!v) return;
+  const tf = (el.dataset.tf || '') + ` translateY(${((1 - v) * dy * U).toFixed(1)}px)`;
+  if (el._tf !== tf) { el.style.transform = tf; el._tf = tf; }
+}
+const setText = (el, s) => { if (el._t !== s) { el.textContent = s; el._t = s; } };
+const setHTML = (el, s) => { if (el._h !== s) { el.innerHTML = s; el._h = s; } };
+const setCls = (el, c, on) => { if (el.classList.contains(c) !== on) el.classList.toggle(c, on); };
+
+const WORDS = ['AI agent', 'Model', 'Tools', 'API', 'MCP', 'Connectors', 'Harness'];
+const wordEls = WORDS.map(w => { const d = document.createElement('div'); d.className = 'word pin'; d.textContent = w; ov.insertBefore(d, $('title')); return d; });
+const L = {
+  brain: mkLabel('AI model &middot; the brain', 'var(--amber)', 'big'),
+  llm: mkLabel('LLM = large language model', 'var(--amber)'),
+  room: mkLabel('No phone. No computer. No window.', 'var(--sky)'),
+  cantX: cant.map(() => { const d = document.createElement('div'); d.className = 'xmark pin'; d.textContent = '✕'; ov.insertBefore(d, $('ripple')); return d; }),
+  cant: ['Calendar', 'Email', 'Weather'].map(s => mkLabel(s, '#9fb4b8')),
+  tools: TOOLS.map(tl => mkLabel(tl.label, tl.css)),
+  api: BLD.map(b => mkLabel('API', b.css, 'plain')),
+  key: mkLabel('Key checked: allowed', 'var(--ok)'),
+  apps: APPS.map(a => mkLabel(a.label, '#' + new THREE.Color(a.color).getHexString())),
+  srv: SRV.map(a => mkLabel(a.label, '#' + new THREE.Color(a.color).getHexString())),
+  hub: mkLabel('MCP &middot; Model Context Protocol', 'var(--sun)', 'big'),
+  usb: mkLabel('One standard plug, like USB-C', 'var(--sun)'),
+  engine: mkLabel('The engine = the AI model', 'var(--amber)', 'big'),
+  parts: ['Wheels', 'Steering', 'Dashboard', 'Brakes'].map(s => mkLabel(s, 'var(--sky)')),
+  harness: mkLabel('Harness: the app around the model', 'var(--mint)', 'big'),
+  pods: PODS.map(p => mkLabel(p.label, '#' + new THREE.Color(p.color).getHexString())),
+  askFirst: mkLabel('Stop and ask: "Send this email?"', 'var(--stop)'),
+  stations: STATION_U.map((s, k) => mkLabel(`${k + 1}&nbsp; ${s}`, 'var(--sun)', 'big')),
+  layers: LAYERS.map(Lr => mkLabel(`${Lr.label} <span style="font-weight:600;opacity:.7">&middot; ${Lr.sub}</span>`, '#' + new THREE.Color(Lr.color).getHexString(), 'big')),
+};
+document.querySelectorAll('img[data-icon]').forEach(img => { img.src = iconCanvas(img.dataset.icon).toDataURL(); });
+
+/* =====================================================================
+   CAMERA: a list of shots; each shot eases in from wherever the last one was
+   ===================================================================== */
+const SHOTS = [];
+const shot = (t, p, q, d = 1.8) => SHOTS.push({ t, p: V(...p), q: V(...q), d });
+shot(-1, [0, 2.3, 7.6], [0, 1.75, 0], 0.01);
+shot(cs(1) + 0.2, [3.4, 2.8, 8.8], [-1.7, 1.35, 0]);
+shot(S(1, 1), [0.5, 2.2, 5.8], [0, 1.4, 0]);
+shot(S(1, 2), [0, 2.7, 7.4], [0, 1.6, 0]);
+shot(S(1, 3), [-2.2, 3.7, 9.2], [0, 1.25, 0]);
+shot(S(1, 4), [1.8, 2.5, 8.8], [0, 1.25, 1.2]);
+shot(S(1, 5), [3.4, 3.6, 10.4], [2.0, 1.1, 0.4]);
+shot(S(1, 6), [0.4, 2.6, 7.6], [0, 1.45, 0]);
+shot(cs(2) + 0.4, [0, 5.2, 11.6], [0, 1.0, 0.9]);
+shot(S(2, 2) + 0.2, [1.6, 4.4, 9.8], [0.9, 1.0, 1.2]);
+shot(S(2, 3), [0, 5.6, 11.6], [0, 0.95, 0.6]);
+shot(cs(3) + 0.2, [-6.2, 5.4, 8.2], [-1.5, 1.0, -1.6]);
+shot(S(3, 3), [0, 6.2, 12.6], [0, 1.4, -2.4]);
+shot(S(3, 4), [-3.2, 4.6, 7.4], [-1.6, 1.2, -3.0]);
+shot(S(3, 5), [0, 5.2, 11.8], [0, 1.0, -2.6]);
+shot(cs(4) + 0.1, [0, 7.4, 11.4], [0, 0.6, 0.2]);
+shot(S(4, 4), [5.8, 9.4, 15.2], [4.6, 0.3, 0]);
+shot(cs(5) + 0.1, [0, 2.6, 7.6], [0, 1.4, 0]);
+shot(S(5, 2), [5.6, 3.4, 7.2], [0.3, 1.0, 0]);
+shot(S(5, 3) + 0.4, [0, 5.8, 9.6], [0, 0.45, 0.2]);
+shot(S(5, 8), [0, 4.4, 11.8], [0, 1.75, 0]);
+shot(cs(6) + 0.2, [0, 10.2, 16.2], [0, -0.45, -0.4]);
+shot(cs(7) + 0.2, [-2.4, 4.4, 10.8], [-2.6, 1.1, 0]);
+shot(cs(8) + 0.2, [6.4, 4.6, 14.4], [-1.3, 2.7, 0]);
+shot(cs(9) + 0.2, [2.8, 2.5, 7.0], [-1.5, 1.35, 0]);
+shot(S(9, 4), [0, 2.0, 8.6], [0, 2.75, 0]);
+const _p = new THREE.Vector3(), _q = new THREE.Vector3();
+function poseAt(t, k, outP, outQ) {
+  if (k <= 0) { outP.copy(SHOTS[0].p); outQ.copy(SHOTS[0].q); return; }
+  const s = SHOTS[k], u = ease((t - s.t) / s.d);
+  if (u >= 1) { outP.copy(s.p); outQ.copy(s.q); return; }
+  poseAt(s.t, k - 1, outP, outQ);
+  outP.lerp(s.p, u); outQ.lerp(s.q, u);
+}
+function updateCamera(t) {
+  let k = 0; while (k < SHOTS.length - 1 && t >= SHOTS[k + 1].t) k++;
+  poseAt(t, k, _p, _q);
+  if (!REDUCED) { _p.x += Math.sin(t * 0.13) * 0.22; _p.y += Math.sin(t * 0.17 + 1) * 0.1; }
+  camera.position.copy(_p); camera.lookAt(_q); camera.updateMatrixWorld();
+}
+
+/* =====================================================================
+   WORLD UPDATE: everything is a pure function of time t
+   ===================================================================== */
+const _a = new THREE.Vector3(), _b = new THREE.Vector3();
+function billboard(m) { m.quaternion.copy(camera.quaternion); }
+function along(m, curve, u, lift = 0.28) { m.position.copy(curve.getPointAt(clamp01(u))); m.position.y += lift; billboard(m); }
+function fly(m, from, to, u, arc = 0.8) { m.position.lerpVectors(from, to, u); m.position.y += Math.sin(u * Math.PI) * arc; billboard(m); }
+function hl(tl, h, baseY) {
+  const { body } = tl.userData;
+  body.material.emissiveIntensity = 0.55 * h;
+  tl.scale.setScalar(tl.userData.sc * (1 + 0.14 * h));
+  tl.position.y = baseY + 0.16 * h;
+}
+function loopU(t) {
+  const steps = [
+    [S(6, 1) + 0.6, 1.2], [S(6, 1) + 2.2, 1.2], [S(6, 1) + 3.8, 1.2],
+    [S(6, 3) + 1.4, 1.0], [S(6, 3) + 5.4, 1.0],
+    [S(6, 4) + 0.3, 1.0], [S(6, 4) + 1.5, 1.0], [S(6, 4) + 4.4, 1.0],
+    [S(6, 5) + 0.3, 1.0], [S(6, 5) + 1.4, 1.0],
+    [S(6, 6) + 2.6, 1.0], [S(6, 6) + 3.8, 1.0],
+  ];
+  let u = 0; for (const [a, d] of steps) u += ease(rp(t, a, d));
+  return u;
+}
+
+function updateWorld(t) {
+  const c = chAt(t);
+
+  /* --- brain --- */
+  const bVis = Math.max(win(t, -9, cs(4) + 0.6, 0.1, 0.8), win(t, cs(5) + 0.1, cs(8) + 0.6, 0.8, 0.7), win(t, S(8, 4) + 0.2, DURATION + 9, 0.8, 0.1));
+  const carK = Math.min(ease(rp(t, S(5, 2), 1.2)), 1 - ease(rp(t, S(5, 3) + 0.1, 1.2)));
+  const slabK = t >= S(8, 4) ? (t < cs(9) ? 1 : 1 - ease(rp(t, cs(9), 1.6))) : 0;
+  _a.set(0, 1.4, 0).lerp(V(1.55, 1.42, 0), carK).lerp(V(0, slabY(3) + 0.5, 0), slabK);
+  let bs = lerp(1, 0.62, carK) * lerp(1, 0.42, slabK);
+  let think = 0.25;
+  think += 0.75 * Math.max(win(t, S(2, 3), S(2, 4) + 0.4, 0.5, 0.5), bump(t, S(2, 5) + 1.8, 1.4), bump(t, S(1, 2), BD(1, 2)));
+  if (c === 6) { const u = loopU(t); const near = Math.abs(u - Math.round(u)) < 0.15 && Math.round(u) % 3 === 0 && t > S(6, 1); think += near ? 0.6 : 0; }
+  bs *= 1 + 0.035 * Math.sin(t * 5.5) * think;
+  brain.position.copy(_a); brain.position.y += Math.sin(t * 1.3) * 0.06 * (1 - slabK);
+  brain.scale.setScalar(bs);
+  bShell.rotation.set(t * 0.21, t * (0.35 + 0.25 * think), 0); bNodes.rotation.copy(bShell.rotation);
+  bInner.rotation.set(-t * 0.3, -t * 0.42, t * 0.1);
+  bCore.material.emissiveIntensity = 0.7 + 0.7 * think;
+  fade(brain, bVis);
+  bGlow.material.opacity = (0.4 + 0.35 * think + 0.06 * Math.sin(t * 2.2)) * bVis;
+  bLight.intensity = 10 * bVis * (0.7 + think * 0.6);
+  brainShadow.position.set(brain.position.x, 0.012, brain.position.z); brainShadow.scale.set(2 * bs, 2 * bs, 1);
+  fade(brainShadow, bVis * (1 - slabK) * (1 - carK));
+
+  /* --- chapter 1 --- */
+  const roomUp = Math.min(eOut(rp(t, S(1, 3) + 0.2, 1.4)), 1 - ease(rp(t, cs(2) + 0.1, 1.0)));
+  room.scale.set(1, Math.max(0.001, roomUp), 1); fade(room, Math.min(1, roomUp * 1.5));
+  books.forEach(b => {
+    const u = rp(t, S(1, 2) + 0.2 + b.userData.delay, 1.5);
+    const on = u > 0 && u < 1;
+    if (!on) { b.visible = false; return; }
+    b.visible = true; const e = ease(u);
+    b.position.lerpVectors(b.userData.from, brain.position, e); b.position.y += Math.sin(e * Math.PI) * 0.8;
+    b.rotation.set(b.userData.spin.x * u, b.userData.spin.y * u, b.userData.spin.z * u);
+    b.scale.setScalar(1 - e * 0.85);
+  });
+  {
+    const a = S(1, 4), d = BD(1, 4);
+    const slot = V(0, 1.25, 1.75);
+    const q1 = ease(rp(t, a + 0.2, 1.6)), q2 = ease(rp(t, a + 1.9, 0.8));
+    noteQ.position.lerpVectors(V(-1.7, 1.4, 3.9), slot, q1).lerp(brain.position, q2); billboard(noteQ);
+    noteQ.scale.setScalar(Math.max(0.001, (1 - q2 * 0.95) * (q1 < 1 ? 1 : 1 - 0.3 * q2)));
+    fade(noteQ, rp(t, a + 0.05, 0.3) * (1 - rp(t, a + 2.6, 0.1)));
+    const a1 = ease(rp(t, a + 2.8, 0.8)), a2 = ease(rp(t, a + 3.6, 1.6));
+    noteA.position.lerpVectors(brain.position, slot, a1).lerp(V(1.8, 1.4, 3.5), a2); billboard(noteA);
+    noteA.scale.setScalar(Math.max(0.001, 0.05 + 0.95 * a1));
+    fade(noteA, rp(t, a + 2.8, 0.2) * (1 - rp(t, Math.min(a + d + 1.0, cs(2)), 0.6)));
+  }
+  cant.forEach((tl, i) => { const p = win(t, S(1, 5) + 0.3 + i * 0.35, S(1, 6) + 0.5, 0.6, 0.6); tl.userData.sc = 1; tl.scale.setScalar(Math.max(0.001, eBack(p))); fade(tl, p); });
+
+  /* --- tools --- */
+  const R = t < cs(5) ? R_EARLY : T6;
+  const toolsInEarly = cs(2) + 0.3, toolsInLate = cs(6) + 0.4;
+  toolTiles.forEach((tl, i) => {
+    const p = Math.max(win(t, toolsInEarly + i * 0.18, cs(4) + 0.6, 0.7, 0.7), win(t, toolsInLate + i * 0.12, cs(7) + 0.7, 0.7, 0.7));
+    tl.position.copy(toolPos(i, R)); faceToward(tl, tl.position.x * 0.6, 14);
+    tl.userData.sc = Math.max(0.001, eBack(p));
+    let h = 0;
+    if (c === 2) {
+      const f = [0.02, 0.2, 0.38, 0.6, 0.78][i];
+      h = Math.max(h, bump(t, S(2, 1) + 0.2 + f * (BD(2, 1) - 0.8), 1.3));
+      if (i === 1) h = Math.max(h, bump(t, S(2, 4) + 1.6, 1.0));
+      if (i === 3) h = Math.max(h, win(t, S(2, 2) + 0.3, S(2, 3) + 0.3) * 0.6);
+    }
+    if (c === 3 && i === 1) h = Math.max(h, win(t, cs(3), S(3, 3) + 0.4) * 0.5);
+    if (c === 6) {
+      if (i === 1) h = win(t, S(6, 3) + 1.5, S(6, 3) + 5.4);
+      if (i === 2) h = win(t, S(6, 4) + 1.3, S(6, 4) + 4.4);
+      if (i === 3) h = Math.max(win(t, S(6, 5) + 1.4, S(6, 5) + BD(6, 5) + 0.2), win(t, S(6, 6) + 0.9, S(6, 6) + 2.7));
+    }
+    hl(tl, h, 0.85);
+    fade(tl, p);
+    toolShadows[i].position.set(tl.position.x, 0.012, tl.position.z + 0.1); fade(toolShadows[i], p * 0.8);
+  });
+  {
+    const ap = S(2, 3) + 0.6, hover = V(-2.45, 2.75, 0.9), back = V(2.45, 2.75, 0.9);
+    const calTop = toolPos(1, R_EARLY).add(V(0, 0.95, 0.2));
+    const r1 = eOut(rp(t, ap, 0.7)), r2 = ease(rp(t, S(2, 4) + 0.1, 1.6));
+    if (r2 <= 0) { reqCard.position.lerpVectors(brain.position, hover, r1); billboard(reqCard); reqCard.scale.setScalar(Math.max(0.001, r1)); }
+    else { fly(reqCard, hover, calTop, r2, 0.6); reqCard.scale.setScalar(Math.max(0.001, 1 - 0.65 * r2 - 0.35 * rp(t, S(2, 4) + 1.6, 0.25))); }
+    fade(reqCard, (t >= ap ? 1 : 0) * (1 - rp(t, S(2, 4) + 1.75, 0.1)));
+    const s1 = ease(rp(t, S(2, 4) + 2.3, 1.7)), s2 = ease(rp(t, S(2, 5) + 1.4, 0.8));
+    fly(resCard, calTop, back, s1, 0.6); if (s2 > 0) { resCard.position.lerp(brain.position, s2); }
+    resCard.scale.setScalar(Math.max(0.001, (0.35 + 0.65 * s1) * (1 - s2 * 0.95)));
+    fade(resCard, rp(t, S(2, 4) + 2.3, 0.2) * (1 - rp(t, S(2, 5) + 2.1, 0.2)));
+  }
+
+  /* --- services & APIs --- */
+  buildings.forEach((b, i) => {
+    const p = Math.max(win(t, cs(3) + 0.2 + i * 0.15, cs(4) + 0.6, 1.0, 0.7), win(t, cs(6) + 0.6 + i * 0.12, cs(7) + 0.7, 1.0, 0.7));
+    b.position.y = -2.8 * (1 - eOut(p)); fade(b, Math.min(1, p * 1.4));
+    let lit = 0;
+    if (c === 3) {
+      if (i === 1) lit = Math.max(win(t, S(3, 0) + 1.6, S(3, 3)), bump(t, S(3, 2) + 2.2, 0.9) * 1.3, bump(t, S(3, 4) + 2.0, 0.9) * 1.3);
+      lit = Math.max(lit, win(t, S(3, 3) + 0.6 + i * 0.5, cs(4) + 0.4) * 0.8);
+    }
+    if (c === 6) lit = [0, win(t, S(6, 3) + 3.4, S(6, 3) + 5.4), Math.max(win(t, S(6, 4) + 3.0, S(6, 4) + 4.6), win(t, S(6, 6) + 2.5, S(6, 6) + 3.6)), 0][i];
+    b.userData.win.material.emissiveIntensity = 0.9 * lit;
+  });
+  {
+    const p = Math.min(win(t, S(3, 0) + 0.5, cs(4) + 0.4), 1);
+    grow(calCable, ease(rp(t, S(3, 0) + 0.6, 1.4))); fade(calCable, p);
+    const cv = calCable.userData.curve;
+    const trip = (m, a, d, rev) => { const u = ease(rp(t, a, d)); along(m, cv, rev ? 1 - u : u); fade(m, t > a && t < a + d + 0.05 ? Math.min(1, rp(t, a, 0.2) * 1.2) * (1 - rp(t, a + d - 0.15, 0.15)) : 0); };
+    const tA = t < S(3, 4) ? S(3, 2) + 0.3 : S(3, 4) + 0.3;
+    trip(orderCard, tA, 1.9, false);
+    trip(replyCard, tA + 2.3, 1.9, true);
+  }
+
+  /* --- MCP --- */
+  const mP = win(t, cs(4) + 0.2, cs(5) + 0.3, 0.8, 0.8);
+  mcp.visible = mP > 0.003;
+  if (mcp.visible) {
+    const shrink = ease(rp(t, S(4, 4), 1.2));
+    mcp.scale.setScalar(1 - 0.12 * shrink);
+    appTiles.forEach((tl, i) => { const p = mP * eOut(rp(t, cs(4) + 0.3 + i * 0.15, 0.7)); tl.userData.sc = 1; tl.scale.setScalar(Math.max(0.001, p)); fade(tl, p); });
+    srvTiles.forEach((tl, i) => {
+      const p = mP * eOut(rp(t, cs(4) + 0.5 + i * 0.12, 0.7)); tl.userData.sc = 1;
+      const h = i === 0 ? win(t, S(4, 5) + 3.3, S(4, 6) + BD(4, 6)) : 0;
+      tl.scale.setScalar(Math.max(0.001, p * (1 + 0.12 * h))); tl.userData.body.material.emissiveIntensity = 0.5 * h; fade(tl, p);
+    });
+    const gone = ease(rp(t, S(4, 2), 1.1));
+    tangle.forEach(g => { grow(g.userData.c, ease(rp(t, S(4, 0) + 0.3 + g.userData.delay, 0.9)) * (1 - gone)); fade(g, mP * (1 - gone) * (rp(t, S(4, 0) + 0.3 + g.userData.delay, 0.1))); });
+    const hubP = eBack(rp(t, S(4, 2) + 0.7, 0.8));
+    hub.scale.setScalar(Math.max(0.001, hubP)); fade(hub, mP * Math.min(1, hubP));
+    clean.forEach((g, k) => { const u = ease(rp(t, S(4, 3) + 0.2 + k * 0.22, 0.9)); grow(g.children[0], u); g.children[1].visible = u > 0.95; fade(g, mP * Math.min(1, u * 3)); });
+  }
+
+  /* --- car + harness --- */
+  const carVis = t > S(5, 2) - 0.1 && t < S(5, 3) + 1.6;
+  car.visible = carVis; fade(carShadow, win(t, S(5, 2) + 0.2, S(5, 3) + 1.0, 0.8, 0.6) * 0.9);
+  if (carVis) {
+    const d = BD(5, 2);
+    const times = [0.0, 0.5, 0.42 * d, 0.42 * d, 0.42 * d, 0.42 * d, 0.55 * d, 0.68 * d];
+    carParts.forEach((m, k) => {
+      const tin = S(5, 2) + 0.3 + times[k] + (k >= 2 && k <= 5 ? (k - 2) * 0.12 : 0);
+      const u = eBack(rp(t, tin, 0.9)), out = ease(rp(t, S(5, 3) + 0.15 + k * 0.05, 1.1));
+      m.position.lerpVectors(m.userData.from, m.userData.at, u).lerp(V(m.userData.at.x * 2.2, m.userData.at.y + 3.5, m.userData.at.z * 2.2), out);
+      fade(m, Math.min(1, rp(t, tin, 0.25)) * (1 - out));
+    });
+    const brk = rp(t, S(5, 2) + 0.3 + 0.8 * d, 0.3);
+    wheels.forEach(w => { w.userData.brake.material.emissiveIntensity = 0.3 + 1.6 * bump(t, S(5, 2) + 0.3 + 0.8 * d, 1.2); w.userData.brake.scale.setScalar(1 + 0.4 * brk * (1 - rp(t, S(5, 3), 0.5))); });
+    lamps.forEach(l => fade(l, rp(t, S(5, 2) + 0.4, 0.4) * (1 - rp(t, S(5, 3) + 0.2, 0.6))));
+    carShadow.position.set(0, 0.012, 0);
+  }
+  const hP = win(t, S(5, 3) + 0.8, cs(8) + 0.6, 1.1, 0.8);
+  harness.scale.set(Math.max(0.001, eOut(hP)), 1, Math.max(0.001, eOut(hP))); fade(harness, hP);
+  let ringWait = 0;
+  if (c === 5) ringWait = win(t, S(5, 7) + 0.4, S(5, 8) + 0.2) * (0.6 + 0.4 * Math.sin(t * 6));
+  if (c === 6) ringWait = win(t, S(6, 5) + 1.8, S(6, 6) + 1.1, 0.4, 0.4) * (0.6 + 0.4 * Math.sin(t * 6));
+  ringMat.color.setHex(0x63e2b7).lerp(new THREE.Color(0xffb547), ringWait);
+  ringMat.emissive.setHex(0x63e2b7).lerp(new THREE.Color(0xff8a1f), ringWait);
+  pods.forEach((pd, k) => {
+    const p = win(t, S(5, 3) + 1.5 + k * 0.25, cs(6) + 0.8, 0.7, 0.8);
+    pd.userData.sc = Math.max(0.001, eBack(p));
+    let h = c === 5 ? win(t, S(5, 4 + k) + 0.1, S(5, 4 + k) + BD(5, 4 + k) + 0.2, 0.4, 0.5) : 0;
+    hl(pd, h, 1.05);
+    if (k === 3) { pd.userData.body.material.color.setHex(0x63e2b7).lerp(new THREE.Color(0xff5d5d), win(t, S(5, 7) + 0.4, S(5, 7) + BD(5, 7), 0.3, 0.6)); }
+    fade(pd, p);
+  });
+  {
+    const pI = PODS.map((_, k) => pods[k].position.clone().add(V(0, 0.55, 0.2)));
+    const a = S(5, 4);
+    const i1 = ease(rp(t, a + 0.5, 1.6)), i2 = ease(rp(t, a + 1.1, 1.6));
+    fly(instrCard, pI[0], brain.position, i1, 1.0); instrCard.scale.setScalar(Math.max(0.001, 1 - 0.9 * i1)); fade(instrCard, win(t, a + 0.3, a + 2.1, 0.3, 0.2));
+    fly(askCard, V(0, 3.2, 3.2), brain.position, i2, 0.4); askCard.scale.setScalar(Math.max(0.001, 1 - 0.9 * i2)); fade(askCard, win(t, a + 0.7, a + 2.7, 0.3, 0.2));
+    const b5 = S(5, 5), n1 = ease(rp(t, b5 + 0.4, 1.8));
+    fly(noteCard, brain.position, pI[1], n1, 1.0); noteCard.scale.setScalar(Math.max(0.001, 0.2 + 0.8 * Math.sin(Math.min(1, n1 * 1.15) * Math.PI * 0.5) - 0.7 * rp(t, b5 + 2.0, 0.4))); fade(noteCard, win(t, b5 + 0.3, b5 + 2.5, 0.3, 0.3));
+    const b6 = S(5, 6), m1 = ease(rp(t, b6 + 0.4, 1.4)), m2 = ease(rp(t, b6 + 2.0, 1.4));
+    if (m2 <= 0) fly(miniReq, brain.position, pI[2], m1, 0.8); else fly(miniReq, pI[2], brain.position, m2, 0.8);
+    miniReq.scale.setScalar(Math.max(0.001, 0.4 + 0.6 * Math.sin(Math.PI * (m2 > 0 ? m2 : m1)) )); fade(miniReq, win(t, b6 + 0.35, b6 + 3.5, 0.2, 0.2));
+  }
+
+  /* --- loop (chapter 6) --- */
+  const loopP = win(t, S(6, 1) + 0.1, cs(7) + 0.4, 0.6, 0.6);
+  const u = loopU(t);
+  bead.position.copy(ringPt(loopAng(u), 0.62)); fade(bead, loopP);
+  bead.scale.setScalar(1 + 0.25 * Math.sin(t * 8) * (c === 6 && ringWait > 0.1 ? 1 : 0));
+  arrows.forEach(a => fade(a, loopP));
+  [0, 1, 2].forEach(i => {
+    const cb = cab6[i];
+    const ta = [S(6, 3) + 1.9, S(6, 4) + 1.5, S(6, 6) + 1.0][i];
+    grow(cb, ease(rp(t, ta, 0.9))); fade(cb, win(t, ta, cs(7) + 0.4, 0.2, 0.6) * (0.55 + 0.45 * win(t, ta, ta + 3.0, 0.2, 0.8)));
+    const [q, r] = pkt[i];
+    const go = rp(t, ta + 0.5, 1.2), ret = rp(t, ta + 2.0, 1.2);
+    along(q, cb.userData.curve, ease(go)); fade(q, go > 0 && go < 1 ? 1 : 0);
+    if (i < 2) { along(r, cb.userData.curve, 1 - ease(ret)); fade(r, ret > 0 && ret < 1 ? 1 : 0); } else fade(r, 0);
+  });
+
+  /* --- recap stack --- */
+  slabs.forEach((g, i) => {
+    const a = S(8, i + 1);
+    const p = win(t, a - 0.2, cs(9) + 0.6, 0.9, 0.8);
+    g.position.y = slabY(i) - 1.2 * (1 - eOut(p)); fade(g, p);
+    g.userData.slab.material.emissiveIntensity = 0.35 * win(t, a, a + BD(8, i + 1), 0.3, 0.5) + 0.25 * win(t, S(8, 6) + 1.6, cs(9) + 0.4, 0.8, 0.5);
+  });
+}
+
+/* =====================================================================
+   OVERLAY UPDATE
+   ===================================================================== */
+const capEl = $('cap'), capBelow = $('capBelow'), tagEl = $('tag'), cc = $('ccard');
+let capsOn = true;
+const lnEls = [0, 1, 2, 3].map(i => $('ln' + i));
+const LOG = [
+  { at: () => S(6, 3) + 0.2, done: () => S(6, 3) + 5.1, a: 'Thinking: I need your free times', b: 'Checked your calendar<small>Tuesday 12:00 is free</small>' },
+  { at: () => S(6, 4) + 0.2, done: () => S(6, 4) + 4.0, a: 'Looking up Sue in your contacts', b: 'Found Sue Miller<small>sue.miller@example.com</small>' },
+  { at: () => S(6, 5) + 0.8, wait: () => S(6, 5) + 2.2, done: () => S(6, 6) + 2.4, a: 'Writing the invitation', w: 'Waiting for your OK<small>Sending is a real action</small>', b: 'Invite sent to Sue' },
+  { at: () => S(6, 6) + 3.4, done: () => S(6, 6) + 3.4, a: '', b: 'Reported back to you<small>Job done</small>' },
+];
+const typed = (s, u) => s.slice(0, Math.round(s.length * clamp01(u)));
+const ASK_TEXT = 'Find a time next week for lunch with my sister Sue, and send her an invite.';
+const CHAT_A = 'A beginner telescope, or a glow-in-the-dark star map for the ceiling.';
+function rel(el) { const r = el.getBoundingClientRect(), s = stage.getBoundingClientRect(); const k = W / s.width; return { x: (r.left - s.left + r.width / 2) * k, y: (r.top - s.top + r.height / 2) * k }; }
+let lastCh = -1;
+
+function updateOverlays(t) {
+  const c = chAt(t);
+  // chapter card and tag
+  if (c !== lastCh) {
+    lastCh = c;
+    const ch = CHAPTERS[c];
+    setText($('ccK'), `Part ${c} of ${CHAPTERS.length - 1}`); setText($('ccT'), ch.title); setText($('ccS'), ch.sub);
+    setHTML(tagEl, c ? `<b>${c}/${CHAPTERS.length - 1}</b> ${ch.short}` : '');
+  }
+  show(cc, c ? win(t, cs(c) + 0.05, cs(c) + 2.6, 0.45, 0.6) : 0, 0.8);
+  show(tagEl, c ? win(t, cs(c) + 1.4, CHAPTERS[c].e + 0.2, 0.6, 0.3) : 0, 0);
+
+  // captions
+  const bi = beatAt(t);
+  if (bi >= 0 && capsOn) {
+    const b = BEATS[bi];
+    setText(capEl, b.text);
+    show(capEl, Math.min(rp(t, b.s, 0.25), 1 - rp(t, b.e - 0.18, 0.18)), 0.4);
+  } else show(capEl, 0);
+  setText(capBelow, bi >= 0 ? BEATS[bi].text : '');
+
+  // 0 intro
+  show($('title'), win(t, -9, cs(1) + 0.3, 0.1, 0.8), 0);
+  wordEls.forEach((el, k) => {
+    const p = win(t, S(0, 0) + 0.2 + k * 0.62, cs(1) + 0.4, 0.45, 0.8);
+    const a = k / WORDS.length * Math.PI * 2 + t * 0.16 + 0.5;
+    const z = Math.sin(a) * 1.5;
+    pin(el, p * (z < -0.4 ? 0.55 : 1), V(Math.cos(a) * 3.3, 1.3 + 0.5 * Math.sin(k * 1.7 + t * 0.5), z));
+  });
+
+  // 1 brain
+  show($('chat'), win(t, cs(1) + 2.3, S(1, 1) + 1.4, 0.6, 0.6));
+  if (c === 1) { const ta = S(1, 0) + 2.4; setHTML($('chatA'), t < ta ? '<span class="dots"></span>' : typed(CHAT_A, rp(t, ta, 1.8))); }
+  const bTop = brain.position.clone().add(V(0, 1.15 * brain.scale.x, 0));
+  pin(L.brain, win(t, S(1, 1) + 0.6, cs(2) + 0.4), bTop, 'b');
+  pin(L.llm, win(t, S(1, 6) + 0.4, cs(2) + 0.4), brain.position.clone().add(V(0, -1.05, 0)), 't');
+  pin(L.room, win(t, S(1, 3) + 1.4, S(1, 4) + 0.2), V(1.7, 2.75, 1.7), 'bl');
+  cant.forEach((tl, i) => {
+    const p = win(t, S(1, 5) + 0.6 + i * 0.35, S(1, 6) + 0.4);
+    pin(L.cantX[i], p, tl.position.clone().add(V(0.45, 0.45, 0.15)));
+    pin(L.cant[i], p, tl.position.clone().add(V(0, -0.65, 0)), 't');
+  });
+
+  // 2 tools + 6 reuse
+  toolTiles.forEach((tl, i) => {
+    const p = Math.max(win(t, cs(2) + 0.9 + i * 0.18, cs(4) + 0.4), win(t, cs(6) + 1.0 + i * 0.12, cs(7) + 0.5));
+    pin(L.tools[i], p, V(tl.position.x, 0.1, tl.position.z + 0.1), 't');
+  });
+  pin($('icard'), win(t, S(2, 2) + 0.3, S(2, 3) + 0.5), toolPos(3, R_EARLY).add(V(0.55, 0.75, 0)), 'bl');
+
+  // 3 APIs
+  BLD.forEach((b, i) => {
+    const p = c === 3 ? (i === 1 ? win(t, S(3, 0) + 2.0, cs(4) + 0.3) : win(t, S(3, 3) + 0.7 + i * 0.5, cs(4) + 0.3)) : 0;
+    pin(L.api[i], p, winPt(i).add(V(0, 0.0, 0.05)));
+  });
+  pin($('menu'), win(t, S(3, 1) + 0.8, S(3, 3) + 0.2), V(-3.2, 1.7, BZ + 0.9), 'r');
+  pin(L.key, win(t, S(3, 4) + 1.6, S(3, 5) + 0.3), winPt(1).add(V(0.8, 0.1, 0.2)), 'l');
+  show($('apidef'), win(t, S(3, 5) + 0.3, cs(4) + 0.3));
+
+  // 4 MCP
+  const mP = win(t, cs(4) + 0.2, cs(5) + 0.3, 0.8, 0.8);
+  appTiles.forEach((tl, i) => pin(L.apps[i], mP * rp(t, cs(4) + 0.6 + i * 0.15, 0.5), mcp.localToWorld(tl.position.clone().add(V(0, -0.62, 0))), 't'));
+  srvTiles.forEach((tl, i) => pin(L.srv[i], mP * rp(t, cs(4) + 0.8 + i * 0.12, 0.5), mcp.localToWorld(tl.position.clone().add(V(0, -0.62, 0))), 't'));
+  show($('tangle'), win(t, S(4, 0) + 2.6, S(4, 2) + 0.4));
+  pin(L.hub, win(t, S(4, 2) + 1.2, S(4, 4) + 0.2), V(0, 1.0, 0), 'b');
+  pin(L.usb, win(t, S(4, 3) + 0.6, S(4, 4) + 0.2), V(0, -0.15, 1.3), 't');
+  show($('conn'), win(t, S(4, 4) + 0.3, cs(5) + 0.3));
+  show($('signin'), win(t, S(4, 5) + 1.6, S(4, 5) + 3.5, 0.35, 0.3), 0.8);
+  const calOn = t >= S(4, 5) + 3.35;
+  setCls($('calTog'), 'on', calOn); setText($('calState'), calOn ? 'Connected' : 'Not connected'); setCls($('calState'), 'ok', calOn);
+  setCls($('allowBtn'), 'pressed', t >= S(4, 5) + 3.0 && t < S(4, 5) + 3.4);
+  $('adds').querySelectorAll('.chipx').forEach((el, k) => { const p = eOut(rp(t, S(4, 6) + 0.5 + k * 0.4, 0.4)); el.style.opacity = p; el.style.transform = `scale(${0.7 + 0.3 * p})`; });
+
+  // 5 harness
+  pin(L.engine, win(t, S(5, 1) + 0.5, S(5, 3) + 0.3), brain.position.clone().add(V(0, 1.0 * brain.scale.x + 0.1, 0)), 'b');
+  {
+    const d = BD(5, 2), a = S(5, 2) + 0.3;
+    const pts = [V(1.55, 0.2, 1.45), steer.position.clone().add(V(0, 0.4, 0)), V(0.25, 1.5, -1.0), V(-1.55, 0.2, 1.45)];
+    const fr = [0.45, 0.6, 0.72, 0.84];
+    L.parts.forEach((el, k) => pin(el, win(t, a + fr[k] * d, S(5, 3) + 0.4, 0.4, 0.4), pts[k], k === 1 || k === 2 ? 'b' : 't'));
+  }
+  pin(L.harness, win(t, S(5, 3) + 2.2, S(5, 4) + 0.3), V(0, 2.45, 0), 'b');
+  pods.forEach((pd, k) => pin(L.pods[k], win(t, S(5, 3) + 2.0 + k * 0.25, cs(6) + 0.4), pd.position.clone().add(V(0, -0.62, 0)), 't'));
+  pin(L.askFirst, win(t, S(5, 7) + 0.8, S(5, 8) + 0.2), pods[3].position.clone().add(V(0.6, 0.25, 0)), 'l');
+  show($('hx'), win(t, S(5, 8) + 0.3, cs(6) + 0.3));
+
+  // 6 agent
+  {
+    const u = loopU(t), st = ((Math.round(u) % 3) + 3) % 3, settled = Math.abs(u - Math.round(u)) < 0.08;
+    L.stations.forEach((el, k) => { pin(el, win(t, S(6, 1) + 0.2 + k * 0.3, cs(7) + 0.4), ringPt(loopAng(k), 0.9), 'b'); setCls(el, 'on', c === 6 && t > S(6, 1) && settled && st === k); });
+  }
+  show($('ask'), win(t, S(6, 2) + 0.1, S(6, 7) + 0.2));
+  if (c === 6) {
+    setText($('askT'), typed(ASK_TEXT, rp(t, S(6, 2) + 0.5, 3.6)));
+    setCls($('askT'), 'typed', t < S(6, 2) + 4.1);
+    $('askR').style.display = t >= S(6, 6) + 3.4 ? '' : 'none';
+    LOG.forEach((ln, k) => {
+      const el = lnEls[k], on = t >= ln.at();
+      el.style.display = on ? '' : 'none';
+      if (!on) return;
+      const done = t >= ln.done(), wait = !done && ln.wait && t >= ln.wait();
+      setCls(el, 'done', done); setCls(el, 'wait', !!wait);
+      setHTML(el.children[0], done ? '✓' : wait ? '!' : '…');
+      setHTML(el.children[1], done ? ln.b : wait ? ln.w : ln.a);
+    });
+  }
+  show($('log'), win(t, S(6, 3) + 0.0, S(6, 7) + 0.2));
+  show($('dlg'), win(t, S(6, 5) + 2.6, S(6, 6) + 1.5, 0.4, 0.4));
+  setCls($('sendBtn'), 'pressed', t >= S(6, 6) + 0.9);
+  show($('cmp'), win(t, S(6, 7) + 0.2, cs(7) + 0.3));
+
+  // 7 habits
+  show($('habs'), win(t, cs(7) + 0.5, cs(8) + 0.3));
+  if (c === 7) $('habs').querySelectorAll('.hab').forEach((el, k) => { const p = eOut(rp(t, S(7, k + 1), 0.6)); el.style.opacity = p; el.style.transform = `translateX(${((1 - p) * -2 * U).toFixed(1)}px)`; setCls(el, 'on', beatAt(t) === BEATS.indexOf(CHAPTERS[7].beats[k + 1])); });
+
+  // 8 recap
+  slabs.forEach((g, i) => pin(L.layers[i], win(t, S(8, i + 1) + 0.2, cs(9) + 0.4), V(-2.45, g.position.y, 1.3), 'r', -0.6));
+  {
+    const br = $('bracket'), p = win(t, S(8, 6) + 1.6, cs(9) + 0.4, 0.6, 0.5);
+    if (p > 0.003) {
+      _v.set(2.5, slabY(4) + 0.3, 0).project(camera); const yTop = (-_v.y * 0.5 + 0.5) * H, xTop = (_v.x * 0.5 + 0.5) * W;
+      _v.set(2.5, slabY(0) - 0.1, 0).project(camera); const yBot = (-_v.y * 0.5 + 0.5) * H, xBot = (_v.x * 0.5 + 0.5) * W;
+      br.style.opacity = p; br.style.visibility = 'visible';
+      br.style.transform = `translate(${(Math.max(xTop, xBot) + 1.2 * U).toFixed(1)}px,${yTop.toFixed(1)}px)`; br.style.height = Math.max(10, yBot - yTop).toFixed(1) + 'px';
+    } else { br.style.opacity = 0; br.style.visibility = 'hidden'; }
+  }
+
+  // 9 start
+  show($('steps'), win(t, S(9, 1) - 0.2, S(9, 4) + 0.3));
+  if (c === 9) $('steps').querySelectorAll('.step').forEach((el, k) => { const p = eOut(rp(t, S(9, k + 1), 0.6)); el.style.opacity = p; el.style.transform = `translateX(${((1 - p) * -2 * U).toFixed(1)}px)`; setCls(el, 'on', beatAt(t) === BEATS.indexOf(CHAPTERS[9].beats[k + 1])); });
+  show($('endc'), win(t, S(9, 4) + 0.3, DURATION + 9, 0.8, 0.1));
+
+  // shared cursor (connectors click, then the Send button)
+  {
+    const cur = $('cursor'), rip = $('ripple');
+    let cp = 0, cx = 0, cy = 0, clickAt = -1;
+    if (t > S(4, 5) - 0.2 && t < S(4, 5) + 4.4) {
+      const a = S(4, 5), tog = rel($('calTog')), al = rel($('allowBtn'));
+      const start = { x: 0.9 * W, y: 0.78 * H };
+      const m1 = ease(rp(t, a + 0.1, 1.1)), m2 = ease(rp(t, a + 1.9, 0.9)), m3 = ease(rp(t, a + 3.4, 0.7));
+      cx = lerp(lerp(lerp(start.x, tog.x, m1), al.x, m2), 0.92 * W, m3); cy = lerp(lerp(lerp(start.y, tog.y, m1), al.y, m2), 0.6 * H, m3);
+      cp = Math.min(rp(t, a - 0.1, 0.3), 1 - rp(t, a + 3.8, 0.4));
+      clickAt = t - a < 2.4 ? a + 1.3 : a + 3.0;
+    } else if (t > S(6, 6) - 0.4 && t < S(6, 6) + 2.2) {
+      const a = S(6, 6), sb = rel($('sendBtn'));
+      const m1 = ease(rp(t, a - 0.3, 1.0));
+      cx = lerp(0.62 * W, sb.x, m1); cy = lerp(0.7 * H, sb.y, m1);
+      cp = Math.min(rp(t, a - 0.4, 0.3), 1 - rp(t, a + 1.7, 0.4));
+      clickAt = a + 0.9;
+    }
+    if (cp > 0.003) {
+      cur.style.opacity = cp; cur.style.transform = `translate(${(cx - 0.3 * U).toFixed(1)}px,${(cy - 0.2 * U).toFixed(1)}px)`;
+      const rr2 = rp(t, clickAt, 0.5);
+      rip.style.opacity = rr2 > 0 && rr2 < 1 ? (1 - rr2).toFixed(3) : 0;
+      rip.style.transform = `translate(${cx.toFixed(1)}px,${cy.toFixed(1)}px) translate(-50%,-50%) scale(${(0.3 + rr2).toFixed(3)})`;
+    } else { cur.style.opacity = 0; rip.style.opacity = 0; }
+  }
+}
+
+function renderAt(t) {
+  updateCamera(t);
+  updateWorld(t);
+  scene.updateMatrixWorld();
+  updateOverlays(t);
+  renderer.render(scene, camera);
+}
+
+/* =====================================================================
+   PLAYER
+   ===================================================================== */
+const fmt = s => { s = Math.max(0, Math.round(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+let t = 0, playing = false, last = performance.now(), speed = 1, voiceOn = false, dragging = false;
+const synth = window.speechSynthesis;
+let voice = null;
+const speech = { active: false, beat: -1, started: 0, spoke: false };
+const SAY = [[/\bLLM\b/g, 'L L M'], [/\bAPIs\b/g, 'A P eyes'], [/\bAPI\b/g, 'A P I'], [/\bMCP\b/g, 'M C P'], [/USB-C/g, 'U S B C'], [/\bOK\b/g, 'okay']];
+function pickVoice() {
+  if (!synth) return null;
+  const vs = synth.getVoices().filter(v => /^en([-_]|$)/i.test(v.lang));
+  const prefs = [/natural/i, /neural/i, /premium|enhanced/i, /^(Samantha|Daniel|Karen|Moira|Serena|Arthur|Martha)/i, /Google UK English Female/i, /Google US English/i, /Microsoft (Aria|Jenny|Guy|Libby|Sonia|Ryan)/i];
+  for (const p of prefs) { const v = vs.find(v => p.test(v.name)); if (v) return v; }
+  return vs.find(v => v.default) || vs[0] || null;
+}
+if (synth) { voice = pickVoice(); synth.onvoiceschanged = () => { voice = pickVoice(); }; }
+function stopSpeech() { if (synth) synth.cancel(); speech.active = false; }
+function speakBeat(i) {
+  if (!synth || i < 0) return;
+  synth.cancel();
+  let text = BEATS[i].text; for (const [re, s] of SAY) text = text.replace(re, s);
+  const u = new SpeechSynthesisUtterance(text);
+  if (voice) u.voice = voice;
+  u.lang = voice ? voice.lang : 'en-GB'; u.rate = 0.95 * speed; u.pitch = 1;
+  speech.active = true; speech.beat = i; speech.started = performance.now(); speech.spoke = false;
+  u.onstart = () => { if (speech.beat === i) speech.spoke = true; };
+  u.onend = u.onerror = () => { if (speech.beat === i) speech.active = false; };
+  setTimeout(() => { if (speech.beat === i && playing) synth.speak(u); }, 30);
+}
+let lastBeat = -1;
+function syncSpeech(fromStart) {
+  const i = beatAt(t);
+  lastBeat = i;
+  if (!voiceOn || !playing || i < 0) { stopSpeech(); return; }
+  if (fromStart) t = BEATS[i].s;
+  speakBeat(i);
+}
+
+const playBtn = $('play'), seekEl = $('seek'), timeEl = $('time'), big = $('bigplay');
+seekEl.max = DURATION.toFixed(1);
+$('bigplayDur').textContent = `(${Math.round(DURATION / 60)} min)`;
+function setPlaying(on) {
+  if (on && t >= DURATION - 0.05) t = 0;
+  playing = on; last = performance.now();
+  $('playLabel').textContent = on ? 'Pause' : (t >= DURATION - 0.05 ? 'Replay' : 'Play');
+  $('playIcon').innerHTML = on ? '<path d="M6.5 4.5h4v15h-4zm7 0h4v15h-4z" fill="currentColor"/>' : '<path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/>';
+  big.hidden = on;
+  if (!on) { $('bigplayLabel').textContent = t >= DURATION - 0.05 ? 'Watch again' : t > 0.5 ? 'Resume' : 'Play'; }
+  syncSpeech(true);
+}
+function seek(to, keepPlaying = playing) {
+  t = Math.max(0, Math.min(DURATION, to));
+  if (keepPlaying) syncSpeech(true); else stopSpeech();
+  lastBeat = beatAt(t);
+  if (!playing) { $('bigplayLabel').textContent = t > 0.5 ? 'Resume' : 'Play'; }
+}
+playBtn.onclick = () => setPlaying(!playing);
+big.onclick = e => { e.stopPropagation(); setPlaying(true); };
+stage.addEventListener('click', e => { if (e.target === big || big.contains(e.target)) return; setPlaying(!playing); });
+$('back').onclick = () => seek(t - 10);
+seekEl.addEventListener('input', () => { dragging = true; seek(parseFloat(seekEl.value), false); });
+seekEl.addEventListener('change', () => { dragging = false; seek(parseFloat(seekEl.value)); });
+if (!synth) $('voice').hidden = true;
+$('voice').onclick = () => {
+  voiceOn = !voiceOn;
+  $('voice').setAttribute('aria-pressed', voiceOn); $('voiceState').textContent = voiceOn ? 'on' : 'off';
+  if (voiceOn && !voice) voice = pickVoice();
+  syncSpeech(true);
+};
+$('caps').onclick = () => { capsOn = !capsOn; capBelow.hidden = !capsOn; $('caps').setAttribute('aria-pressed', capsOn); $('capsState').textContent = capsOn ? 'on' : 'off'; };
+document.querySelectorAll('[data-speed]').forEach(b => b.onclick = () => {
+  speed = parseFloat(b.dataset.speed);
+  document.querySelectorAll('[data-speed]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  syncSpeech(true);
+});
+$('fs').onclick = () => {
+  const p = $('player');
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  else if (p.requestFullscreen) p.requestFullscreen().catch(() => {});
+};
+if (!document.fullscreenEnabled) $('fs').hidden = true;
+const chapNav = $('chapters');
+CHAPTERS.forEach((ch, i) => {
+  const b = document.createElement('button'); b.type = 'button';
+  b.innerHTML = `<span class="n">${i ? 'Part ' + i : 'Start'} &middot; ${fmt(ch.s)}</span><span class="c">${i ? ch.title : 'Welcome'}</span>`;
+  b.onclick = () => { seek(ch.s + (i ? 0.01 : 0), false); setPlaying(true); };
+  chapNav.appendChild(b);
+});
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input, textarea, select') || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === ' ' || e.key === 'k') { if (e.target.closest('button')) return; e.preventDefault(); setPlaying(!playing); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(t - 5); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); seek(t + 5); }
+});
+let curChapBtn = -1;
+function syncUI() {
+  if (!dragging) seekEl.value = t.toFixed(1);
+  setText(timeEl, `${fmt(t)} / ${fmt(DURATION)}`);
+  const c = chAt(t);
+  if (c !== curChapBtn) { curChapBtn = c; [...chapNav.children].forEach((b, i) => b.setAttribute('aria-current', i === c)); }
+}
+
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (playing) {
+    let nt = t + Math.min(0.1, (now - last) / 1000) * speed;
+    if (voiceOn && speech.active && speech.beat >= 0) {
+      const b = BEATS[speech.beat];
+      const silent = !speech.spoke && now - speech.started > 1500;
+      const stuck = silent || now - speech.started > (b.e - b.s) * 1000 / speed + 9000;
+      if (nt > b.e - 0.04 && !stuck) nt = b.e - 0.04;
+    }
+    t = nt;
+    if (t >= DURATION) { t = DURATION; setPlaying(false); }
+    const i = beatAt(t);
+    if (i !== lastBeat) { lastBeat = i; if (voiceOn && i >= 0) speakBeat(i); }
+  }
+  last = now;
+  renderAt(t);
+  syncUI();
+}
+
+/* ---------- boot ---------- */
+function boot() {
+  window.__explainerBooted = true;
+  $('loadnote').hidden = true;
+  resize();
+  if (RENDER) {
+    window.__explainer = { duration: DURATION, chapters: CHAPTERS.map(c => ({ title: c.title, s: c.s, beats: c.beats.map(b => +b.s.toFixed(2)) })), seek(tt) { renderAt(tt); return true; } };
+    renderAt(0);
+    window.__explainerReady = true;
+    return;
+  }
+  new ResizeObserver(resize).observe(stage);
+  syncUI();
+  requestAnimationFrame(frame);
+}
+boot();
+</script>
+</body>
+</html>
