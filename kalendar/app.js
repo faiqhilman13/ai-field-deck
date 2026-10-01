@@ -291,240 +291,14 @@
     Sukan: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M11 21h10l4-17H7Z" fill="currentColor" fill-opacity=".12"/><path d="M13 21 12 4M19 21l1-17M16 21V4M8.5 10h15M9.8 15.5h12.4"/><path d="M11 21h10v2a5 5 0 0 1-10 0Z" fill="currentColor"/></svg>',
     Tempat: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 14 16 5l13 9" fill="currentColor" fill-opacity=".18"/><path d="M6 13v9h20v-9"/><path d="M9 22v6M23 22v6M14 22v6h4v-6"/><path d="M9.5 15.5h4v3.5h-4zM18.5 15.5h4v3.5h-4z"/></svg>',
   };
-  const GOODS = [
-    '<svg viewBox="0 0 40 50" aria-hidden="true"><path d="M8 11Q6 30 7 46q13 3 26 0 1-16-1-35-12 3-24 0Z" fill="#f4ecd6" stroke="#8a7a5a"/><path d="M11 7q9 5 18 0l1.5 4.5Q20 15 9.5 11.5Z" fill="#e8dcc0" stroke="#8a7a5a"/><path d="M14 9h12" stroke="#c0392b" stroke-width="1.6"/><rect x="10.5" y="21" width="19" height="13" rx="2" fill="#d0281f"/><text x="20" y="30.2" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="7.4" fill="#fff5c8">BERAS</text><text x="20" y="42" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="5.6" fill="#1d58a8">10 KG</text></svg>',
-    '<svg viewBox="0 0 32 50" aria-hidden="true"><rect x="13" y="2" width="6" height="5" fill="#8a8f96"/><path d="M9 7h14v4H9z" fill="#5f646b"/><path d="M5 18q0-8 11-8t11 8v26q0 3-3 3H8q-3 0-3-3Z" fill="#2f8a4f"/><rect x="5" y="24" width="22" height="9" fill="#f4ecd6"/><text x="16" y="31.2" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="7.4" fill="#d0281f">GAS</text><path d="M8 13q8-3 16 0" stroke="#7fc79a" stroke-width="1.2" fill="none"/><rect x="7" y="46" width="18" height="3" fill="#1f5c35"/></svg>',
-    '<svg viewBox="0 0 32 38" aria-hidden="true"><ellipse cx="16" cy="6" rx="12" ry="3.5" fill="#c9ccd1"/><path d="M4 6v24q12 5 24 0V6q-12 4-24 0Z" fill="#1d58a8"/><path d="M4 12q12 4 24 0v12q-12 4-24 0Z" fill="#fff8e0"/><text x="16" y="21.6" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="6.4" fill="#d0281f">SUSU</text><path d="M6 31q10 3 20 0" stroke="#a9c3ea" stroke-width="1" fill="none"/></svg>',
-  ];
   const REDRAW_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.6-3.7M13.2 1.8v3.6H9.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  const RING = '<svg class="ring" viewBox="0 0 100 80" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M64 9C34 1 7 16 8 40c1 24 30 37 58 32 25-4 31-30 21-47C79 9 58 4 38 12"/></svg>';
-
-  /* ------------------------------------------------------------- themes */
-  const THEMES = [
-    { id: 'tearoff', name: 'Tear-off', ms: 'Kalendar koyak harian', start: 'day', color: '#c62a22' },
-    { id: 'kuda', name: 'Kalendar Kuda', ms: 'Merah, biru, klasik', start: 'month', color: '#d62b20' },
-    { id: 'kopitiam', name: 'Kopitiam Ledger', ms: 'Buku akaun kedai kopi', start: 'month', color: '#1f5c3a' },
-    { id: 'runcit', name: 'Kedai Runcit', ms: 'Kuning terang, rak barang', start: 'month', color: '#d0281f' },
-    { id: 'batik', name: 'Batik Margin', ms: 'Tenang, berbunga batik', start: 'month', color: '#1f2a4d' },
-    { id: 'postcard', name: 'Postcard Month', ms: 'Poskad lama Malaysia', start: 'month', color: '#e5604d' },
-    { id: 'stamp', name: 'Rubber Stamp', ms: 'Borang & cop getah', start: 'day', color: '#7a1f1f' },
-    { id: 'riso', name: 'Riso Pop', ms: 'Cetakan riso merah-biru', start: 'month', color: '#e2372b' },
-    { id: 'midnight', name: 'Midnight Almanac', ms: 'Almanak waktu malam', start: 'month', color: '#191714' },
-  ];
-  let theme = THEMES[1];
-
-  /* ------------------------------------------------------------ artwork */
-  let uidN = 0;
-  const uid = () => 'sx' + (++uidN);
-
-  function hibiscus({ petal = '#d0281f', centre = '#f2c94c', line = '', sw = 1.6, cls = '' } = {}) {
-    const rot = [0, 72, 144, 216, 288];
-    const petals = rot.map(r => `<path transform="rotate(${r} 50 50)" d="M50 50C37 41 28 20 40 9c5-5 15-5 20 0 12 11 3 32-10 41Z" fill="${line ? 'none' : petal}" stroke="${line || 'rgba(0,0,0,.18)'}" stroke-width="${sw}"/>`).join('');
-    const veins = rot.map(r => `<path transform="rotate(${r} 50 50)" d="M50 45V20" stroke="${line || 'rgba(0,0,0,.2)'}" stroke-width="${sw * 0.6}" fill="none"/>`).join('');
-    return `<svg class="hib ${cls}" viewBox="0 0 100 100" aria-hidden="true">${petals}${veins}<path d="M50 50C57 40 65 30 76 21" stroke="${line || centre}" stroke-width="${sw * 1.5}" fill="none" stroke-linecap="round"/><circle cx="77" cy="20" r="4" fill="${line ? 'none' : centre}" stroke="${line || 'none'}" stroke-width="${sw}"/><circle cx="50" cy="50" r="5.5" fill="${line ? 'none' : '#7a0f0f'}" stroke="${line || 'none'}" stroke-width="${sw}"/></svg>`;
-  }
-  /* ------------------------------------------------------ style hooks
-     Each style's themes/<id>.js registers optional hooks on window.SEHARI_THEMES[id]:
-       masthead(c), monthTitle(c), titleArt(c), summary(c), summaryArt(c),
-       sheetHead(c), dateArt(c), miniArt(c), and the flag ledger: true.
-     Hooks return HTML strings; `c` is the context built by ctx() below. */
-  const hooks = id => (window.SEHARI_THEMES || {})[id] || {};
-  const hook = (id, name, c, fallback = '') => (typeof hooks(id)[name] === 'function' ? hooks(id)[name](c) : fallback);
-  function ctx(t, p) {
-    const { y, m, d } = p;
-    const w = weekday(y, m, d), k = iso(y, m, d);
-    const h = holiday(y, m, d), l = lunar(y, m, d), hj = hijri(y, m, d);
-    return {
-      t, y, m, d, w, iso: k,
-      today: same(p, NOW), selected: same(p, padDate),
-      tone: (h || w === 0) ? 'red' : w === 6 ? 'sat' : '',
-      holiday: h,
-      hijri: hj ? `${hj.day} ${HIJRI_MONTH[hj.month - 1]} ${hj.year} H` : '',
-      lunar: l ? `${lunarYearName(y, m, d)}${lunarMonthZh(l)}${lunarDayZh(l.day)}` : '',
-      doy: dayNum(y, m, d) - dayNum(y, 0, 1) + 1,
-      left: dayNum(y, 11, 31) - dayNum(y, m, d),
-      msMonth: MS_MONTH[m], enMonth: EN_MONTH[m], zhMonth: zhMonth(m + 1), taMonth: TA_MONTH[m], mon3: MS_MON3[m],
-      msDay: MS_DAY[w], enDay: EN_DAY[w], zhDay: '星期' + ZH_DAY[w], taDay: TA_DAY[w],
-      events: () => eventsListHTML(k),
-      eventList: () => eventsFor(k),
-      miniMonth: () => miniMonthHTML(y, m, d),
-      nav: dir => `<button type="button" class="mnav ${dir < 0 ? 'prev' : 'next'}" data-nav="${dir}" aria-label="${dir < 0 ? 'Bulan lepas' : 'Bulan depan'}">${dir < 0 ? '‹' : '›'}</button>`,
-      hibiscus, uid, esc, pad2, goods: GOODS, icons: ICONS,
-    };
-  }
-
-  /* ------------------------------------------------------- events (Acara) */
-  const events = store.get('events', {}) || {};
-  const eventsFor = k => (events[k] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
-  const saveEvents = () => store.set('events', events);
-
-  function eventsListHTML(k) {
-    const evs = eventsFor(k);
-    if (!evs.length) return '<p class="ev-empty">Tiada acara lagi. Tekan <b>+ Acara</b> untuk tambah.</p>';
-    return `<ul class="ev-list">${evs.map(e => `<li class="ev${e.done ? ' done' : ''}">
-      <span class="ev-time">${esc(e.time)}</span>
-      <button type="button" class="ev-body" data-edit="${esc(e.id)}" data-date="${k}"><span class="ev-title">${esc(e.title)}</span>${e.place ? `<small>${esc(e.place)}</small>` : ''}</button>
-      <button type="button" class="ev-check" role="checkbox" aria-checked="${!!e.done}" aria-label="Selesai: ${esc(e.title)}" data-check="${esc(e.id)}" data-date="${k}"></button>
-    </li>`).join('')}</ul>`;
-  }
-
-  /* --------------------------------------------------------- month page */
-  function cellHTML(y, m, d) {
-    const w = weekday(y, m, d), k = iso(y, m, d), h = holiday(y, m, d);
-    const isToday = same({ y, m, d }, NOW);
-    const sel = same({ y, m, d }, padDate);
-    const n = (events[k] || []).length;
-    const cls = ['cell', (h || w === 0) ? 'red' : '', w === 6 ? 'sat' : '', isToday ? 'today' : '', sel ? 'sel' : '', n ? 'has-ev' : '', h ? 'hol' : ''].filter(Boolean).join(' ');
-    const label = `${MS_DAY[w]}, ${d} ${MS_MONTH[m]} ${y}${h ? ', ' + h.ms : ''}${n ? `, ${n} acara` : ''}${isToday ? ', hari ini' : ''}`;
-    return `<button type="button" class="${cls}" data-date="${k}" aria-label="${esc(label)}" aria-pressed="${sel}"><span class="num">${d}</span>${n ? '<i class="dot" aria-hidden="true"></i>' : ''}</button>`;
-  }
-  function gridHTML(y, m) {
-    const first = (weekday(y, m, 1) + 6) % 7, n = daysIn(y, m);
-    const prev = shiftMonth(y, m, -1), prevN = daysIn(prev.y, prev.m);
-    let h = WD_MON.map((c, i) => `<span class="wd${i === 6 ? ' sun' : ''}" aria-hidden="true">${c}</span>`).join('');
-    const total = Math.ceil((first + n) / 7) * 7;
-    for (let i = 0; i < total; i++) {
-      const d = i - first + 1;
-      if (d < 1 || d > n) h += `<span class="cell out" aria-hidden="true"><span class="num">${d < 1 ? prevN + d : d - n}</span></span>`;
-      else h += cellHTML(y, m, d);
-    }
-    return `<div class="mgrid">${h}</div>`;
-  }
-  function ledgerHTML(y, m) {
-    let h = '<div class="lg-head" aria-hidden="true"><span></span><span></span><span>ACARA</span></div>';
-    for (let d = 1, n = daysIn(y, m); d <= n; d++) {
-      const w = weekday(y, m, d), k = iso(y, m, d), hol = holiday(y, m, d);
-      const sel = same({ y, m, d }, padDate), isToday = same({ y, m, d }, NOW);
-      const evs = eventsFor(k);
-      const lines = (sel ? evs : evs.slice(0, 1)).map(e => `<span class="lg-ev${e.done ? ' done' : ''}"><b>${esc(e.time)}</b> ${esc(e.title)}</span>`).join('') + (!sel && evs.length > 1 ? `<span class="lg-more">+${evs.length - 1} lagi</span>` : '');
-      h += `<button type="button" class="lrow${(hol || w === 0) ? ' red' : ''}${sel ? ' sel' : ''}${isToday ? ' today' : ''}" data-date="${k}" aria-pressed="${sel}" aria-label="${esc(`${MS_DAY[w]}, ${d} ${MS_MONTH[m]}${hol ? ', ' + hol.ms : ''}${evs.length ? `, ${evs.length} acara` : ''}`)}">
-        <span class="lg-n"><span>${d}</span>${sel ? RING : ''}</span><span class="lg-d">${sel ? MS_DAY[w] : MS_DAY[w].toUpperCase()}</span>
-        <span class="lg-a">${hol ? `<span class="lg-hol">${esc(hol.ms)}${hol.approx ? '*' : ''}</span>` : ''}${lines}</span></button>`;
-    }
-    return `<div class="ledger">${h}</div>`;
-  }
-  function monthPageHTML(t, y, m) {
-    const c = ctx(t, { y, m, d: 1 });
-    return `<div class="mpage" data-ym="${y}-${pad2(m + 1)}">
-      <div class="mtitle">${hook(t, 'monthTitle', c, `
-        ${c.nav(-1)}
-        <h2 class="mt-main"><span class="mt-month"><span class="full">${MS_MONTH[m].toUpperCase()}</span><span class="short">${MS_MON3[m]}</span></span> <span class="mt-year">${y}</span></h2>
-        ${c.nav(1)}
-        <p class="mt-sub"><span lang="zh">${zhMonth(m + 1)}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="ta">${TA_MONTH[m]}</span></p>`)}
-        ${hook(t, 'titleArt', c)}
-      </div>
-      ${hooks(t).ledger ? ledgerHTML(y, m) : gridHTML(y, m)}
-    </div>`;
-  }
-
-  function summaryHTML(t, p) {
-    const c = ctx(t, p);
-    const custom = hook(t, 'summary', c, null);
-    if (custom != null) return custom;
-    return `<div class="sum-main">
-      <div class="sum-big"><span class="sb-num ${c.tone}">${p.d}</span><span class="sb-names"><b>${c.msDay.toUpperCase()}</b><span>${c.enDay.toUpperCase()}</span><span lang="zh">${c.zhDay}</span></span></div>
-      <h3 class="sum-h">${c.msDay.toUpperCase()}, ${p.d} ${c.msMonth.toUpperCase()} ${p.y}</h3>
-      ${c.holiday ? `<p class="sum-hol">★ ${esc(c.holiday.ms)}${c.holiday.approx ? '*' : ''}</p>` : ''}
-      <div class="sum-events">${c.events()}</div>
-      <button type="button" class="sum-more" data-goto="day">Fakta &amp; peribahasa hari ini <span aria-hidden="true">›</span></button>
-    </div>${hook(t, 'summaryArt', c)}`;
-  }
-
-  /* -------------------------------------------------------- day sheet */
-  function miniMonthHTML(y, m, d) {
-    const first = (weekday(y, m, 1) + 6) % 7, n = daysIn(y, m);
-    let g = WD_MON.map((c, i) => `<i${i === 6 ? ' class="r"' : ''}>${c}</i>`).join('');
-    for (let i = 0; i < first; i++) g += '<span></span>';
-    for (let x = 1; x <= n; x++) {
-      const red = weekday(y, m, x) === 0 || holiday(y, m, x);
-      g += `<span class="${[red ? 'r' : '', x === d ? 'on' : ''].join(' ').trim()}">${x}</span>`;
-    }
-    return `<div class="mm" aria-hidden="true">${g}</div>`;
-  }
-  function factCard(p) {
-    const f = factFor(p);
-    const cat = CAT_EN[f.cat] ? f.cat : 'Tempat';
-    return `<section class="c-card c-fact" aria-label="Fakta Malaysia">
-      <div class="c-head"><span class="c-kick">Tahukah Anda?</span><span class="c-tag">${esc(cat)} · ${CAT_EN[cat]}</span></div>
-      <div class="c-body"><span class="c-icon" aria-hidden="true">${ICONS[cat]}</span><p>${esc(f.t)}</p></div>
-      <div class="c-foot"><button type="button" class="redraw" data-kind="fact">Fakta lain ${REDRAW_ICON}</button></div>
-    </section>`;
-  }
-  function periCard(p) {
-    const r = periFor(p);
-    return `<section class="c-card c-peri" aria-label="Peribahasa hari ini">
-      <div class="c-head"><span class="c-kick">Peribahasa Hari Ini</span>${r.jenis ? `<span class="c-tag">${esc(r.jenis)}</span>` : ''}</div>
-      <p class="pb-p">${esc(r.p)}</p>
-      <p class="pb-k">Maksud</p><p class="pb-v">${esc(r.maksud)}</p>
-      ${r.en ? `<p class="pb-k" lang="en">Explanation</p><p class="pb-v" lang="en">${esc(r.en)}</p>` : ''}
-      ${r.contoh ? `<p class="pb-k">Contoh ayat</p><p class="pb-v pb-hand">${esc(r.contoh)}</p>` : ''}
-      <div class="c-foot"><button type="button" class="redraw" data-kind="peri">Peribahasa lain ${REDRAW_ICON}</button></div>
-    </section>`;
-  }
-  function sheetHTML(t, p) {
-    const c = ctx(t, p);
-    const { y, m, d } = p;
-    const h = c.holiday, k = c.iso;
-    const head = hook(t, 'sheetHead', c, null) ?? `
-      <div class="sh-form"><span>PELAN<br>JADUAL<br>HARIAN</span><span class="sh-no">No. ${pad2(y % 100)}${String(c.doy).padStart(4, '0')}</span></div>
-      <header class="sh-top"><span class="sh-my">${c.msMonth.toUpperCase()} ${y}</span><span class="sh-alt"><span lang="zh">${c.zhMonth}</span><span>${c.enMonth.toUpperCase()}</span><span lang="ta">${c.taMonth}</span></span></header>
-      <div class="sh-date">
-        <span class="sh-stamp">${c.msDay.toUpperCase()}</span>
-        <div class="sh-num ${c.tone}" aria-label="${d} ${c.msMonth} ${y}">${d}</div>
-        <div class="sh-dmy">${pad2(d)} / ${pad2(m + 1)} / ${y}</div>
-        <div class="sh-dayname ${c.tone}">${c.msDay.toUpperCase()}</div>
-        <div class="sh-langs"><span lang="zh">${c.zhDay}</span><span>${c.enDay.toUpperCase()}</span><span lang="ta">${c.taDay}</span></div>
-        ${hook(t, 'dateArt', c)}
-      </div>
-      <p class="sh-meta">${c.hijri ? `<span class="m-hij" title="Tarikh Hijrah">${c.hijri}</span>` : ''}${c.lunar ? `<span class="m-lun" lang="zh" title="Kalendar lunar Cina">${c.lunar}</span>` : ''}</p>
-      ${h ? `<p class="sh-hol">${esc(h.ms)}${h.approx ? '*' : ''}<small>${esc(h.en)}${h.scope === 'some' ? ' · sesetengah negeri' : ''}</small></p>` : ''}
-      <div class="sh-mini">${c.miniMonth()}<div class="sh-mini-side"><span>${c.msMonth.toUpperCase()}</span><span>${c.enMonth.toUpperCase()}</span><span lang="zh">${c.zhMonth}</span></div>${hook(t, 'miniArt', c)}</div>`;
-    return `${head}
-      <section class="sh-sec sh-events"><h3 class="sh-h">Acara</h3><div class="sh-ev-list">${eventsListHTML(k)}</div></section>
-      ${factCard(p)}
-      ${periCard(p)}
-      <label class="sh-sec sh-note"><span class="sh-h">Catatan · Nota</span><textarea data-note="${k}" rows="3" spellcheck="false" placeholder="cth: bayar bil air, kenduri Mak Long…">${esc(notes[k] || '')}</textarea></label>
-      <nav class="sh-nav" aria-label="Tukar hari"><button type="button" data-step="-1"><span aria-hidden="true">‹</span> Semalam</button><span>Hari ke-${c.doy} · ${c.left} hari lagi</span><button type="button" data-step="1">Esok <span aria-hidden="true">›</span></button></nav>`;
-  }
-
-  /* --------------------------------------------------------- state & DOM */
-  const shell = $('#shell');
-  const card = $('#card');
-  const pages = $('#pages');
-  const pageBase = $('#pageBase');
-  const flipShade = $('#flipShade');
-  const summary = $('#summary');
-  const dayStack = $('#dayStack');
-
   const NOW = today();
-  const view = { y: NOW.y, m: NOW.m };
-  let padDate = NOW;
-  let flip = null;
-  let pendingView = null;
-  let suppressClickUntil = 0;
-
-  const monthVisible = () => wide.matches || card.dataset.tab === 'month';
-  const dayVisible = () => wide.matches || card.dataset.tab === 'day';
-
-  function renderBase() {
-    const a = document.activeElement;
-    const keep = a && pageBase.contains(a) ? (a.dataset.nav ? `[data-nav="${a.dataset.nav}"]` : a.dataset.date ? `[data-date="${a.dataset.date}"]` : null) : null;
-    pageBase.innerHTML = monthPageHTML(theme.id, view.y, view.m);
-    if (keep) { const next = pageBase.querySelector(keep); if (next) next.focus({ preventScroll: true }); }
-  }
-  function renderSummary() { summary.innerHTML = summaryHTML(theme.id, padDate); }
-  function markSelection() {
-    if (hooks(theme.id).ledger) { renderBase(); return; }
-    $$('.sel', pageBase).forEach(b => { b.classList.remove('sel'); b.setAttribute('aria-pressed', 'false'); });
-    const b = pageBase.querySelector(`[data-date="${iso(padDate.y, padDate.m, padDate.d)}"]`);
-    if (b) { b.classList.add('sel'); b.setAttribute('aria-pressed', 'true'); }
-  }
 
   /* ------------------------------------------------- page curl (the flip)
-     The month page is cut into horizontal strips, each nested inside the one
-     above and hinged on its top edge. Rotating every strip a little more than
-     its parent bends the paper; letting the bottom strips lead makes it curl
-     up from the bottom edge, the way you lift a wall-calendar page. */
+     The page is cut into horizontal strips, each nested inside the one above
+     and hinged on its top edge. Rotating every strip a little more than its
+     parent bends the paper; letting the bottom strips lead makes it curl up
+     from the bottom edge, the way you lift a wall-calendar page. */
   function buildFlipper(html, H) {
     const N = H > 520 ? 16 : 12;
     const h = H / N;
@@ -592,453 +366,586 @@
       requestAnimationFrame(step);
     });
   }
-  function beginFlip(target) {
-    if (flip) return null;
-    const dir = (target.y - view.y) * 12 + (target.m - view.m) > 0 ? 1 : -1;
-    const H = pageBase.offsetHeight;
-    const s = { dir, from: { y: view.y, m: view.m }, target, t: dir > 0 ? 0 : 1 };
-    if (dir > 0) {
-      s.f = buildFlipper(pageBase.innerHTML, H);
-      view.y = target.y; view.m = target.m;
-      renderBase();
-    } else {
-      s.f = buildFlipper(monthPageHTML(theme.id, target.y, target.m), H);
+  /* ===================================================================
+     STYLES: the nine designs, ported 1:1 from the msia-calendar studies
+     (markup below mirrors its renderScreen(); CSS lives in design.css).
+     =================================================================== */
+  const STYLES = [
+    { id: 'tearoff', no: 1, cls: 'tearoff', name: 'Tear-off', start: 'month', color: '#b42b2b', desc: 'Satu hari, dakwat merah. Helaian yang dikoyak esok pagi.' },
+    { id: 'kuda', no: 2, cls: 'horse', name: 'Kalendar Kuda', start: 'month', color: '#c4312b', desc: 'Kuda, garis merah, tarikh biru. Kalendar dinding klasik.' },
+    { id: 'kopitiam', no: 3, cls: 'ledger', name: 'Kopitiam Ledger', start: 'month', color: '#24553c', desc: 'Seminggu rancangan, di antara garis buku akaun kedai kopi.' },
+    { id: 'runcit', no: 4, cls: 'runcit', name: 'Kedai Runcit', start: 'month', color: '#c92d31', desc: 'Kertas kuning mentega dan kalendar dari kedai hujung jalan.' },
+    { id: 'batik', no: 5, cls: 'batik', name: 'Batik Margin', start: 'month', color: '#17364d', desc: 'Sebulan yang lapang, dengan batik biru nila di tepi.' },
+    { id: 'postcard', no: 6, cls: 'postcard', name: 'Postcard Month', start: 'month', color: '#dd8875', desc: 'Jalan rumah kedai di atas bulan. Poskad kecil di dinding.' },
+    { id: 'stamp', no: 7, cls: 'stamp', name: 'Rubber Stamp', start: 'day', color: '#943340', desc: 'Borang harian untuk temu janji dan nota, dicop merah.' },
+    { id: 'riso', no: 8, cls: 'riso', name: 'Riso Pop', start: 'month', color: '#e94a47', desc: 'Merah karang dan biru kobalt, bulan besar dan bas bandar.' },
+    { id: 'midnight', no: 9, cls: 'midnight', name: 'Midnight Almanac', start: 'month', color: '#25251f', desc: 'Tarikh krim dan garis tembaga di atas kertas dakwat gelap.' },
+  ];
+  const DAYS = ['AHAD', 'ISNIN', 'SELASA', 'RABU', 'KHAMIS', 'JUMAAT', 'SABTU'];
+  const SHORT_DAYS = ['AHAD', 'ISN', 'SEL', 'RAB', 'KHAMIS', 'JUMAAT', 'SABTU'];
+  const DAY_INITIALS = ['I', 'S', 'R', 'K', 'J', 'S', 'A'];
+  const MONTHS = MS_MONTH.map(m => m.toUpperCase());
+  const dateFromISO = v => { const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d, 12); };
+  const isoFromDate = d => iso(d.getFullYear(), d.getMonth(), d.getDate());
+  const monthName = d => MONTHS[d.getMonth()];
+  const fullLabel = d => `${DAYS[d.getDay()]}, ${d.getDate()} ${monthName(d)} ${d.getFullYear()}`;
+  function translated(date, locale, part) {
+    if (locale.startsWith('ta')) return part === 'month' ? TA_MONTH[date.getMonth()] : TA_DAY[date.getDay()];
+    try { return new Intl.DateTimeFormat(locale, { [part]: 'long' }).format(date); } catch { return part === 'month' ? EN_MONTH[date.getMonth()] : EN_DAY[date.getDay()]; }
+  }
+  const announce = t => { const el = $('#announcement'); if (el) el.textContent = t; };
+  const TODAY = iso(NOW.y, NOW.m, NOW.d);
+
+  /* ------------------------------------------------------------- events
+     Own events: { [iso]: [{ id, time, title, place, done }] }.
+     Imported calendars live separately so a re-sync never clobbers them:
+     { [sourceId]: { name, kind: 'file'|'url', url?, synced, items: [{ uid, date, time, title, place, allDay }] } } */
+  const events = store.get('events', {}) || {};
+  const sources = store.get('sources', {}) || {};
+  const importDone = store.get('importDone', {}) || {};
+  const saveEvents = () => store.set('events', events);
+  const saveSources = () => { try { localStorage.setItem('sehari:sources', JSON.stringify(sources)); } catch { announce('Storan pelayar penuh. Sebahagian acara import mungkin tidak disimpan.'); } };
+  let importIndex = null; // date -> imported items, rebuilt when sources change
+  function rebuildImportIndex() {
+    importIndex = new Map();
+    Object.entries(sources).forEach(([sid, src]) => (src.items || []).forEach(it => {
+      const row = { id: `imp:${sid}:${it.uid}`, date: it.date, time: it.time || '', title: it.title, place: it.place, allDay: it.allDay || !it.time, src: src.name, imported: true };
+      row.done = !!importDone[row.id];
+      if (!importIndex.has(it.date)) importIndex.set(it.date, []);
+      importIndex.get(it.date).push(row);
+    }));
+  }
+  function eventsFor(isoDate) {
+    if (!importIndex) rebuildImportIndex();
+    const own = (events[isoDate] || []).map(e => ({ ...e, date: isoDate }));
+    const imp = (importIndex.get(isoDate) || []).map(e => ({ ...e, done: !!importDone[e.id] }));
+    return own.concat(imp).sort((a, b) => (a.time || '').localeCompare(b.time || '') || a.title.localeCompare(b.title));
+  }
+
+  /* ------------------------------------------------- screen markup (1:1) */
+  const state = { selected: TODAY, view: 'month', risoCompact: true, ledgerCompact: true };
+  let style = STYLES[1];
+
+  function art(kind, extra = '') { return `<span class="print-art art-${kind} ${extra}" aria-hidden="true"></span>`; }
+  function multilingual(date) {
+    return `<div class="multilingual"><span lang="zh">${esc(translated(date, 'zh-CN', 'month'))}</span><span lang="en">${esc(translated(date, 'en-GB', 'month').toUpperCase())}</span><span lang="ta">${esc(translated(date, 'ta-MY', 'month'))}</span></div>`;
+  }
+  function monthHeading(date, { split = false, compact = false } = {}) {
+    return `<div class="month-title-wrap"><div class="month-nav"><button class="nav-arrow" data-action="month-prev" aria-label="Bulan sebelumnya">‹</button><h3 class="month-heading${split ? ' split' : ''}"><span class="month-word">${monthName(date)}</span>${split ? '' : ' '}<span class="year">${date.getFullYear()}</span></h3><button class="nav-arrow" data-action="month-next" aria-label="Bulan seterusnya">›</button></div>${compact ? '' : multilingual(date)}</div>`;
+  }
+  function calendar(st, { mini = false, week = false } = {}) {
+    const selected = dateFromISO(st.selected);
+    const start = new Date(selected.getFullYear(), selected.getMonth(), 1, 12);
+    const offset = (start.getDay() + 6) % 7;
+    const dim = new Date(selected.getFullYear(), selected.getMonth() + 1, 0, 12).getDate();
+    let length = Math.ceil((offset + dim) / 7) * 7;
+    if (week) { start.setDate(selected.getDate() - (selected.getDay() + 6) % 7); length = 14; }
+    const weekdays = DAY_INITIALS.map((day, i) => `<span class="weekday${i === 6 ? ' sunday' : ''}" aria-label="${DAYS[(i + 1) % 7]}">${day}</span>`).join('');
+    let dates = '';
+    for (let i = 0; i < length; i++) {
+      const date = new Date(start);
+      date.setDate(week ? start.getDate() + i : i - offset + 1);
+      const k = isoFromDate(date);
+      const outside = date.getMonth() !== selected.getMonth();
+      if (!week && outside) { dates += '<span class="date-cell blank" aria-hidden="true"></span>'; continue; }
+      const sel = k === st.selected;
+      const hol = holiday(date.getFullYear(), date.getMonth(), date.getDate());
+      const has = eventsFor(k).length > 0;
+      const red = date.getDay() === 0 || hol;
+      dates += `<button type="button" class="date-cell${sel ? ' selected' : ''}${red ? ' sunday' : ''}${hol ? ' holiday' : ''}${outside ? ' outside' : ''}${has ? ' has-events' : ''}" data-date="${k}" aria-label="${esc(fullLabel(date))}${hol ? ', ' + esc(hol.ms) : ''}${has ? ', ada acara' : ''}" aria-pressed="${sel}"${k === TODAY ? ' aria-current="date"' : ''}><span class="date-number">${date.getDate()}</span></button>`;
     }
-    pages.appendChild(s.f.root);
-    card.classList.add('flipping');
+    return `<div class="calendar${mini ? ' mini-calendar' : ''}${week ? ' week-calendar' : ''}" aria-label="${week ? 'Dua minggu' : monthName(selected) + ' ' + selected.getFullYear()}">${weekdays}${dates}</div>`;
+  }
+  function eventLabel(e) { return `${e.done ? 'Tandakan belum selesai' : 'Tandakan selesai'}: ${e.title}, ${e.time || 'sepanjang hari'}${e.src ? ' (' + e.src + ')' : ''}`; }
+  function eventRows(st, { places = false } = {}) {
+    const rows = eventsFor(st.selected);
+    if (!rows.length) return '<p class="empty-events">Tiada acara. Ruang untuk rancangan baru.</p>';
+    return rows.map(e => `<button type="button" class="event-row${e.done ? ' completed' : ''}${e.imported ? ' imported' : ''}" data-event="${esc(e.id)}" aria-pressed="${!!e.done}" aria-label="${esc(eventLabel(e))}"><time datetime="${e.date}${e.time ? 'T' + e.time : ''}">${e.time || 'Hari'}</time><span class="event-title">${esc(e.title)}${places && (e.place || e.src) ? `<span class="event-place">${esc(e.place || e.src)}</span>` : ''}</span><span class="check" aria-hidden="true">${e.done ? '✓' : ''}</span></button>`).join('');
+  }
+  function caption(st) { const d = dateFromISO(st.selected); return `<p class="date-caption"><span class="caption-weekday">${DAYS[d.getDay()]}, </span>${d.getDate()} ${monthName(d)} ${d.getFullYear()}</p>`; }
+  function agenda(st, { showCaption = true, places = false } = {}) { return `<section class="agenda" aria-label="Acara untuk ${esc(fullLabel(dateFromISO(st.selected)))}">${showCaption ? caption(st) : ''}${eventRows(st, { places })}</section>`; }
+  const addButton = () => '<button type="button" class="add-event" data-action="add">+ Acara</button>';
+  function controls(st, { toggle = true, add = true } = {}) {
+    return `<div class="controls">${toggle ? `<div class="view-switch" aria-label="Paparan kalendar"><button type="button" data-action="day" aria-pressed="${st.view === 'day'}">Hari</button><button type="button" data-action="month" aria-pressed="${st.view === 'month'}">Bulan</button></div>` : ''}${add ? addButton() : ''}</div>`;
+  }
+  function selectedDay(st, { expanded = false, motif = false } = {}) {
+    const d = dateFromISO(st.selected);
+    return `<div class="selected-day${expanded ? ' day-expanded' : ''}"><span class="selected-number">${d.getDate()}</span><div class="selected-day-copy"><h3>${DAYS[d.getDay()]}</h3><p>${esc(translated(d, 'en-GB', 'weekday'))}</p><p lang="zh">${esc(translated(d, 'zh-CN', 'weekday'))}</p></div>${motif ? art('moon') : ''}</div>`;
+  }
+  function weekRows(st) {
+    const date = dateFromISO(st.selected);
+    const monday = new Date(date); monday.setDate(date.getDate() - (date.getDay() + 6) % 7);
+    let rows = '<div class="ledger-columns" aria-hidden="true"><span></span><span></span><span>ACARA</span></div>';
+    for (let n = 0; n < 7; n++) {
+      const day = new Date(monday); day.setDate(monday.getDate() + n);
+      const k = isoFromDate(day), sel = k === st.selected;
+      const red = day.getDay() === 0 || holiday(day.getFullYear(), day.getMonth(), day.getDate());
+      const list = eventsFor(k);
+      rows += `<div class="ledger-row${sel ? ' is-selected' : ''}"><div class="ledger-day"><button class="ledger-num${red ? ' sunday' : ''}" data-date="${k}" aria-label="${esc(fullLabel(day))}" aria-pressed="${sel}">${day.getDate()}</button><button class="${red ? 'sunday' : ''}" data-date="${k}" aria-label="${esc(fullLabel(day))}" aria-pressed="${sel}">${sel ? DAYS[day.getDay()].charAt(0) + DAYS[day.getDay()].slice(1).toLowerCase() : SHORT_DAYS[day.getDay()]}</button></div><div class="ledger-events">${list.map(e => `<button class="ledger-event${e.done ? ' completed' : ''}" data-event="${esc(e.id)}" aria-label="${esc(eventLabel(e))}" aria-pressed="${!!e.done}">${e.time || 'Hari'}&nbsp; ${esc(e.title)}</button>`).join('')}</div></div>`;
+    }
+    return `<section class="ledger-table" aria-label="Agenda mingguan">${rows}<div class="ledger-tail" aria-hidden="true"><span></span><span></span><span></span></div></section>`;
+  }
+  function screenHTML(s, st, { preview = false } = {}) {
+    const date = dateFromISO(st.selected), d = date.getDate();
+    switch (s.no) {
+      case 1: return `<div class="binding" aria-hidden="true"><i></i><i></i></div>${monthHeading(date, { compact: true })}<div class="tear-date${d >= 10 ? ' two-digit' : ''}">${d}</div><h3 class="tear-weekday">${DAYS[date.getDay()]}</h3><div class="tear-translations"><span lang="zh">${esc(translated(date, 'zh-CN', 'weekday'))}</span><span lang="en">${esc(translated(date, 'en-GB', 'weekday').toUpperCase())}</span><span lang="ta">${esc(translated(date, 'ta-MY', 'weekday'))}</span></div><div class="tear-month">${calendar(st, { mini: true })}<div class="tear-month-label">${monthName(date)}<br>${esc(translated(date, 'en-GB', 'month'))}<br><span lang="zh">${esc(translated(date, 'zh-CN', 'month'))}</span></div></div>${agenda(st, { showCaption: false })}${controls(st, { toggle: false })}`;
+      case 2: return `<header class="horse-masthead"><h3>KALENDAR</h3><div class="horse-copy" lang="zh">萬用<br>實用<br>天天進步<small>KALENDAR KUDA<br>馬牌日曆</small></div>${art('horse')}</header>${monthHeading(date)}${calendar(st)}${selectedDay(st, { expanded: true })}${agenda(st)}${controls(st)}`;
+      case 3: return `<header class="coffee-masthead"><h3><small>KEDAI KOPI</small>SINAR PAGI</h3><p class="chinese" lang="zh">新早晨咖啡店</p>${art('coffee')}<p class="strapline">KOPI · ROTI · KAWAN · JADUAL HIDUP</p></header>${monthHeading(date, { compact: true })}${st.view === 'day' ? `${selectedDay(st)}${agenda(st, { showCaption: false, places: true })}` : st.ledgerCompact ? weekRows(st) : `${calendar(st)}${agenda(st)}`}${controls(st)}`;
+      case 4: return `<header class="shop-masthead"><h3>HARI HARI</h3><h4>KEDAI RUNCIT</h4>${art('goods')}<p>BERAS · GULA · MINYAK MASAK<br>TEPUNG · MINUMAN · BARANG HARIAN</p></header>${monthHeading(date)}${calendar(st)}<div class="receipt">${agenda(st)}${controls(st, { toggle: false })}</div>`;
+      case 5: return `<div class="batik-strip" aria-hidden="true"></div>${monthHeading(date, { split: true })}${calendar(st)}${selectedDay(st, { expanded: true })}${agenda(st)}${controls(st)}`;
+      case 6: return `<div class="postcard-picture"><img src="assets/postcard-street.webp" alt="Ilustrasi lama rumah kedai dan pokok kelapa"><span class="postcard-greeting">Selamat Datang<br>ke<strong>MALAYSIA</strong></span></div>${monthHeading(date)}${calendar(st)}${selectedDay(st, { expanded: true })}<div class="postcard-bottom">${art('flower')}${agenda(st)}</div>${controls(st)}`;
+      case 7: return `<header class="stamp-header"><p>PELAN<br>JADUAL<br>HARIAN</p><p class="serial">No. ${pad2(date.getMonth() + 1)}${pad2(d)}28</p><div class="weekday-stamp">${DAYS[date.getDay()]}</div></header><h3 class="stamp-date">${pad2(d)} / ${pad2(date.getMonth() + 1)} / ${date.getFullYear()}</h3>${monthHeading(date, { compact: true })}${st.view === 'month' ? calendar(st) : ''}${agenda(st, { showCaption: false, places: true })}<label class="stamp-notes"${preview ? '' : ' for="notes-7"'}>NOTA<textarea${preview ? '' : ' id="notes-7"'} data-notes="${st.selected}" aria-label="Nota untuk ${esc(fullLabel(date))}" maxlength="500" spellcheck="false">${esc(notes[st.selected] || '')}</textarea></label><div class="stamp-footer"><div><p class="stamp-mini-title">${monthName(date)} ${date.getFullYear()}</p>${calendar(st, { mini: true })}</div><div class="print-seal" aria-hidden="true"><span>JADUAL</span><strong>★</strong><span>HARIAN</span></div></div>${controls(st)}`;
+      case 8: return `<header class="riso-masthead"><h3>${monthName(date).slice(0, 3)}</h3><p class="riso-year">${date.getFullYear()}</p>${art('flower')}<div class="riso-languages"><span><span lang="zh">${esc(translated(date, 'zh-CN', 'month'))}</span>&nbsp; ${esc(translated(date, 'en-GB', 'month').toUpperCase())}</span><span lang="ta">${esc(translated(date, 'ta-MY', 'month'))}</span></div></header>${calendar(st, { week: st.risoCompact })}${st.view === 'month' && st.risoCompact ? '<div class="week-navigation"><button data-action="week-prev" aria-label="Minggu sebelumnya">‹</button><span>DUA MINGGU</span><button data-action="week-next" aria-label="Minggu seterusnya">›</button></div>' : ''}${selectedDay(st, { expanded: true })}<div class="riso-bottom">${art('bus')}<section class="agenda" aria-label="Acara hari ini">${caption(st)}${eventRows(st)}${addButton()}</section></div>${controls(st, { add: false })}`;
+      case 9: return `${art('moon')}${monthHeading(date)}${calendar(st)}${selectedDay(st, { motif: true })}${agenda(st, { showCaption: false })}${controls(st)}`;
+      default: return '';
+    }
+  }
+  function screenElementHTML(s, st, opts = {}) {
+    return `<section class="screen ${s.cls}" data-study="${s.no}" data-view="${st.view}" aria-label="${esc(s.name)}" lang="ms"${opts.preview ? ' inert' : ''}>${screenHTML(s, st, opts)}</section>`;
+  }
+
+  /* --------------------------------------------- the daily leaf (our page)
+     Fact, peribahasa, notes, and holiday/Hijri/lunar details, set in the
+     chosen design's paper, ink and type so it reads as the next page. */
+  function leafHTML(st) {
+    const p = parseIso(st.selected);
+    const d = dateFromISO(st.selected);
+    const h = holiday(p.y, p.m, p.d), l = lunar(p.y, p.m, p.d), hj = hijri(p.y, p.m, p.d);
+    const doy = dayNum(p.y, p.m, p.d) - dayNum(p.y, 0, 1) + 1, left = dayNum(p.y, 11, 31) - dayNum(p.y, p.m, p.d);
+    const f = factFor(p), r = periFor(p);
+    const cat = CAT_EN[f.cat] ? f.cat : 'Tempat';
+    const mine = (events[st.selected] || []);
+    const imported = eventsFor(st.selected).filter(e => e.imported);
+    const meta = [hj ? `${hj.day} ${HIJRI_MONTH[hj.month - 1]} ${hj.year} H` : '', l ? `<span lang="zh">${lunarYearName(p.y, p.m, p.d)}${lunarMonthZh(l)}${lunarDayZh(l.day)}</span>` : ''].filter(Boolean).join('<i aria-hidden="true">·</i>');
+    return `
+      <header class="leaf-head">
+        <p class="leaf-kicker">Helaian hari ini · <span>Hari ke-${doy}, ${left} hari lagi</span></p>
+        <h2 class="leaf-date">${fullLabel(d)}</h2>
+        <p class="leaf-meta">${meta}</p>
+        ${h ? `<p class="leaf-hol">${esc(h.ms)}${h.approx ? '*' : ''} <span>${esc(h.en)}${h.scope === 'some' ? ' · sesetengah negeri' : ''}</span></p>` : ''}
+      </header>
+      <article class="leaf-card leaf-fact">
+        <div class="leaf-card-head"><h3>Tahukah Anda?</h3><span>${esc(cat)} · ${CAT_EN[cat]}</span></div>
+        <div class="leaf-fact-body"><span class="leaf-icon" aria-hidden="true">${ICONS[cat]}</span><p>${esc(f.t)}</p></div>
+        <button type="button" class="leaf-redraw" data-kind="fact">Fakta lain ${REDRAW_ICON}</button>
+      </article>
+      <article class="leaf-card leaf-peri">
+        <div class="leaf-card-head"><h3>Peribahasa</h3>${r.jenis ? `<span>${esc(r.jenis)}</span>` : ''}</div>
+        <p class="leaf-proverb">${esc(r.p)}</p>
+        <dl>
+          <dt>Maksud</dt><dd>${esc(r.maksud)}</dd>
+          ${r.en ? `<dt lang="en">Explanation</dt><dd lang="en">${esc(r.en)}</dd>` : ''}
+          ${r.contoh ? `<dt>Contoh ayat</dt><dd class="leaf-example">${esc(r.contoh)}</dd>` : ''}
+        </dl>
+        <button type="button" class="leaf-redraw" data-kind="peri">Peribahasa lain ${REDRAW_ICON}</button>
+      </article>
+      ${style.no === 7 ? '' : `<label class="leaf-note">Catatan<textarea data-notes="${st.selected}" maxlength="500" spellcheck="false" placeholder="cth: bayar bil air, kenduri Mak Long…">${esc(notes[st.selected] || '')}</textarea></label>`}
+      ${mine.length || imported.length ? `<section class="leaf-manage" aria-label="Urus acara"><h3>Urus acara</h3><ul>${mine.slice().sort((a, b) => a.time.localeCompare(b.time)).map(e => `<li><span><b>${esc(e.time)}</b> ${esc(e.title)}</span><button type="button" data-edit="${esc(e.id)}">Ubah</button></li>`).join('')}${imported.map(e => `<li class="leaf-imported"><span><b>${e.time || 'Hari'}</b> ${esc(e.title)}</span><small>${esc(e.src)}</small></li>`).join('')}</ul></section>` : ''}
+      <nav class="leaf-nav" aria-label="Tukar hari"><button type="button" data-step="-1">‹ Semalam</button><button type="button" data-step="0">Hari ini</button><button type="button" data-step="1">Esok ›</button></nav>`;
+  }
+
+  /* ----------------------------------------------------------- rendering */
+  const stage = $('#stage');
+  const leaf = $('#leaf');
+  const flipShade = $('#flipShade');
+  let screen = null;
+
+  function render() {
+    const keep = document.activeElement && stage.contains(document.activeElement) ? document.activeElement : null;
+    const sel = keep ? (keep.dataset.date ? `[data-date="${keep.dataset.date}"]` : keep.dataset.action ? `[data-action="${keep.dataset.action}"]` : keep.dataset.event ? `[data-event="${CSS.escape(keep.dataset.event)}"]` : keep.matches('textarea') ? 'textarea' : null) : null;
+    stage.querySelectorAll('.screen').forEach(n => n.remove());
+    stage.insertAdjacentHTML('afterbegin', screenElementHTML(style, state));
+    screen = stage.querySelector('.screen');
+    if (sel) { const n = screen.querySelector(sel); if (n) n.focus({ preventScroll: true }); }
+    renderLeaf();
+  }
+  function renderLeaf() {
+    leaf.dataset.theme = style.id;
+    leaf.innerHTML = leafHTML(state);
+  }
+
+  /* -------------------------------------------------- page curl & tear */
+  // buildFlipper / setCurl / tween come from the shared engine above.
+  let flip = null;
+  async function curlTo(apply, dir) {
+    if (flip || reducedMotion.matches || !screen) { apply(); render(); return; }
+    const H = screen.offsetHeight;
+    const oldHTML = screen.outerHTML;
+    const s = { dir, t: dir > 0 ? 0 : 1 };
+    if (dir > 0) { s.f = buildFlipper(oldHTML, H); apply(); render(); }
+    else { const before = { ...state }; apply(); const nextHTML = screenElementHTML(style, state); Object.assign(state, before); s.f = buildFlipper(nextHTML, H); s.next = apply; }
+    stage.appendChild(s.f.root);
     flip = s;
     setCurl(s, s.t);
     Sound.rustle();
-    return s;
-  }
-  async function endFlip(s, complete, ms) {
-    const to = complete === (s.dir > 0) ? 1 : 0;
-    const dur = ms || 260 + 620 * Math.abs(to - s.t);
-    await tween(s.t, to, dur, t => setCurl(s, t), ms ? easeInOut : u => 1 - Math.pow(1 - u, 2.2));
-    if (s.dir > 0 && !complete) { view.y = s.from.y; view.m = s.from.m; renderBase(); }
-    if (s.dir < 0 && complete) { view.y = s.target.y; view.m = s.target.m; renderBase(); }
+    await tween(s.t, dir > 0 ? 1 : 0, 950, t => setCurl(s, t));
+    if (dir < 0) { s.next(); render(); }
     s.f.root.remove();
     flipShade.style.opacity = 0;
-    card.classList.remove('flipping');
     flip = null;
-    if (pendingView) { const p = pendingView; pendingView = null; showMonth(p.y, p.m); }
   }
-  function showMonth(y, m, animate = true) {
-    if (flip) { pendingView = { y, m }; return; }
-    if (y === view.y && m === view.m) return;
-    if (!animate || reducedMotion.matches || !monthVisible()) {
-      view.y = y; view.m = m;
-      renderBase();
-      if (animate && monthVisible()) pageBase.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 260, easing: 'ease-out' });
-      return;
-    }
-    const s = beginFlip({ y, m });
-    if (s) endFlip(s, true, 1000);
-  }
-  function stepMonth(n) {
-    const base = pendingView || (flip ? (flip.dir > 0 ? view : flip.target) : view);
-    const t = shiftMonth(base.y, base.m, n);
-    showMonth(t.y, t.m);
-  }
-
-  /* drag the page up to lift it, down to bring last month back; swipe sideways too */
-  let drag = null;
-  pages.addEventListener('pointerdown', e => {
-    if (e.button !== 0 || flip) return;
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, mode: null, H: pageBase.offsetHeight };
-  });
-  pages.addEventListener('pointermove', e => {
-    if (!drag || e.pointerId !== drag.id) return;
-    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (!drag.mode) {
-      if (e.pointerType !== 'touch' && Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) {
-        drag.s = beginFlip(shiftMonth(view.y, view.m, dy < 0 ? 1 : -1));
-        if (!drag.s) { drag = null; return; }
-        drag.mode = 'lift';
-        try { pages.setPointerCapture(drag.id); } catch { /* ignore */ }
-      } else if (Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.3) {
-        drag.mode = 'swipe';
-      } else return;
-    }
-    if (drag.mode === 'lift') {
-      const span = drag.H * 0.8;
-      setCurl(drag.s, clamp(drag.s.dir > 0 ? -dy / span : 1 - dy / span, 0, 1));
-      e.preventDefault();
-    }
-  });
-  const endDrag = e => {
-    if (!drag || e.pointerId !== drag.id) return;
-    const d = drag;
-    drag = null;
-    if (d.mode) suppressClickUntil = performance.now() + 350;
-    if (d.mode === 'lift') {
-      endFlip(d.s, e.type !== 'pointercancel' && (d.s.dir > 0 ? d.s.t > 0.28 : d.s.t < 0.72));
-    } else if (d.mode === 'swipe' && e.type !== 'pointercancel') {
-      const dx = e.clientX - d.x;
-      if (Math.abs(dx) > 50) stepMonth(dx < 0 ? 1 : -1);
-    }
-  };
-  pages.addEventListener('pointerup', endDrag);
-  pages.addEventListener('pointercancel', endDrag);
-  pages.addEventListener('click', e => {
-    if (performance.now() < suppressClickUntil) { e.preventDefault(); e.stopPropagation(); return; }
-    const nav = e.target.closest('[data-nav]');
-    if (nav) { stepMonth(+nav.dataset.nav); return; }
-    const b = e.target.closest('[data-date]');
-    if (!b) return;
-    const p = parseIso(b.dataset.date);
-    if (same(p, padDate) && !wide.matches) { setTab('day'); return; }
-    selectDate(p);
-  }, true);
-
-  /* ------------------------------------------------------- day sheets */
-  function stackShadow(p) {
-    const left = dayNum(p.y, 11, 31) - dayNum(p.y, p.m, p.d);
-    const n = clamp(Math.ceil(left / 60), 1, 6);
-    const layers = [];
-    for (let i = 1; i <= n; i++) layers.push(`0 ${i * 1.5}px 0 var(--edge-${i % 2 ? 'a' : 'b'})`);
-    layers.push(`0 ${n * 1.5 + 4}px 10px rgba(0,0,0,.22)`);
-    return layers.join(',');
-  }
-  function makeSheet(p) {
-    const el = document.createElement('article');
-    el.className = 'sheet';
-    el.dataset.date = iso(p.y, p.m, p.d);
-    el.style.setProperty('--stack-shadow', stackShadow(p));
-    el.setAttribute('aria-label', `${MS_DAY[weekday(p.y, p.m, p.d)]}, ${p.d} ${MS_MONTH[p.m]} ${p.y}`);
-    el.innerHTML = sheetHTML(theme.id, p);
-    return el;
-  }
-  const topSheet = () => $$('.sheet:not(.leaving)', dayStack).pop();
-
-  function renderDay(how) {
-    const p = padDate;
-    const old = topSheet();
-    if (!old || how === 'none' || reducedMotion.matches || !dayVisible()) {
-      $$('.sheet', dayStack).forEach(s => s.remove());
-      dayStack.appendChild(makeSheet(p));
-      return;
-    }
-    const fresh = makeSheet(p);
-    if (how === 'tear') {
-      dayStack.insertBefore(fresh, old);
-      tearAway(old);
-    } else {
-      dayStack.appendChild(fresh);
-      Sound.rustle(0.35);
-      fresh.animate([
-        { transform: 'translate(0, -40px) rotate(-3deg)', opacity: 0 },
-        { transform: 'translate(0, 4px) rotate(.4deg)', opacity: 1, offset: 0.7 },
-        { transform: 'none', opacity: 1 },
-      ], { duration: 560, easing: 'cubic-bezier(.3,.7,.4,1)' }).finished.then(() => old.remove(), () => old.remove());
-    }
-  }
-  function tearAway(sheet) {
-    const from = getComputedStyle(sheet).transform;
-    const start = from && from !== 'none' ? from : 'translate(0,0) rotate(0deg)';
-    sheet.classList.add('leaving', 'tearing');
-    sheet.style.transition = 'none';
+  function tearTo(apply) {
+    if (reducedMotion.matches || !screen) { apply(); render(); return; }
+    const old = screen.cloneNode(true);
+    old.inert = true;
+    old.classList.add('tearing');
+    old.style.cssText = `position:absolute;left:0;top:0;width:${screen.offsetWidth}px;z-index:20;margin:0`;
+    apply();
+    render();
+    stage.appendChild(old);
     Sound.rip();
-    sheet.animate([
-      { transform: start, offset: 0 },
-      { transform: 'translate(0, 2px) rotate(1.8deg)', offset: 0.16 },
-      { transform: 'translate(3px, 9px) rotate(5.5deg)', offset: 0.34 },
-      { transform: 'translate(-24px, 46px) rotate(11deg)', offset: 0.52 },
+    old.animate([
+      { transform: 'translate(0,0) rotate(0deg)', offset: 0 },
+      { transform: 'translate(0, 2px) rotate(1.6deg)', offset: 0.16 },
+      { transform: 'translate(3px, 9px) rotate(5deg)', offset: 0.34 },
+      { transform: 'translate(-24px, 46px) rotate(10deg)', offset: 0.52 },
       { transform: 'translate(-120px, 115vh) rotate(-22deg)', offset: 1 },
-    ], { duration: 1050, easing: 'cubic-bezier(.4,.05,.6,1)', fill: 'forwards' })
-      .finished.then(() => sheet.remove(), () => sheet.remove());
+    ], { duration: 1000, easing: 'cubic-bezier(.4,.05,.6,1)', fill: 'forwards' }).finished.then(() => old.remove(), () => old.remove());
   }
 
-  function selectDate(p, how = 'auto') {
-    if (how === 'auto') how = same(p, padDate) ? 'none' : cmpDate(p, padDate) > 0 ? 'tear' : 'drop';
-    padDate = p;
-    if (p.y !== view.y || p.m !== view.m) showMonth(p.y, p.m, monthVisible());
-    markSelection();
-    renderSummary();
-    renderDay(how);
+  const isDayPage = () => style.no === 1 || state.view === 'day';
+  function selectDate(k, { animate = true } = {}) {
+    if (k === state.selected) return;
+    const forward = k > state.selected;
+    const sameMonth = k.slice(0, 7) === state.selected.slice(0, 7);
+    const apply = () => { state.selected = k; };
+    if (!animate) { apply(); render(); }
+    else if (isDayPage()) {
+      if (forward) tearTo(apply);
+      else { apply(); render(); if (!reducedMotion.matches) screen.animate([{ transform: 'translateY(-30px) rotate(-2deg)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 480, easing: 'cubic-bezier(.3,.7,.4,1)' }); Sound.rustle(0.3); }
+    } else if (!sameMonth) curlTo(apply, forward ? 1 : -1);
+    else { apply(); render(); }
+    announce(fullLabel(dateFromISO(k)));
   }
-  const stepDay = n => selectDate(addDays(padDate, n));
+  function shiftDate({ months = 0, days = 0 }) {
+    const date = dateFromISO(state.selected);
+    if (months) { const day = date.getDate(); date.setDate(1); date.setMonth(date.getMonth() + months); date.setDate(Math.min(day, new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate())); }
+    if (days) date.setDate(date.getDate() + days);
+    const k = isoFromDate(date);
+    if (months) { curlTo(() => { state.selected = k; }, months > 0 ? 1 : -1); announce(fullLabel(date)); }
+    else selectDate(k);
+  }
 
-  /* swipe a sheet: left tears it off, right brings yesterday back */
-  let sw = null;
-  dayStack.addEventListener('pointerdown', e => {
-    if (e.button !== 0 || e.target.closest('textarea, button, a, input')) return;
-    const el = e.target.closest('.sheet');
-    if (!el || el.classList.contains('leaving')) return;
-    sw = { id: e.pointerId, x: e.clientX, y: e.clientY, el, mode: null };
+  /* ------------------------------------------------------- interaction */
+  let swipe = null;
+  stage.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || flip || e.target.closest('textarea, input')) return;
+    swipe = { id: e.pointerId, x: e.clientX, y: e.clientY };
   });
-  dayStack.addEventListener('pointermove', e => {
-    if (!sw || e.pointerId !== sw.id) return;
-    const dx = e.clientX - sw.x, dy = e.clientY - sw.y;
-    if (!sw.mode) {
-      if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-        sw.mode = 'h';
-        sw.el.style.transition = 'none';
-        try { sw.el.setPointerCapture(sw.id); } catch { /* ignore */ }
-      } else if (Math.abs(dy) > 10) { sw = null; return; } else return;
+  stage.addEventListener('pointerup', e => {
+    if (!swipe || e.pointerId !== swipe.id) return;
+    const dx = e.clientX - swipe.x, dy = e.clientY - swipe.y;
+    swipe = null;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    suppressClick = performance.now() + 350;
+    if (isDayPage()) shiftDate({ days: dx < 0 ? 1 : -1 });
+    else shiftDate({ months: dx < 0 ? 1 : -1 });
+  });
+  stage.addEventListener('pointercancel', () => { swipe = null; });
+  let suppressClick = 0;
+
+  stage.addEventListener('click', e => {
+    if (performance.now() < suppressClick) { e.preventDefault(); e.stopPropagation(); return; }
+    const t = e.target.closest('button');
+    if (!t || !screen || !screen.contains(t)) return;
+    if (t.dataset.date) { selectDate(t.dataset.date); const n = screen && screen.querySelector(`[data-date="${state.selected}"]`); if (n) n.focus({ preventScroll: true }); return; }
+    if (t.dataset.event) { toggleDone(t.dataset.event); return; }
+    switch (t.dataset.action) {
+      case 'add': openEventDialog(null, t); break;
+      case 'day': state.view = 'day'; render(); break;
+      case 'month': state.view = 'month'; if (style.no === 8) state.risoCompact = false; if (style.no === 3) state.ledgerCompact = false; render(); break;
+      case 'month-prev': shiftDate({ months: -1 }); break;
+      case 'month-next': shiftDate({ months: 1 }); break;
+      case 'week-prev': shiftDate({ days: -7 }); break;
+      case 'week-next': shiftDate({ days: 7 }); break;
     }
-    sw.dx = dx;
-    sw.el.style.transform = dx < 0
-      ? `translate(${dx * 0.18}px, ${-dx * 0.04}px) rotate(${-dx * 0.03}deg)`
-      : `translate(${dx * 0.12}px, 0) rotate(${dx * 0.006}deg)`;
   });
-  const endSwipe = e => {
-    if (!sw || e.pointerId !== sw.id) return;
-    const s = sw;
-    sw = null;
-    if (s.mode !== 'h') return;
-    if (e.type !== 'pointercancel' && s.dx < -70) { stepDay(1); return; }
-    s.el.style.transition = 'transform .35s cubic-bezier(.3,1.4,.5,1)';
-    s.el.style.transform = '';
-    if (e.type !== 'pointercancel' && s.dx > 70) stepDay(-1);
-  };
-  dayStack.addEventListener('pointerup', endSwipe);
-  dayStack.addEventListener('pointercancel', endSwipe);
 
-  /* clicks shared by the summary and the sheets */
-  function onPanelClick(e) {
-    const step = e.target.closest('[data-step]');
-    if (step) { stepDay(+step.dataset.step); return; }
-    if (e.target.closest('[data-goto="day"]')) { setTab('day'); return; }
-    const chk = e.target.closest('[data-check]');
-    if (chk) { toggleDone(chk.dataset.date, chk.dataset.check); return; }
-    const ed = e.target.closest('[data-edit]');
-    if (ed) { openEventDialog(ed.dataset.date, ed.dataset.edit); return; }
-    const btn = e.target.closest('.redraw');
-    if (btn) reroll(btn);
-  }
-  summary.addEventListener('click', onPanelClick);
-  dayStack.addEventListener('click', onPanelClick);
-
-  function reroll(btn) {
-    const kind = btn.dataset.kind;
-    const cardEl = btn.closest('.c-card');
-    const k = iso(padDate.y, padDate.m, padDate.d);
-    rerolls[kind][k] = (rerolls[kind][k] || 0) + 1;
-    const swap = () => {
-      const tmp = document.createElement('div');
-      tmp.innerHTML = kind === 'fact' ? factCard(padDate) : periCard(padDate);
-      const next = tmp.firstElementChild;
-      cardEl.replaceWith(next);
-      next.querySelector('.redraw').focus({ preventScroll: true });
-      return next;
-    };
-    Sound.rustle(0.3);
-    if (reducedMotion.matches) { swap(); return; }
-    cardEl.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-10px) rotate(-3deg) scale(.97)', opacity: 0 }], { duration: 200, easing: 'ease-in', fill: 'forwards' })
-      .finished.then(() => swap().animate([{ transform: 'translateY(14px) rotate(2deg) scale(.97)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 320, easing: 'cubic-bezier(.3,1.3,.5,1)' }));
-  }
+  leaf.addEventListener('click', e => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.step != null) { const n = +t.dataset.step; if (n === 0) { selectDate(TODAY); } else shiftDate({ days: n }); return; }
+    if (t.dataset.edit) { openEventDialog(t.dataset.edit, t); return; }
+    if (t.dataset.kind) {
+      const p = parseIso(state.selected);
+      rerolls[t.dataset.kind][state.selected] = (rerolls[t.dataset.kind][state.selected] || 0) + 1;
+      Sound.rustle(0.25);
+      const card = t.closest('.leaf-card');
+      const swap = () => { renderLeaf(); const b = leaf.querySelector(`[data-kind="${t.dataset.kind}"]`); if (b) b.focus({ preventScroll: true }); };
+      if (reducedMotion.matches || !card) { swap(); return; }
+      card.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateY(-6px)' }], { duration: 160, fill: 'forwards' }).finished.then(swap);
+      void p;
+    }
+  });
 
   let noteTimer = 0;
-  dayStack.addEventListener('input', e => {
-    const ta = e.target.closest('textarea[data-note]');
+  document.addEventListener('input', e => {
+    const ta = e.target.closest('textarea[data-notes]');
     if (!ta) return;
     clearTimeout(noteTimer);
     noteTimer = setTimeout(() => {
-      const k = ta.dataset.note;
+      const k = ta.dataset.notes;
       if (ta.value.trim()) notes[k] = ta.value; else delete notes[k];
       store.set('notes', notes);
     }, 250);
   });
 
-  /* ------------------------------------------------------- event dialog */
+  function toggleDone(id) {
+    if (id.startsWith('imp:')) { if (importDone[id]) delete importDone[id]; else importDone[id] = true; store.set('importDone', importDone); }
+    else {
+      const list = events[state.selected] || Object.values(events).find(l => l.some(x => x.id === id)) || [];
+      const ev = list.find(x => x.id === id) || Object.values(events).flat().find(x => x.id === id);
+      if (!ev) return;
+      ev.done = !ev.done;
+      saveEvents();
+    }
+    render();
+    const n = screen.querySelector(`[data-event="${CSS.escape(id)}"]`);
+    if (n) n.focus({ preventScroll: true });
+    const ev = eventsFor(state.selected).find(x => x.id === id);
+    if (ev) announce(`${ev.title}: ${ev.done ? 'selesai' : 'belum selesai'}`);
+  }
+
+  /* ------------------------------------------------------ event dialog */
   const dlg = $('#eventDialog');
   const form = $('#eventForm');
-  let editing = null;
-  function openEventDialog(k, id) {
-    const p = parseIso(k);
-    const ev = id ? (events[k] || []).find(e => e.id === id) : null;
-    editing = { k, id: ev ? ev.id : null };
-    $('#evTitle').textContent = ev ? 'Ubah Acara' : 'Acara Baharu';
-    $('#evWhen').textContent = `${MS_DAY[weekday(p.y, p.m, p.d)]}, ${p.d} ${MS_MONTH[p.m]} ${p.y}`;
-    form.time.value = ev ? ev.time : '09:00';
-    form.title.value = ev ? ev.title : '';
-    form.place.value = ev ? ev.place || '' : '';
-    $('#evDelete').hidden = !ev;
+  let editing = null, returnFocus = null;
+  function themeDialog(el) {
+    const cs = screen ? getComputedStyle(screen) : null;
+    el.style.setProperty('--modal-paper', style.no === 9 ? '#f2e7cf' : (cs ? cs.getPropertyValue('--paper') : '#f6efdf'));
+    el.style.setProperty('--modal-ink', style.no === 9 ? '#272822' : (cs ? cs.getPropertyValue('--ink') : '#263327'));
+    el.style.setProperty('--modal-accent', cs ? cs.getPropertyValue('--accent') : '#b62d2b');
+  }
+  function findOwn(id) {
+    for (const [k, list] of Object.entries(events)) { const ev = list.find(x => x.id === id); if (ev) return { k, ev }; }
+    return null;
+  }
+  function openEventDialog(id, from) {
+    returnFocus = from || null;
+    const found = id ? findOwn(id) : null;
+    editing = found;
+    form.reset();
+    $('#eventTitle').textContent = found ? 'Ubah acara' : 'Tambah acara';
+    form.elements.title.value = found ? found.ev.title : '';
+    form.elements.date.value = found ? found.k : state.selected;
+    form.elements.time.value = found ? found.ev.time : '09:00';
+    form.elements.place.value = found ? found.ev.place || '' : '';
+    $('#deleteEvent').hidden = !found;
+    themeDialog(dlg);
     dlg.showModal();
-    setTimeout(() => form.title.focus(), 30);
+    form.elements.title.focus();
   }
-  function refreshEvents(k) {
-    renderSummary();
-    if (hooks(theme.id).ledger || pageBase.querySelector(`[data-date="${k}"]`)) renderBase();
-    $$(`.sheet[data-date="${k}"] .sh-ev-list`, dayStack).forEach(el => { el.innerHTML = eventsListHTML(k); });
-  }
+  function closeEventDialog() { dlg.close(); if (returnFocus && returnFocus.isConnected) returnFocus.focus(); }
   form.addEventListener('submit', e => {
     e.preventDefault();
-    const title = form.title.value.trim();
-    if (!title || !editing) return;
-    const list = events[editing.k] = events[editing.k] || [];
-    const data = { time: form.time.value || '09:00', title, place: form.place.value.trim() };
-    const ev = editing.id && list.find(x => x.id === editing.id);
-    if (ev) Object.assign(ev, data);
-    else list.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), done: false, ...data });
+    const title = form.elements.title.value.trim(), date = form.elements.date.value, time = form.elements.time.value;
+    if (!title) { form.elements.title.setCustomValidity('Masukkan nama acara.'); form.elements.title.reportValidity(); return; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) return;
+    const place = form.elements.place.value.trim();
+    if (editing) {
+      events[editing.k] = events[editing.k].filter(x => x !== editing.ev);
+      if (!events[editing.k].length) delete events[editing.k];
+      (events[date] = events[date] || []).push({ ...editing.ev, title, time, place });
+    } else {
+      (events[date] = events[date] || []).push({ id: (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)), time, title, place, done: false });
+    }
     saveEvents();
-    refreshEvents(editing.k);
+    state.selected = date;
+    render();
+    closeEventDialog();
     Sound.rustle(0.2);
-    dlg.close();
+    announce(`Acara ${title} disimpan untuk ${fullLabel(dateFromISO(date))}.`);
   });
-  $('#evCancel').addEventListener('click', () => dlg.close());
-  $('#evDelete').addEventListener('click', () => {
-    if (!editing || !editing.id) return;
-    events[editing.k] = (events[editing.k] || []).filter(x => x.id !== editing.id);
+  form.elements.title.addEventListener('input', () => form.elements.title.setCustomValidity(''));
+  $('#deleteEvent').addEventListener('click', () => {
+    if (!editing) return;
+    events[editing.k] = events[editing.k].filter(x => x !== editing.ev);
     if (!events[editing.k].length) delete events[editing.k];
     saveEvents();
-    refreshEvents(editing.k);
-    dlg.close();
+    render();
+    closeEventDialog();
+    announce('Acara dipadam.');
   });
-  function toggleDone(k, id) {
-    const ev = (events[k] || []).find(x => x.id === id);
-    if (!ev) return;
-    ev.done = !ev.done;
-    saveEvents();
-    refreshEvents(k);
-  }
-  $('#addEvent').addEventListener('click', () => openEventDialog(iso(padDate.y, padDate.m, padDate.d)));
+  dlg.querySelector('.close-dialog').addEventListener('click', closeEventDialog);
+  dlg.addEventListener('click', e => { if (e.target === dlg) closeEventDialog(); });
 
-  /* -------------------------------------------------------------- tabs */
-  function setTab(tab) {
-    const changed = card.dataset.tab !== tab;
-    card.dataset.tab = tab;
-    $$('.seg [role="tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
-    if (changed && !wide.matches) {
-      if (tab === 'day') renderDay('none');
-      if (tab === 'month' && (padDate.y !== view.y || padDate.m !== view.m)) showMonth(padDate.y, padDate.m, false);
-      const pane = tab === 'day' ? $('#paneDay') : $('#paneMonth');
-      if (!reducedMotion.matches) pane.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
-      if (card.getBoundingClientRect().top < 0) card.scrollIntoView({ block: 'start', behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  /* ------------------------------------------------------ import dialog */
+  const imp = $('#importDialog');
+  const impStatus = $('#importStatus');
+  function sourceListHTML() {
+    const list = Object.entries(sources);
+    if (!list.length) return '<p class="imp-empty">Belum ada kalendar diimport.</p>';
+    return `<ul class="imp-sources">${list.map(([sid, s]) => {
+      const n = (s.items || []).length;
+      const when = s.synced ? new Date(s.synced).toLocaleString('ms-MY', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+      return `<li><div><b>${esc(s.name)}</b><small>${n} acara · ${s.kind === 'url' ? 'langganan' : 'fail'}${when ? ' · ' + when : ''}</small></div><span>${s.kind === 'url' ? `<button type="button" data-sync="${sid}">Segerak</button>` : ''}<button type="button" data-remove="${sid}">Buang</button></span></li>`;
+    }).join('')}</ul>`;
+  }
+  function paintSources() { $('#importSources').innerHTML = sourceListHTML(); }
+  function status(msg, bad) { impStatus.textContent = msg; impStatus.classList.toggle('bad', !!bad); }
+  function addSource(name, kind, items, url) {
+    const sid = (kind === 'url' ? 'u' : 'f') + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    sources[sid] = { name: name || 'Kalendar', kind, url: url || '', synced: Date.now(), items };
+    saveSources(); rebuildImportIndex();
+    return sid;
+  }
+  function summarise(items) {
+    if (!items.length) return 'tiada acara dalam julat dua tahun';
+    const ds = items.map(i => i.date).sort();
+    const f = d => { const p = parseIso(d); return `${p.d} ${MS_MON3[p.m]} ${p.y}`; };
+    return `${items.length} acara (${f(ds[0])} – ${f(ds[ds.length - 1])})`;
+  }
+  function openImport(from) {
+    returnFocus = from || null;
+    themeDialog(imp);
+    paintSources();
+    status('');
+    imp.showModal();
+  }
+  $('#importFile').addEventListener('change', async e => {
+    const files = [...e.target.files];
+    e.target.value = '';
+    if (!files.length) return;
+    status('Membaca fail…');
+    const done = [];
+    for (const file of files) {
+      try {
+        const cals = await window.SehariImport.readFile(file);
+        cals.forEach(c => { addSource(c.name, 'file', c.items); done.push(`${c.name}: ${summarise(c.items)}`); });
+      } catch (err) { status(`${file.name}: ${err.message}`, true); paintSources(); return; }
     }
+    status('Diimport. ' + done.join('; ') + '.');
+    paintSources(); render();
+  });
+  $('#importUrlForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const url = e.target.elements.url.value.trim();
+    const name = e.target.elements.name.value.trim();
+    if (!url) return;
+    status('Memuat pautan…');
+    try {
+      const text = await window.SehariImport.fetchFeed(url);
+      const cal = window.SehariImport.parseICS(text);
+      addSource(name || cal.name || new URL(url.replace(/^webcals?:/i, 'https:')).hostname, 'url', cal.items, url);
+      e.target.reset();
+      status(`Dilanggan. ${summarise(cal.items)}. Akan disegerak semula setiap kali aplikasi dibuka.`);
+      paintSources(); render();
+    } catch (err) { status(err.message, true); }
+  });
+  async function syncSource(sid, quiet) {
+    const s = sources[sid];
+    if (!s || s.kind !== 'url') return;
+    try {
+      const cal = window.SehariImport.parseICS(await window.SehariImport.fetchFeed(s.url));
+      s.items = cal.items; s.synced = Date.now();
+      saveSources(); rebuildImportIndex();
+      if (!quiet) status(`${s.name} disegerak: ${summarise(cal.items)}.`);
+    } catch (err) { if (!quiet) status(`${s.name}: ${err.message}`, true); }
   }
-  $$('.seg [role="tab"]').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
-
-  /* ------------------------------------------------------------ themes */
-  function applyTheme(id) {
-    theme = THEMES.find(t => t.id === id) || THEMES[1];
-    shell.dataset.theme = theme.id;
-    document.body.dataset.bg = theme.id;
-    const meta = $('meta[name="theme-color"]');
-    if (meta) meta.content = theme.color;
-    $('#masthead').innerHTML = hook(theme.id, 'masthead', ctx(theme.id, padDate));
-    renderBase();
-    renderSummary();
-    renderDay('none');
-    setTab(theme.start);
-  }
+  $('#importSources').addEventListener('click', async e => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.remove) {
+      const sid = t.dataset.remove;
+      Object.keys(importDone).filter(k => k.startsWith(`imp:${sid}:`)).forEach(k => delete importDone[k]);
+      store.set('importDone', importDone);
+      delete sources[sid]; saveSources(); rebuildImportIndex();
+      status('Kalendar dibuang.'); paintSources(); render();
+    }
+    if (t.dataset.sync) { status('Menyegerak…'); await syncSource(t.dataset.sync); paintSources(); render(); }
+  });
+  imp.querySelector('.close-dialog').addEventListener('click', () => { imp.close(); if (returnFocus && returnFocus.isConnected) returnFocus.focus(); });
+  imp.addEventListener('click', e => { if (e.target === imp) imp.close(); });
+  // Re-sync subscriptions quietly when the app opens (at most every 3 hours).
+  setTimeout(async () => {
+    const due = Object.entries(sources).filter(([, s]) => s.kind === 'url' && Date.now() - (s.synced || 0) > 3 * 36e5);
+    for (const [sid] of due) await syncSource(sid, true);
+    if (due.length) render();
+  }, 1500);
 
   /* --------------------------------------------------------- onboarding */
   const onboard = $('#onboard');
   const obGrid = $('#obGrid');
   let obChoice = null;
-  function previewHTML(t) {
-    const bar = '<nav class="bottombar"><div class="seg"><span class="tab"' + (t.start === 'day' ? ' aria-selected="true"' : '') + '>Hari</span><span class="tab"' + (t.start === 'month' ? ' aria-selected="true"' : '') + '>Bulan</span></div><span class="btn-acara">+ Acara</span></nav>';
-    if (t.start === 'day') return `<div class="card preview" data-tab="day"><section class="pane pane-day"><div class="day-stack"><article class="sheet">${sheetHTML(t.id, padDate)}</article></div></section>${bar}</div>`;
-    return `<div class="card preview" data-tab="month"><section class="pane pane-month"><div class="masthead">${hook(t.id, 'masthead', ctx(t.id, padDate))}</div><div class="pages"><div class="page-base">${monthPageHTML(t.id, view.y, view.m)}</div></div><div class="summary">${summaryHTML(t.id, padDate)}</div></section>${bar}</div>`;
-  }
-  const fitPreviews = () => $$('.ob-prev', obGrid).forEach(el => el.style.setProperty('--s', (el.clientWidth / 400).toFixed(4)));
+  function previewState(s) { return { selected: state.selected, view: s.start, risoCompact: true, ledgerCompact: true }; }
+  const fitPreviews = () => obGrid.querySelectorAll('.ob-prev').forEach(el => el.style.setProperty('--s', (el.clientWidth / 390).toFixed(4)));
   function openOnboarding(first) {
-    obChoice = theme.id;
-    obGrid.innerHTML = THEMES.map((t, i) => `<div class="ob-tile" role="radio" tabindex="${t.id === obChoice ? 0 : -1}" aria-checked="${t.id === obChoice}" aria-label="${i + 1}. ${t.name}: ${t.ms}" data-id="${t.id}">
-      <span class="ob-prev" data-theme="${t.id}" inert><span class="ob-scale">${previewHTML(t)}</span></span>
-      <span class="ob-name" aria-hidden="true"><b>${i + 1}</b> · ${t.name}</span><span class="ob-desc" aria-hidden="true">${t.ms}</span></div>`).join('');
+    obChoice = style.id;
+    obGrid.innerHTML = STYLES.map(s => `<div class="ob-tile" role="radio" tabindex="${s.id === obChoice ? 0 : -1}" aria-checked="${s.id === obChoice}" aria-label="${s.no}. ${esc(s.name)}: ${esc(s.desc)}" data-id="${s.id}">
+      <span class="ob-prev"><span class="ob-scale">${screenElementHTML(s, previewState(s), { preview: true })}</span></span>
+      <span class="ob-name" aria-hidden="true"><b>${pad2(s.no)}</b> ${esc(s.name)}</span><span class="ob-desc" aria-hidden="true">${esc(s.desc)}</span></div>`).join('');
     $('#obClose').hidden = first;
     onboard.hidden = false;
     document.body.classList.add('ob-open');
-    shell.inert = true;
+    $('#app').inert = true;
     requestAnimationFrame(fitPreviews);
     paintChoice();
     setTimeout(() => (obGrid.querySelector('[aria-checked="true"]') || obGrid.firstElementChild).focus({ preventScroll: true }), 50);
   }
   function paintChoice() {
-    $$('.ob-tile', obGrid).forEach(b => { const on = b.dataset.id === obChoice; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
-    const t = THEMES.find(x => x.id === obChoice);
-    $('#obPicked').textContent = t ? `Dipilih: ${t.name}` : '';
+    obGrid.querySelectorAll('.ob-tile').forEach(b => { const on = b.dataset.id === obChoice; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+    const s = STYLES.find(x => x.id === obChoice);
+    $('#obPicked').textContent = s ? `Dipilih: ${s.name}` : '';
   }
-  function closeOnboarding() {
-    onboard.hidden = true;
-    document.body.classList.remove('ob-open');
-    shell.inert = false;
-    obGrid.innerHTML = '';
-  }
-  obGrid.addEventListener('click', e => {
-    const tile = e.target.closest('.ob-tile');
-    if (!tile) return;
-    obChoice = tile.dataset.id;
-    paintChoice();
-    Sound.rustle(0.2);
-  });
+  function closeOnboarding() { onboard.hidden = true; document.body.classList.remove('ob-open'); $('#app').inert = false; obGrid.innerHTML = ''; }
+  obGrid.addEventListener('click', e => { const t = e.target.closest('.ob-tile'); if (!t) return; obChoice = t.dataset.id; paintChoice(); Sound.rustle(0.2); });
   obGrid.addEventListener('dblclick', e => { if (e.target.closest('.ob-tile')) $('#obGo').click(); });
   obGrid.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      const tile = e.target.closest('.ob-tile');
-      if (tile) { e.preventDefault(); obChoice = tile.dataset.id; paintChoice(); if (e.key === 'Enter') $('#obGo').click(); }
-      return;
-    }
+    if (e.key === 'Enter' || e.key === ' ') { const t = e.target.closest('.ob-tile'); if (t) { e.preventDefault(); obChoice = t.dataset.id; paintChoice(); if (e.key === 'Enter') $('#obGo').click(); } return; }
     const keys = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 3, ArrowUp: -3 };
     if (!(e.key in keys)) return;
     e.preventDefault();
-    const i = clamp(THEMES.findIndex(t => t.id === obChoice) + keys[e.key], 0, THEMES.length - 1);
-    obChoice = THEMES[i].id;
-    paintChoice();
-    obGrid.children[i].focus();
+    const i = clamp(STYLES.findIndex(s => s.id === obChoice) + keys[e.key], 0, STYLES.length - 1);
+    obChoice = STYLES[i].id; paintChoice(); obGrid.children[i].focus();
   });
   $('#obGo').addEventListener('click', () => {
-    const changed = obChoice !== theme.id;
     store.set('theme', obChoice);
     closeOnboarding();
-    if (changed || !store.get('seen', false)) applyTheme(obChoice);
-    store.set('seen', true);
-    if (!reducedMotion.matches) card.animate([{ opacity: 0, transform: 'translateY(14px) rotate(-.6deg)' }, { opacity: 1, transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.3,1.2,.5,1)' });
+    applyStyle(obChoice);
+    if (!reducedMotion.matches) $('#app').animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.3,1.2,.5,1)' });
     $('#themeBtn').focus({ preventScroll: true });
   });
   $('#obClose').addEventListener('click', () => { closeOnboarding(); $('#themeBtn').focus(); });
   window.addEventListener('resize', () => { if (!onboard.hidden) fitPreviews(); });
 
+  function applyStyle(id) {
+    style = STYLES.find(s => s.id === id) || STYLES[1];
+    state.view = style.start; state.risoCompact = true; state.ledgerCompact = true;
+    document.body.dataset.style = style.id;
+    const meta = $('meta[name="theme-color"]');
+    if (meta) meta.content = style.color;
+    render();
+  }
+
   /* ------------------------------------------------------------ controls */
   $('#themeBtn').addEventListener('click', () => openOnboarding(false));
-  $('#todayBtn').addEventListener('click', () => {
-    const t = today();
-    showMonth(t.y, t.m);
-    selectDate(t);
-  });
+  $('#importBtn').addEventListener('click', e => openImport(e.currentTarget));
+  $('#todayBtn').addEventListener('click', () => { const k = TODAY; if (k.slice(0, 7) !== state.selected.slice(0, 7)) curlTo(() => { state.selected = k; }, k > state.selected ? 1 : -1); else selectDate(k); });
   const soundBtn = $('#soundBtn');
   const paintSound = () => { soundBtn.setAttribute('aria-pressed', String(Sound.on)); soundBtn.textContent = Sound.on ? 'Bunyi: Ya' : 'Bunyi: Tidak'; };
   soundBtn.addEventListener('click', () => { Sound.toggle(); paintSound(); Sound.rustle(0.25); });
   paintSound();
-
   document.addEventListener('keydown', e => {
-    if (e.target.closest && e.target.closest('textarea, input, [contenteditable], dialog')) return;
-    if (e.key === 'Escape' && !onboard.hidden && !$('#obClose').hidden) { closeOnboarding(); $('#themeBtn').focus(); return; }
-    if (!onboard.hidden) return;
-    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-    if (e.altKey || e.ctrlKey || e.metaKey) return;
-    const dir = e.key === 'ArrowRight' ? 1 : -1;
+    if (e.target.closest && e.target.closest('textarea, input, dialog')) return;
+    if (e.key === 'Escape' && !onboard.hidden && !$('#obClose').hidden) { closeOnboarding(); return; }
+    if (!onboard.hidden || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') || e.altKey || e.ctrlKey || e.metaKey) return;
     e.preventDefault();
-    if (e.shiftKey || !dayVisible()) stepMonth(dir); else stepDay(dir);
+    const dir = e.key === 'ArrowRight' ? 1 : -1;
+    if (e.shiftKey) shiftDate({ months: dir }); else shiftDate({ days: dir });
   });
-  wide.addEventListener('change', () => { renderDay('none'); if (!wide.matches) setTab(card.dataset.tab); });
 
   /* ---------------------------------------------------------- installable */
   let installEvt = null;
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    installEvt = e;
-    $('#installBtn').hidden = false;
-  });
-  $('#installBtn').addEventListener('click', async () => {
-    if (!installEvt) return;
-    installEvt.prompt();
-    try { await installEvt.userChoice; } catch { /* dismissed */ }
-    installEvt = null;
-    $('#installBtn').hidden = true;
-  });
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; $('#installBtn').hidden = false; });
+  $('#installBtn').addEventListener('click', async () => { if (!installEvt) return; installEvt.prompt(); try { await installEvt.userChoice; } catch { /* dismissed */ } installEvt = null; $('#installBtn').hidden = true; });
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
     window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
   }
 
   /* --------------------------------------------------------------- start */
   const saved = store.get('theme', null);
-  applyTheme(saved || 'kuda');
-  if (!saved || !THEMES.some(t => t.id === saved)) openOnboarding(true);
+  applyStyle(saved || 'kuda');
+  if (!saved || !STYLES.some(s => s.id === saved)) openOnboarding(true);
 
-  // a tiny hook for automated checks
-  window.__sehari = { showMonth, stepMonth, selectDate, stepDay, applyTheme, setTab, view, get padDate() { return padDate; }, beginFlip, setCurl, endFlip, openOnboarding };
+  window.__sehari = { applyStyle, selectDate, shiftDate, state, get style() { return style; }, openOnboarding, openImport, sources, rebuildImportIndex, render };
 })();

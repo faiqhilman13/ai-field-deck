@@ -4,108 +4,89 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sehari Selembar · Kalendar Fakta &amp; Peribahasa</title>
-  <meta name="description" content="Kalendar gaya lama Malaysia: setiap hari ada fakta Malaysia, peribahasa beserta maksudnya, dan jadual acara anda.">
-  <meta name="theme-color" content="#b72a22">
+  <meta name="description" content="Kalendar gaya lama Malaysia: fakta, peribahasa dan jadual acara untuk setiap hari, dalam sembilan gaya. Import dari Google Calendar, Apple Calendar, Outlook atau Notion.">
+  <meta name="theme-color" content="#c4312b">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Sehari Selembar">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700;800&family=Kalam:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Special+Elite&family=Yellowtail&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&display=swap&text=%E5%88%9D%E4%B8%80%E4%BA%8C%E4%B8%89%E5%9B%9B%E4%BA%94%E5%85%AD%E4%B8%83%E5%85%AB%E4%B9%9D%E5%8D%81%E5%BB%BF%E5%8D%85%E6%AD%A3%E5%86%AC%E8%85%8A%E6%9C%88%E9%97%B0%E6%97%A5%E6%98%9F%E6%9C%9F%E5%86%9C%E5%8E%86%E5%B9%B4%E7%94%B2%E4%B9%99%E4%B8%99%E4%B8%81%E6%88%8A%E5%B7%B1%E5%BA%9A%E8%BE%9B%E5%A3%AC%E7%99%B8%E5%AD%90%E4%B8%91%E5%AF%85%E5%8D%AF%E8%BE%B0%E5%B7%B3%E5%8D%88%E6%9C%AA%E7%94%B3%E9%85%89%E6%88%8C%E4%BA%A5%E9%BC%A0%E7%89%9B%E8%99%8E%E5%85%94%E9%BE%99%E8%9B%87%E9%A9%AC%E7%BE%8A%E7%8C%B4%E9%B8%A1%E7%8B%97%E7%8C%AA%E4%BA%9A%E6%88%90%E7%88%B6%E6%9D%82%E8%B4%A7%E5%BA%97%E5%A4%87%E5%BF%98%E8%B0%A2%E6%83%A0%E9%A1%BE%E8%80%90%E7%94%A8%E5%AF%A6%E5%A4%A9%E9%80%B2%E6%AD%A5%E9%A6%AC%E7%89%8C%E6%9B%86%E6%96%B0%E6%97%A9%E5%92%96%E5%95%A1%E8%B2%A8" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@500;700&display=swap&text=%E0%AE%9C%E0%AE%A9%E0%AE%B5%E0%AE%B0%E0%AE%BF%E0%AE%AA%E0%AF%8D%E0%AE%AE%E0%AE%BE%E0%AE%9A%E0%AE%8F%E0%AE%B2%E0%AF%87%E0%AF%82%E0%AF%88%E0%AE%86%E0%AE%95%E0%AE%B8%E0%AE%9F%E0%AF%86%E0%AE%85%E0%AF%8B%E0%AE%A8%E0%AE%9E%E0%AE%AF%E0%AE%B1%E0%AF%81%E0%AE%A4%E0%AE%99%E0%AE%B3%E0%AE%B4" rel="stylesheet">
+  <link rel="stylesheet" href="design.css">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="themes/tearoff.css">
-  <link rel="stylesheet" href="themes/kuda.css">
-  <link rel="stylesheet" href="themes/kopitiam.css">
-  <link rel="stylesheet" href="themes/runcit.css">
-  <link rel="stylesheet" href="themes/batik.css">
-  <link rel="stylesheet" href="themes/postcard.css">
-  <link rel="stylesheet" href="themes/stamp.css">
-  <link rel="stylesheet" href="themes/riso.css">
-  <link rel="stylesheet" href="themes/midnight.css">
 </head>
-<body data-bg="kuda">
-  <div class="shell" id="shell" data-theme="kuda">
+<body data-style="kuda">
+  <div class="app" id="app">
     <header class="topbar">
       <span class="brand">Sehari Selembar</span>
-      <div class="top-actions">
-        <button type="button" class="chip" id="todayBtn">Hari Ini</button>
+      <nav class="top-actions" aria-label="Aplikasi">
+        <button type="button" class="chip" id="todayBtn">Hari ini</button>
         <button type="button" class="chip" id="themeBtn" aria-haspopup="dialog">Gaya</button>
+        <button type="button" class="chip" id="importBtn" aria-haspopup="dialog">Import</button>
         <button type="button" class="chip" id="soundBtn" aria-pressed="true">Bunyi</button>
         <button type="button" class="chip" id="installBtn" hidden>Pasang</button>
-      </div>
-    </header>
-
-    <main class="card" id="card" data-tab="month">
-      <section class="pane pane-month" id="paneMonth" aria-label="Paparan bulan">
-        <div class="masthead" id="masthead"></div>
-        <div class="pages" id="pages">
-          <div class="page-base" id="pageBase"></div>
-          <div class="flip-shade" id="flipShade" aria-hidden="true"></div>
-        </div>
-        <div class="summary" id="summary" aria-live="polite"></div>
-      </section>
-
-      <section class="pane pane-day" id="paneDay" aria-label="Paparan hari">
-        <div class="day-stack" id="dayStack" aria-live="polite"></div>
-      </section>
-
-      <nav class="bottombar" aria-label="Paparan">
-        <div class="seg" role="tablist">
-          <button type="button" role="tab" data-tab="day" id="tabDay">Hari</button>
-          <button type="button" role="tab" data-tab="month" id="tabMonth">Bulan</button>
-        </div>
-        <button type="button" class="btn-acara" id="addEvent"><span aria-hidden="true">+</span> Acara</button>
       </nav>
+    </header>
+    <main class="desk">
+      <div class="stage" id="stage"><div class="flip-shade" id="flipShade" aria-hidden="true"></div></div>
+      <section class="leaf" id="leaf" aria-label="Helaian hari ini" aria-live="polite"></section>
     </main>
-
-    <p class="smallprint">Leret halaman untuk selak bulan, leret helaian untuk koyak hari. Cuti bertanda * bergantung pada anak bulan. Tarikh Hijrah ikut takwim Malaysia bila diketahui, selainnya anggaran.</p>
-
-    <dialog class="sheet-dialog" id="eventDialog" aria-labelledby="evTitle">
-      <form method="dialog" id="eventForm">
-        <h2 id="evTitle">Acara Baharu</h2>
-        <p class="ev-when" id="evWhen"></p>
-        <label>Masa <input type="time" name="time" required value="09:00"></label>
-        <label>Acara <input type="text" name="title" required maxlength="80" placeholder="cth: Mesyuarat, Makan keluarga" autocomplete="off"></label>
-        <label>Tempat <small>(pilihan)</small> <input type="text" name="place" maxlength="80" placeholder="cth: Rumah Mak Long" autocomplete="off"></label>
-        <div class="dlg-actions">
-          <button type="button" class="dlg-del" id="evDelete" hidden>Padam</button>
-          <button type="button" class="dlg-cancel" id="evCancel">Batal</button>
-          <button type="submit" class="btn-acara" value="save">Simpan</button>
-        </div>
-      </form>
-    </dialog>
+    <p class="smallprint">Leret ke kiri atau kanan untuk tukar bulan, atau tukar hari pada paparan Hari. Tarikh merah ialah Ahad dan cuti umum; yang bertanda * bergantung pada anak bulan.</p>
   </div>
+
+  <dialog id="eventDialog" class="event-dialog" aria-labelledby="eventTitle">
+    <form id="eventForm">
+      <div class="dialog-heading"><h2 id="eventTitle">Tambah acara</h2><button type="button" class="close-dialog" aria-label="Tutup">×</button></div>
+      <label>Nama acara<input name="title" autocomplete="off" placeholder="Contoh: Makan keluarga" maxlength="80" required></label>
+      <div class="form-row"><label>Tarikh<input name="date" type="date" min="1900-01-01" max="2100-12-31" required></label><label>Masa<input name="time" type="time" value="09:00" required></label></div>
+      <label>Tempat <span>(pilihan)</span><input name="place" autocomplete="off" placeholder="Rumah, pejabat…" maxlength="100"></label>
+      <button class="save-event" type="submit">Simpan acara</button>
+      <button class="delete-event" type="button" id="deleteEvent" hidden>Padam acara ini</button>
+    </form>
+  </dialog>
+
+  <dialog id="importDialog" class="event-dialog import-dialog" aria-labelledby="importTitle">
+    <div class="dialog-heading"><h2 id="importTitle">Import kalendar</h2><button type="button" class="close-dialog" aria-label="Tutup">×</button></div>
+    <p class="imp-lead">Bawa masuk acara dari kalendar yang anda guna sekarang. Semuanya kekal dalam pelayar ini.</p>
+
+    <section class="imp-block">
+      <h3>Dari fail</h3>
+      <label class="imp-drop">Pilih fail .ics, .zip atau .csv<input id="importFile" type="file" accept=".ics,.ical,.ifb,.zip,.csv,text/calendar,text/csv,application/zip" multiple></label>
+      <details><summary>Google Calendar</summary><p>Di komputer, buka calendar.google.com → Tetapan → <b>Import &amp; eksport</b> → <b>Eksport</b>. Pilih fail .zip yang dimuat turun di sini; tak perlu nyahzip.</p></details>
+      <details><summary>Apple Calendar (Mac / iCloud)</summary><p>Mac: pilih kalendar, kemudian <b>Fail → Eksport → Eksport…</b> untuk dapatkan fail .ics. iPhone: kongsi kalendar sebagai <b>Kalendar Awam</b> di iCloud dan guna pautan di bawah.</p></details>
+      <details><summary>Outlook</summary><p>Outlook web: <b>Tetapan → Kalendar → Kalendar dikongsi → Terbitkan kalendar</b>, salin pautan ICS ke bahagian pautan. Outlook desktop: <b>Fail → Simpan Kalendar</b> sebagai .ics.</p></details>
+      <details><summary>Notion</summary><p>Pada pangkalan data kalendar Notion, tekan <b>••• → Export → Markdown &amp; CSV</b>. Pilih fail .csv (atau .zip) di sini. Lajur nama dan tarikh dikesan sendiri.</p></details>
+    </section>
+
+    <section class="imp-block">
+      <h3>Dari pautan langganan</h3>
+      <form id="importUrlForm" class="imp-url">
+        <label>Pautan iCal<input name="url" type="url" inputmode="url" placeholder="https://… atau webcal://…" required autocomplete="off"></label>
+        <label>Nama <span>(pilihan)</span><input name="name" maxlength="60" placeholder="cth: Kerja" autocomplete="off"></label>
+        <button class="save-event" type="submit">Langgan</button>
+      </form>
+      <details><summary>Di mana pautannya?</summary><p><b>Google:</b> Tetapan kalendar → Integrasikan kalendar → <b>Alamat rahsia dalam format iCal</b>. <b>Apple:</b> Kongsi kalendar → Kalendar Awam → salin pautan webcal://. <b>Outlook:</b> pautan ICS dari Terbitkan kalendar. <b>Notion Calendar:</b> mana-mana kalendar yang memberi pautan .ics.</p><p>Langganan disegerak semula bila aplikasi dibuka. Pautan rahsia memberi akses baca kepada kalendar itu, jadi jangan kongsi.</p></details>
+    </section>
+
+    <p class="imp-status" id="importStatus" role="status" aria-live="polite"></p>
+    <section class="imp-block"><h3>Kalendar diimport</h3><div id="importSources"></div></section>
+  </dialog>
 
   <div class="onboard" id="onboard" hidden>
     <div class="ob-inner" role="dialog" aria-modal="true" aria-labelledby="obTitle">
-      <button type="button" class="ob-close" id="obClose" aria-label="Tutup" hidden>✕</button>
-      <p class="ob-kicker">Selamat datang ke <b>Sehari Selembar</b></p>
-      <h1 id="obTitle">Pilih gaya kalendar anda</h1>
-      <p class="ob-sub">Setiap hari ada satu fakta Malaysia dan satu peribahasa. Pilih rupa yang paling dekat di hati. Boleh tukar bila-bila masa melalui butang <b>Gaya</b>.</p>
+      <button type="button" class="ob-close" id="obClose" aria-label="Tutup" hidden>×</button>
+      <p class="eyebrow">SEHARI SELEMBAR · KALENDAR MALAYSIA</p>
+      <h1 id="obTitle">Hari yang sama. Sembilan cara.</h1>
+      <p class="ob-sub">Setiap hari ada satu fakta Malaysia dan satu peribahasa. Pilih rupa kalendar anda; boleh tukar bila-bila masa melalui <b>Gaya</b>.</p>
       <div class="ob-grid" id="obGrid" role="radiogroup" aria-label="Gaya kalendar"></div>
-      <div class="ob-bar">
-        <span class="ob-picked" id="obPicked"></span>
-        <button type="button" class="ob-go" id="obGo">Guna gaya ini <span aria-hidden="true">→</span></button>
-      </div>
+      <div class="ob-bar"><span class="ob-picked" id="obPicked"></span><button type="button" class="ob-go" id="obGo">Guna gaya ini →</button></div>
     </div>
   </div>
 
+  <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
   <script src="data/holidays.js"></script>
   <script src="data/facts.js"></script>
   <script src="data/peribahasa.js"></script>
-  <script src="themes/tearoff.js"></script>
-  <script src="themes/kuda.js"></script>
-  <script src="themes/kopitiam.js"></script>
-  <script src="themes/runcit.js"></script>
-  <script src="themes/batik.js"></script>
-  <script src="themes/postcard.js"></script>
-  <script src="themes/stamp.js"></script>
-  <script src="themes/riso.js"></script>
-  <script src="themes/midnight.js"></script>
+  <script src="import.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

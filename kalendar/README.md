@@ -1,46 +1,70 @@
 # Sehari Selembar
 
-A nostalgic Malaysian calendar app with nine styles to choose from. Every day has a sheet to tear off, with a **Tahukah Anda?** fact about Malaysia and a **peribahasa** with its maksud, an English explanation and an example sentence.
+A nostalgic Malaysian calendar app with nine styles. Every day has a **Tahukah Anda?** fact about Malaysia and a **peribahasa** with its maksud, an English explanation and an example sentence. You can keep your own appointments or import them from Google Calendar, Apple Calendar, Outlook or Notion.
 
-It is static HTML, CSS and JS with no build step. Netlify publishes it at `/kalendar/`.
+It is static HTML, CSS and JS with no build step. Netlify publishes it at `/kalendar/`. The only server code is the small iCal proxy for subscription links.
 
-## Nine styles
+## The nine styles
 
-The first visit opens a picker showing live previews of nine styles. You can change style any time with the **Gaya** button.
+The screens are a 1:1 port of the [msia-calendar](https://github.com/faiqhilman13/msia-calendar) studies. That covers their markup, `design.css`, local fonts, and the print atlas, postcard, batik and paper-grain artwork, re-encoded from PNG to WebP (12 MB down to 2.4 MB). A pixel diff against the original pages differs by at most 0.6% of pixels, all of it text anti-aliasing.
 
-1. **Tear-off.** A red-bound daily pad with a huge red date.
-2. **Kalendar Kuda.** A red grid with blue numbers and the horse.
-3. **Kopitiam Ledger.** A green ledger book where each day is a row.
-4. **Kedai Runcit.** "HARI HARI" in yellow and red, with a shelf of goods.
-5. **Batik Margin.** A serif title with a navy-and-gold batik border.
-6. **Postcard Month.** A shophouse street postcard header.
-7. **Rubber Stamp.** A *Pelan Jadual Harian* form with a KHAMIS stamp and a seal.
-8. **Riso Pop.** Red and blue riso print, a hibiscus, the twin towers and a bus.
-9. **Midnight Almanac.** Dark, with a crescent moon and gold line-art.
+1. Tear-off
+2. Kalendar Kuda
+3. Kopitiam Ledger
+4. Kedai Runcit
+5. Batik Margin
+6. Postcard Month
+7. Rubber Stamp
+8. Riso Pop
+9. Midnight Almanac
 
-Every style has the same pieces:
-- a **Bulan** view: the month grid, or a ledger in Kopitiam, plus the selected day's agenda
-- a **Hari** view: the daily sheet with the date in Malay, English, Chinese and Tamil, the Hijri and lunar dates, the day's agenda, a *Tahukah Anda?* fact, a peribahasa and a notes field
-- **+ Acara** to add events: a time, a title and an optional place. Tap an event to edit or delete it, and tick it when it's done.
+On first launch you pick a style from a gallery of live previews. The **Gaya** button reopens it.
 
-Months flip with a page curl: swipe the page sideways, drag it up with a mouse, or use the arrows. Days tear off: swipe a sheet left, or use Esok and Semalam. On a wide screen, Bulan and Hari sit side by side.
+## What the app adds around each screen
+
+- **The daily leaf.** A second page set in the chosen design's paper, ink and type. It holds:
+  - the date, Hijri and Chinese lunar dates, and any public holiday
+  - the fact and peribahasa, with a reroll button for each
+  - notes, and an "Urus acara" list to edit or delete your events
+- **Animations.** Moving months lifts the page with a curl. Moving days on a day page (Tear-off, or any Hari view) tears the sheet off.
+- **Holidays.** Sundays and public holidays print in the design's red.
+- **One shared agenda.** Events are shared across all nine styles. Tap an event row to mark it done.
+
+## Import
+
+**Import** accepts:
+
+- **Files:** `.ics`, Google Calendar's export `.zip` (no need to unzip) and Notion CSV exports. These come from:
+  - Google Calendar: Tetapan → Import & eksport → Eksport
+  - Apple Calendar: Fail → Eksport
+  - Outlook: Simpan Kalendar
+  - Notion: Export → CSV
+- **Subscription links:** `https://` or `webcal://` iCal links, such as Google's secret iCal address, iCloud public calendars and Outlook published calendars. Each one re-syncs when the app opens, at most every 3 hours.
+
+The parser, `import.js`, handles:
+- timezones, including Outlook's Windows zone names
+- recurring events: daily, weekly, monthly and yearly, with COUNT/UNTIL/INTERVAL/BYDAY/BYMONTHDAY, EXDATE and RECURRENCE-ID
+- multi-day all-day events and cancelled events
+- Notion date formats such as `October 1, 2026 9:00 AM (GMT+8)` and `A → B` ranges
+
+Imported calendars are stored separately from your own events, so a re-sync never overwrites them. Removing a calendar removes its events.
+
+Subscription links are fetched by `netlify/functions/ics-proxy.mjs` at `/api/ics`, because most calendar hosts don't allow browsers to fetch them directly. It accepts only public http(s) hosts, re-checks every redirect, caps size and time, and returns only iCal.
 
 ## Files
 
 | File | What it holds |
 |---|---|
-| `index.html`, `styles.css`, `app.js` | the app |
-| `data/facts.js` | `window.KALENDAR_FACTS`: `{ cat, t, on? }`. `on: "MM-DD"` pins a fact to that date every year. |
-| `data/peribahasa.js` | `window.KALENDAR_PERIBAHASA`: `{ p, jenis, maksud, en, contoh }` |
-| `data/holidays.js` | `window.KALENDAR_HOLIDAYS`: gazetted federal holidays for 2025–2027, keyed by ISO date |
+| `index.html`, `styles.css`, `app.js` | app shell, leaf, dialogs, onboarding |
+| `design.css`, `assets/` | the nine designs, fonts and artwork, ported 1:1 |
+| `import.js` | ICS / zip / CSV import |
+| `data/facts.js`, `data/peribahasa.js`, `data/holidays.js` | daily content and gazetted holidays for 2025–2027 |
 | `sw.js`, `manifest.webmanifest`, `icons/` | offline support and install on a phone |
-
-Each day gets the same fact and peribahasa every time you open it. The day number indexes a fixed shuffle of each list, so consecutive days never repeat until the whole list has cycled.
-
-Hijri dates come from the browser's Umm al-Qura calendar. They are then corrected with the gazetted Islamic holidays, because Malaysia starts its months by its own moon sighting. For years outside the holiday table, holidays are estimated from the lunar and Hijri calendars and marked with `*`.
 
 ## Run locally
 
 ```sh
 npx http-server -p 8080 .   # from the repo root, then open http://localhost:8080/kalendar/
 ```
+
+Subscription links only work under `netlify dev` or when deployed, because they need the proxy function. File imports work anywhere.
