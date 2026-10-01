@@ -72,7 +72,7 @@
     <g fill="${BLUE}" stroke="none"><circle cx="34" cy="178" r="3.5"/><circle cx="108" cy="178" r="3.5"/><path d="M3 166h6v6H3zM140 166h7v6h-7z"/></g>
   </g></svg>`;
 
-  const SMALL_HIB = `<svg class="riso-mini" viewBox="-80 -80 160 160" aria-hidden="true"><g style="mix-blend-mode:multiply">${L(10, 10, 35, 70, 18, 12)}${L(-10, 10, 140, 64, 17, 12)}</g><g style="mix-blend-mode:multiply" transform="scale(.9)">${petals}<circle r="7" fill="#b3221d"/></g></svg>`;
+  const SMALL_HIB = `<svg class="riso-mini" viewBox="-90 -90 180 180" aria-hidden="true"><circle cx="40" cy="-44" r="36" fill="${RED}" opacity=".9"/>${L(-4, -4, -112, 84, 28, 14)}${L(6, 6, 18, 80, 27, 14)}${L(-6, 8, 160, 76, 25, 12)}${L(0, 10, 100, 70, 22, 12)}<g transform="rotate(-8) scale(.7)">${petals}<circle r="6" fill="#c42a24"/></g></svg>`;
 
   (window.SEHARI_THEMES = window.SEHARI_THEMES || {}).riso = {
     titleArt,

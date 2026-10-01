@@ -30,11 +30,11 @@
 
 /* ------------------------------------------------------------ title */
 [data-theme="batik"] .mtitle { display: block; padding: 18px 0 20px; text-align: left; border-bottom: 2px solid rgba(18, 41, 74, .3); }
-[data-theme="batik"] .mt-main { font: 900 min(59px, calc(145cqi / var(--n, 7)))/.94 var(--f-display); letter-spacing: 0; color: #10294b; transform: scaleX(.9); transform-origin: 0 0; }
+[data-theme="batik"] .mt-main { font: 900 min(59px, calc(150cqi / var(--n, 7)))/.94 var(--f-display); letter-spacing: 0; color: #10294b; transform: scaleX(.9); transform-origin: 0 0; }
 [data-theme="batik"] .mt-year { display: block; }
 [data-theme="batik"] .mt-sub [lang="ta"] { font-weight: 500; font-size: 15px; }
 [data-theme="batik"] .mt-sub { justify-content: flex-start; gap: 18px; margin-top: 12px; font: 600 16px/1.2 var(--f-serif); letter-spacing: .03em; color: #10294b; }
-[data-theme="batik"] .bk-nav { position: absolute; right: -8px; top: calc(3px + 1.41 * min(59px, calc(145cqi / var(--n, 7)))); display: flex; gap: 2px; }
+[data-theme="batik"] .bk-nav { position: absolute; right: -8px; top: calc(3px + 1.41 * min(59px, calc(150cqi / var(--n, 7)))); display: flex; gap: 2px; }
 [data-theme="batik"] .mnav { width: 30px; height: 30px; color: #b8862e; font-size: 24px; opacity: .85; }
 
 /* ------------------------------------------------------------- grid */

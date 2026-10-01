@@ -44,7 +44,7 @@
 [data-theme="runcit"] .rc-shelf { position: relative; margin-top: -.5cqi; }
 [data-theme="runcit"] .rc-art { display: block; width: 100%; height: auto; }
 [data-theme="runcit"] .rc-zh {
-  position: absolute; right: 1cqi; top: -.5cqi;
+  position: absolute; right: .5cqi; top: 1cqi;
   display: flex; gap: 0; color: var(--rc-red);
   font: 900 10.6cqi/1 var(--f-zh) !important; letter-spacing: 0 !important;
 }
@@ -140,7 +140,7 @@
 [data-theme="runcit"] .btn-acara {
   padding: 11px clamp(16px, 8cqi, 40px) 10px; border-radius: 10px; white-space: nowrap;
   background: radial-gradient(120% 140% at 50% 20%, #d0262f, #a3121b);
-  font: 600 22px/1 var(--f-cond); letter-spacing: .03em;
+  font: 600 clamp(18px, 5.6cqi, 22px)/1 var(--f-cond); letter-spacing: .03em;
   box-shadow: 0 2px 0 #6e0d12, 0 3px 6px rgba(80, 10, 10, .25);
 }
 [data-theme="runcit"] .btn-acara span { font-weight: 500; margin-right: 4px; }

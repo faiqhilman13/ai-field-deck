@@ -6,7 +6,7 @@
   --ink: #2450a6; --num-ink: #2450a6; --muted: #7d8db3; --rule: #e8403a;
   --accent: #e8403a; --sun: #e8403a;
   --sel-bg: #e8403a; --sel-ink: #fff;
-  --f-title: var(--f-cond); --f-num: var(--f-cond); --f-ui: var(--f-cond); --f-body: var(--f-cond);
+  --f-title: var(--f-cond); --f-num: var(--f-cond); --f-ui: var(--f-cond); --f-body: var(--f-sans);
   --card-bg: #fbf6ea; --card-line: rgba(36, 80, 166, .45);
   --seg-line: #2450a6; --seg-ink: #2450a6; --seg-on-bg: #2450a6; --seg-bg: #fffdf8; --seg-radius: 9px;
   --btn-radius: 9px;
@@ -83,13 +83,12 @@
 [data-theme="riso"] .sh-my { color: var(--r-red); font-size: 26px; letter-spacing: .04em; }
 [data-theme="riso"] .sh-alt { color: var(--r-blue); font-size: 13px; }
 [data-theme="riso"] .sh-date { text-align: left; min-height: 220px; }
-[data-theme="riso"] .sh-num { position: relative; z-index: 1; margin-top: 10px; font-family: var(--f-cond); font-weight: 800; font-size: clamp(150px, 52cqi, 220px); line-height: .82; color: var(--r-blue); -webkit-text-stroke: 4px currentColor; text-shadow: 4px 3px 0 rgba(232, 64, 58, .35); -webkit-mask-image: var(--riso-speck); mask-image: var(--riso-speck); -webkit-mask-size: 160px; mask-size: 160px; }
+[data-theme="riso"] .sh-num { position: relative; z-index: 1; margin-top: 10px; font-family: var(--f-cond); font-weight: 800; font-size: clamp(150px, 54cqi, 230px); line-height: .8; transform: scaleX(1.12); transform-origin: 0 50%; display: inline-block; color: var(--r-blue); -webkit-text-stroke: 4px currentColor; text-shadow: 4px 3px 0 rgba(232, 64, 58, .35); -webkit-mask-image: var(--riso-speck); mask-image: var(--riso-speck); -webkit-mask-size: 160px; mask-size: 160px; }
 [data-theme="riso"] .sh-num.red { color: var(--r-red); text-shadow: 4px 3px 0 rgba(36, 80, 166, .3); }
 [data-theme="riso"] .sh-dayname { position: relative; z-index: 1; margin-top: 10px; font-family: var(--f-cond); font-weight: 800; font-size: 34px; letter-spacing: .14em; color: var(--r-blue); }
 [data-theme="riso"] .sh-dayname.red { color: var(--r-red); }
 [data-theme="riso"] .sh-langs { position: relative; z-index: 1; justify-content: flex-start; gap: 18px; color: var(--r-blue); border-top: 3px solid var(--r-red); border-bottom: 1px solid rgba(36, 80, 166, .25); }
-[data-theme="riso"] .riso-dart { position: absolute; right: -14px; top: 0; width: 52%; pointer-events: none; }
-[data-theme="riso"] .riso-dart::before { content: ""; position: absolute; right: 8%; top: 2%; width: 38%; aspect-ratio: 1; border-radius: 50%; background: var(--r-red); opacity: .9; }
+[data-theme="riso"] .riso-dart { position: absolute; right: -14px; top: -6px; width: 58%; pointer-events: none; }
 [data-theme="riso"] .riso-mini { position: relative; display: block; width: 100%; height: auto; }
 [data-theme="riso"] .sh-meta { justify-content: flex-start; color: var(--r-blue); opacity: .8; }
 [data-theme="riso"] .sh-hol { align-self: flex-start; }
@@ -98,7 +97,7 @@
 [data-theme="riso"] .c-card { border: 2px solid var(--r-blue); border-radius: 8px; box-shadow: 3px 3px 0 rgba(232, 64, 58, .35); }
 [data-theme="riso"] .c-kick { font-family: var(--f-cond); font-style: normal; font-weight: 800; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; color: var(--r-red); }
 [data-theme="riso"] .c-tag { color: var(--r-blue); }
-[data-theme="riso"] .c-body p, [data-theme="riso"] .pb-v { color: var(--r-navy); font: 500 17px/1.45 var(--f-cond); }
+[data-theme="riso"] .c-body p, [data-theme="riso"] .pb-v { color: var(--r-navy); font: 400 15.5px/1.5 var(--f-sans); }
 [data-theme="riso"] .c-icon { color: #fff; background: var(--r-blue); }
 [data-theme="riso"] .pb-p { color: var(--r-blue); font: 700 24px/1.2 var(--f-cond); letter-spacing: .01em; }
 [data-theme="riso"] .pb-k { color: var(--r-red); }
@@ -108,3 +107,4 @@
 [data-theme="riso"] .sh-nav { border-top: 3px solid var(--r-red); color: var(--r-blue); }
 [data-theme="riso"] .sh-nav button { border-width: 2px; border-color: var(--r-blue); color: var(--r-blue); border-radius: 8px; }
 [data-theme="riso"] .cell.sel .dot { display: none; }
+[data-theme="riso"] .sh-alt, [data-theme="riso"] .sh-meta, [data-theme="riso"] .sh-nav { font-weight: 700; }

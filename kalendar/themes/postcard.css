@@ -7,7 +7,7 @@
   --sel-bg: #e88a7b; --sel-ink: #fff;
   --f-title: var(--f-display); --f-num: var(--f-serif); --f-ui: var(--f-serif);
   --card-bg: #fbf3e2; --card-line: rgba(224, 88, 77, .4);
-  --seg-line: #d9897c; --seg-ink: #4a4f5c; --seg-on-bg: #fbf3e2; --seg-on-ink: #15294a; --seg-bg: #fbf3e2;
+  --seg-line: #d9897c; --seg-ink: #3a4254; --seg-on-bg: #fbf3e2; --seg-on-ink: #15294a; --seg-bg: #fbf3e2;
   --btn-bg: #e0584d; --btn-radius: 8px; --seg-radius: 7px;
   --note-ink: #2d4f86;
 }
@@ -15,7 +15,7 @@
   --pad: 9px; --radius: 3px;
   border: 0;
   padding-top: 8px;
-  background: radial-gradient(120% 90% at 50% 40%, rgba(248, 234, 208, .72) 55%, rgba(236, 216, 180, .6)), var(--grain), var(--paper);
+  background: radial-gradient(120% 90% at 50% 40%, rgba(248, 231, 204, .86) 55%, rgba(240, 220, 186, .8)), var(--grain), var(--paper);
   background-size: auto, 180px 180px, auto;
   box-shadow: inset 0 0 0 1px rgba(150, 120, 80, .25), inset 0 0 18px rgba(150, 110, 60, .18), 0 1px 2px rgba(0,0,0,.2), 0 20px 34px -14px rgba(20, 40, 60, .45);
 }
@@ -25,9 +25,9 @@
 [data-theme="postcard"] .mh-post { position: relative; aspect-ratio: 384 / 242; overflow: hidden; border-radius: 2px; box-shadow: 0 0 0 1px rgba(110, 85, 55, .35); }
 [data-theme="postcard"] .pc-scene { display: block; width: 100%; height: 100%; }
 [data-theme="postcard"] .pc-hello { position: absolute; top: 8%; right: 5%; margin: 0; display: flex; flex-direction: column; align-items: center; color: #1c3150; transform: rotate(-3deg); text-shadow: 0 0 6px rgba(255, 246, 228, .55); }
-[data-theme="postcard"] .pc-hello span { font: italic 400 clamp(15px, 4.9cqi, 21px)/1 var(--f-hand); letter-spacing: .01em; }
+[data-theme="postcard"] .pc-hello span { font: italic 400 clamp(14px, 4.4cqi, 19px)/1 var(--f-hand); letter-spacing: .01em; }
 [data-theme="postcard"] .pc-hello .pc-ke { font-size: clamp(14px, 4.4cqi, 19px); }
-[data-theme="postcard"] .pc-hello b { margin-top: 1px; font: 700 clamp(14px, 4.6cqi, 19px)/1 var(--f-cond); letter-spacing: .16em; color: #1c2c48; }
+[data-theme="postcard"] .pc-hello b { margin-top: 1px; font: 700 clamp(15px, 4.8cqi, 20px)/1 var(--f-cond); letter-spacing: .2em; color: #1c2c48; }
 
 /* ---------- month title: one bold serif line, arrows beside the language labels */
 [data-theme="postcard"] .mtitle { grid-template-columns: 30px 1fr 30px; grid-template-areas: "main main main" "prev sub next"; padding: 10px 0 9px; }
@@ -40,9 +40,9 @@
 /* ---------- ruled grid */
 [data-theme="postcard"] .mgrid { border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
 [data-theme="postcard"] .wd, [data-theme="postcard"] .cell { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-[data-theme="postcard"] .wd { padding: 10px 0 9px; font: 600 14px/1 var(--f-serif); color: #33405a; letter-spacing: .02em; }
+[data-theme="postcard"] .wd { padding: 10px 0 9px; font: 700 14.5px/1 var(--f-display); color: #33405a; letter-spacing: .02em; }
 [data-theme="postcard"] .wd.sun { color: var(--sun); }
-[data-theme="postcard"] .cell { aspect-ratio: 1 / .705; font: 700 clamp(17px, 6.3cqi, 26px)/1 var(--f-display); font-variant-numeric: lining-nums; color: #15294a; }
+[data-theme="postcard"] .cell { aspect-ratio: 1 / .705; font: 900 clamp(16px, 6cqi, 25px)/1 var(--f-display); font-variant-numeric: lining-nums; color: #15294a; }
 [data-theme="postcard"] .cell.red { color: var(--sun); }
 [data-theme="postcard"] .cell.out { visibility: visible; }
 [data-theme="postcard"] .cell.out .num { visibility: hidden; }
@@ -60,8 +60,9 @@
 [data-theme="postcard"] .sum-main { grid-column: 2; grid-row: 1; padding-top: 10px; }
 [data-theme="postcard"] .s-art { position: relative; grid-column: 1; grid-row: 1; inset: auto; align-self: stretch; min-height: 96px; }
 [data-theme="postcard"] .s-art svg, [data-theme="postcard"] .pc-stamp svg { display: block; width: 100%; height: 100%; }
-[data-theme="postcard"] .sum-h { margin: 0 0 4px; font: 600 15px/1.2 var(--f-cond); letter-spacing: .03em; color: #15294a; }
+[data-theme="postcard"] .sum-h { margin: 0 0 4px; font: 600 17px/1.2 var(--f-cond); letter-spacing: .02em; color: #15294a; }
 [data-theme="postcard"] .sum-hol { font: 600 13px/1.2 var(--f-cond); letter-spacing: .05em; }
+[data-theme="postcard"] .summary .sum-more { display: none; }
 [data-theme="postcard"] .sum-more { margin-top: 4px; font: 600 12px/1.3 var(--f-cond); letter-spacing: .08em; border-bottom-width: 1px; opacity: .85; }
 [data-theme="postcard"] .ev { grid-template-columns: 22px 46px minmax(0, 1fr); gap: 6px; padding: 4px 0; border-bottom: 0; }
 [data-theme="postcard"] .ev-check { order: -1; justify-self: start; width: 17px; height: 17px; border: 1.4px solid #4a5468; }
@@ -87,7 +88,7 @@
 [data-theme="postcard"] .sh-num { grid-area: num; margin: 0; font: 900 clamp(96px, 34cqi, 150px)/.82 var(--f-display); color: #142a4c; }
 [data-theme="postcard"] .sh-num.red { color: var(--sun); }
 [data-theme="postcard"] .sh-dayname { grid-area: day; margin-top: 6px; font: 700 clamp(20px, 7cqi, 28px)/1 var(--f-cond); letter-spacing: .24em; color: #142a4c; }
-[data-theme="postcard"] .pc-stamp { grid-area: art; align-self: stretch; aspect-ratio: 130 / 100; padding: 5px; background: #fbf3e2; box-shadow: 0 1px 3px rgba(60, 40, 20, .3); transform: rotate(3deg); -webkit-mask: radial-gradient(circle 3px at 3px 3px, transparent 98%, #000) -3px -3px / 8px 8px; mask: radial-gradient(circle 3px at 3px 3px, transparent 98%, #000) -3px -3px / 8px 8px; }
+[data-theme="postcard"] .pc-stamp { grid-area: art; align-self: stretch; aspect-ratio: 130 / 100; padding: 5px; background: #fbf3e2; box-shadow: 0 1px 3px rgba(60, 40, 20, .3); transform: rotate(3deg); outline: 1.5px dashed rgba(224, 88, 77, .45); outline-offset: -3px; }
 [data-theme="postcard"] .sh-langs { grid-area: langs; margin-top: 12px; border-color: var(--rule); font: 400 15px/1.2 var(--f-serif); letter-spacing: .04em; color: #1c2c48; }
 [data-theme="postcard"] .sh-meta { font: 400 13px/1.3 var(--f-serif); font-style: italic; color: var(--muted); }
 [data-theme="postcard"] .sh-hol { background: var(--accent); font-family: var(--f-cond); }
@@ -103,3 +104,4 @@
 [data-theme="postcard"] .pb-k, [data-theme="postcard"] .redraw { font-family: var(--f-cond); font-weight: 600; }
 [data-theme="postcard"] .sh-nav { font-family: var(--f-cond); font-size: 13px; }
 [data-theme="postcard"] .sh-nav button { font-family: var(--f-cond); font-weight: 600; font-size: 13px; border-color: #d97f72; color: var(--accent); }
+[data-theme="postcard"] .s-art svg { -webkit-mask: radial-gradient(75% 75% at 50% 50%, #000 62%, transparent); mask: radial-gradient(75% 75% at 50% 50%, #000 62%, transparent); }

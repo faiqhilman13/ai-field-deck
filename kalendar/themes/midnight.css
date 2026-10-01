@@ -16,7 +16,7 @@
   --scheme: dark;
 }
 [data-theme="midnight"] .chip { color: #e9dfc8; }
-[data-theme="midnight"] .card, [data-theme="midnight"] .card * { font-feature-settings: "lnum" 1; }
+[data-theme="midnight"], [data-theme="midnight"] * { font-variant-numeric: lining-nums !important; }
 
 /* card */
 [data-theme="midnight"] .card {

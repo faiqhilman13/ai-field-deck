@@ -24,58 +24,52 @@
     return loop([...L, ...R.reverse()]);
   };
   const LEGS_FAR = [
-    [[66, 72, 22], [58, 96, 13], [47, 112, 8], [38, 128, 5], [32, 140, 5], [27, 146, 6.5]],
-    [[134, 82, 15], [138, 100, 10], [147, 119, 7], [154, 134, 5], [158, 142, 5], [162, 147, 6.5]],
+    [[86, 98, 26], [94, 118, 14], [90, 134, 9], [99, 147, 6.5], [103, 154, 6], [107, 159, 7.5]], // hind, under the body
+    [[140, 100, 18], [150, 118, 11], [160, 128, 8.5], [174, 140, 6.5], [180, 148, 6], [187, 153, 7.5]], // fore, reaching
   ];
   const LEGS_NEAR = [
-    [[74, 74, 24], [80, 96, 14], [77, 116, 8], [86, 132, 5], [93, 142, 5], [98, 147, 6.5]],
-    [[142, 80, 17], [148, 96, 11], [164, 101, 7.5], [162, 112, 5.2], [161, 120, 5], [166, 127, 6]],
+    [[70, 90, 30], [60, 115, 16], [50, 130, 9.5], [43, 145, 6.5], [39, 153, 6], [35, 159, 7.5]], // hind, pushing off
+    [[148, 98, 20], [163, 111, 12], [181, 112, 9], [177, 125, 6.5], [173, 134, 6], [177, 140, 7.5]], // fore, folded high
   ];
-  const BODY = [[63, 59], [77, 52], [92, 56], [106, 59], [121, 50], [133, 37], [145, 24], [156, 17], [165, 20], [176, 31], [185, 42], [189, 49], [186, 55], [179, 57], [171, 56], [164, 53], [161, 48], [158, 54], [156, 65], [154, 78], [153, 90], [146, 100], [133, 104], [115, 105], [98, 102], [86, 97], [74, 96], [62, 92], [55, 82], [55, 70]];
+  const BODY = [[64, 73], [77, 67], [92, 70], [106, 64], [114, 50], [124, 34], [137, 21], [152, 12], [166, 10], [178, 19], [186, 31], [193, 44], [196, 52], [192, 58], [185, 59], [178, 60], [172, 56], [168, 62], [166, 74], [164, 88], [160, 100], [153, 110], [139, 114], [118, 116], [98, 114], [86, 110], [74, 108], [62, 104], [57, 92], [58, 80]];
   const strand = (pts, w) => limb(pts.map(([x, y], i) => [x, y, w * (1 - i / (pts.length - 1)) + .25]));
-  const MANE = [
-    [[157, 19], [146, 16], [134, 18], [124, 14]],
-    [[153, 22], [142, 22], [130, 26], [118, 24]],
-    [[149, 27], [138, 30], [126, 36], [114, 36]],
-    [[144, 32], [133, 38], [122, 44], [112, 46]],
-    [[139, 38], [129, 45], [119, 50], [108, 52]],
-    [[134, 44], [125, 50], [116, 55]],
-    [[160, 18], [152, 12], [142, 10], [134, 6]],
-  ];
+  const MANE = [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+    const t = i / 8, x = 164 - 54 * t - 6 * Math.sin(Math.PI * t), y = 12 + 44 * t - 8 * Math.sin(Math.PI * t), L = 34 - 10 * t + (i % 2) * 6;
+    return [[x, y], [x - L * .3, y - 4], [x - L * .6, y - 3 + (i % 3)], [x - L, y - 8 + 3 * t]];
+  });
   const TAIL = [
-    [[62, 62], [50, 56], [36, 57], [24, 52], [12, 50]],
-    [[62, 64], [48, 62], [34, 66], [20, 64], [6, 66]],
-    [[61, 66], [48, 68], [36, 74], [24, 76], [12, 82]],
-    [[61, 68], [50, 74], [40, 82], [30, 88]],
-    [[63, 61], [54, 52], [42, 48], [30, 42]],
+    [[62, 74], [48, 68], [30, 66], [14, 61], [3, 58]],
+    [[62, 76], [46, 74], [28, 75], [12, 72], [1, 74]],
+    [[62, 78], [46, 80], [30, 85], [15, 87], [4, 92]],
+    [[61, 80], [48, 87], [35, 95], [24, 100]],
+    [[63, 72], [52, 64], [38, 59], [25, 52]],
+    [[61, 77], [44, 79], [26, 81], [8, 82]],
   ];
   const DETAIL = [
-    'M163 38C170 41 172 47 168 52', 'M181 54L187 53', 'M176 36C178 40 181 43 184 44', // cheek, mouth, nose bone
-    'M127 57C135 67 139 79 137 92', // shoulder
-    'M78 61C86 69 88 83 82 96', // hip
-    'M112 78C116 84 117 90 116 96M120 80C123 85 124 90 123 95', // ribs
+    'M175 35C183 39 186 49 181 56', 'M186 58L192 57', 'M183 36C186 41 190 45 194 47', // cheek, mouth, nose bone
+    'M124 66C134 78 140 92 138 106', 'M78 76C88 86 90 100 84 110', // shoulder, hip
+    'M112 92C116 98 117 104 116 110M120 92C123 98 124 104 123 110', // ribs
   ].join('');
-  const horse = id => `<svg class="horse" viewBox="0 -10 200 170" aria-hidden="true" fill="#fbf3e1" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+  const horse = id => `<svg class="horse" viewBox="0 0 200 166" aria-hidden="true" fill="#fbf3e1" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
     <defs>
       <pattern id="${id}h" width="2.6" height="2.6" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="3" height="3" fill="#fbf3e1" stroke="none"/><path d="M0 .6H3" stroke="currentColor" stroke-width="1.2"/></pattern>
-      <pattern id="${id}l" width="3.6" height="3.6" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="4" height="4" fill="#fbf3e1" stroke="none"/><path d="M0 .6H4" stroke="currentColor" stroke-width=".85"/></pattern>
+      <pattern id="${id}l" width="3.4" height="3.4" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="4" height="4" fill="#fbf3e1" stroke="none"/><path d="M0 .6H4" stroke="currentColor" stroke-width=".85"/></pattern>
       <clipPath id="${id}c"><path d="${loop(BODY)}"/></clipPath>
     </defs>
-    <g fill="none" stroke-width="1.2"><path d="M12 151H54M64 154H120M130 151H192M22 156H46M84 158H116M146 156H180M6 147H22M178 147H196"/></g>
-    <g transform="rotate(-10 60 150)">
+    <g fill="none" stroke-width="1.3"><path d="M24 162H60M70 164H128M136 161H196M34 156H52M112 158H134M150 156H170M8 160H18M60 158H80"/></g>
     <g fill="url(#${id}h)">${LEGS_FAR.map(c => `<path d="${limb(c, 1)}"/>`).join('')}</g>
-    <g fill="currentColor" stroke="none">${TAIL.map(c => `<path d="${strand(c, 4.5)}"/>`).join('')}</g>
+    <g fill="currentColor" stroke="none">${TAIL.map(c => `<path d="${strand(c, 5)}"/>`).join('')}</g>
     <g fill="url(#${id}l)">${LEGS_NEAR.map(c => `<path d="${limb(c, 1)}"/>`).join('')}</g>
     <path d="${loop(BODY)}" fill="url(#${id}l)"/>
-    <g clip-path="url(#${id}c)" fill="#fbf3e1" stroke="none"><ellipse cx="104" cy="70" rx="30" ry="11"/><ellipse cx="140" cy="62" rx="9" ry="16" transform="rotate(35 140 62)"/><ellipse cx="172" cy="38" rx="7" ry="12" transform="rotate(-40 172 38)"/><ellipse cx="74" cy="70" rx="9" ry="10"/></g>
-    <g clip-path="url(#${id}c)" fill="url(#${id}h)" stroke="none">
-      <ellipse cx="112" cy="112" rx="52" ry="15"/><ellipse cx="156" cy="80" rx="6" ry="22"/><ellipse cx="57" cy="80" rx="8" ry="16"/><ellipse cx="166" cy="56" rx="9" ry="5"/><ellipse cx="100" cy="56" rx="26" ry="3.5"/>
+    <g clip-path="url(#${id}c)" stroke="none">
+      <g fill="#fbf3e1"><ellipse cx="108" cy="84" rx="30" ry="12"/><ellipse cx="146" cy="72" rx="9" ry="20" transform="rotate(35 146 72)"/><ellipse cx="181" cy="32" rx="6" ry="14" transform="rotate(-35 181 32)"/><ellipse cx="80" cy="84" rx="11" ry="11"/></g>
+      <g fill="url(#${id}h)"><ellipse cx="116" cy="124" rx="56" ry="15"/><ellipse cx="167" cy="88" rx="7" ry="26"/><ellipse cx="57" cy="92" rx="9" ry="18"/><ellipse cx="178" cy="63" rx="10" ry="5"/></g>
     </g>
     <path d="${loop(BODY)}" fill="none"/>
-    <path d="M154 19L153 7L160 16Z"/><path d="M159 18L161 8L165 19Z"/>
-    <g fill="currentColor" stroke="none">${MANE.map(c => `<path d="${strand(c, 4)}"/>`).join('')}<path d="${strand([[163, 21], [168, 25], [171, 30]], 3)}"/>
-    <circle cx="171" cy="30" r="1.7"/><ellipse cx="184.5" cy="47.5" rx="1.4" ry="1"/></g>
-    <path fill="none" stroke-width=".9" d="${DETAIL}"/></g></svg>`;
+    <path d="M165 15L164 3L171 12Z"/><path d="M172 15L178 4L178 18Z"/>
+    <g fill="currentColor" stroke="none">${MANE.map(c => `<path d="${strand(c, 4.2)}"/>`).join('')}<path d="${strand([[172, 15], [177, 20], [180, 26]], 3)}"/>
+    <circle cx="181" cy="27" r="1.8"/><ellipse cx="192" cy="49" rx="1.4" ry="1.1"/></g>
+    <path fill="none" stroke-width=".9" d="${DETAIL}"/></svg>`;
 
   /* ---------- the arched "KALENDAR" word: each letter squeezed and stretched so the
      baseline bows upward in the middle, like the old printed calendar heading */
@@ -93,7 +87,7 @@
       <text x="194" y="159" font-size="14" letter-spacing="2.5" text-anchor="middle">馬牌日曆</text>
       <text x="193" y="141" font-size="10.5" letter-spacing=".6" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700">KALENDAR KUDA</text>
     </g>
-    ${horse(id).replace('<svg class="horse"', '<svg class="horse" x="238" y="44" width="152" height="129"')}
+    ${horse(id).replace('<svg class="horse"', '<svg class="horse" x="244" y="52" width="140" height="116"')}
   </svg>`;
 
   (window.SEHARI_THEMES = window.SEHARI_THEMES || {}).kuda = {

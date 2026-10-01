@@ -159,7 +159,7 @@
     const puffs = [[0, 0, 22], [22, -10, 26], [48, -2, 22], [66, 8, 16], [-18, 10, 15], [30, 12, 20], [10, 14, 18]];
     const lit = puffs.map(([dx, dy, r]) => `<circle cx="${r1(x + dx * s)}" cy="${r1(y + dy * s)}" r="${r1(r * s)}"/>`).join('');
     const sh = puffs.map(([dx, dy, r]) => `<circle cx="${r1(x + dx * s + 3 * s)}" cy="${r1(y + dy * s + 7 * s)}" r="${r1(r * s * .9)}"/>`).join('');
-    return `<g opacity="${a}"><g fill="#f0b98e" opacity=".75">${sh}</g><g fill="#fdf2dc">${lit}</g><g fill="#fff9ec" opacity=".8">${puffs.slice(0, 3).map(([dx, dy, r]) => `<circle cx="${r1(x + dx * s - 4 * s)}" cy="${r1(y + dy * s - 5 * s)}" r="${r1(r * s * .6)}"/>`).join('')}</g></g>`;
+    return `<g opacity="${a}"><g fill="#eeb58e" opacity=".5">${sh}</g><g fill="#fdf2dc">${lit}</g><g fill="#fff9ec" opacity=".8">${puffs.slice(0, 3).map(([dx, dy, r]) => `<circle cx="${r1(x + dx * s - 4 * s)}" cy="${r1(y + dy * s - 5 * s)}" r="${r1(r * s * .6)}"/>`).join('')}</g></g>`;
   }
   function tower() {
     // tall slender tower at the end of the street
@@ -210,6 +210,7 @@
     const bushes = `<g><ellipse cx="350" cy="232" rx="40" ry="16" fill="#3f6a3e"/><ellipse cx="372" cy="222" rx="26" ry="18" fill="#4f7f45"/><ellipse cx="335" cy="214" rx="18" ry="10" fill="#5f8a4c"/><ellipse cx="10" cy="236" rx="22" ry="10" fill="#4f7f45"/><ellipse cx="24" cy="230" rx="12" ry="9" fill="#6a8f52"/></g>`;
     const people = [[78, 238, '#c4573f'], [112, 233, '#3f6f73'], [196, 224, '#e8a24a'], [236, 219, '#4a5a78']].map(([x, y, c]) => `<g><circle cx="${x}" cy="${y - 9}" r="1.8" fill="#4a3428"/><path d="M${x - 2} ${y - 7}h4l1 7h-6Z" fill="${c}"/></g>`).join('');
 
+    const trees = [[322, 200, 16, '#4f7a4a'], [340, 192, 18, '#3f6a3e'], [362, 186, 20, '#5f8a4c'], [378, 200, 18, '#3f6a3e'], [330, 214, 14, '#6a8f52']].map(([x, y, r, c]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/><circle cx="${x - r * .3}" cy="${y - r * .35}" r="${r * .55}" fill="#86a35a" opacity=".5"/>`).join('');
     const art = `
       <rect width="${W}" height="${Hh}" fill="url(#${id}s)"/>
       <g filter="url(#${id}b)">${cloud(150, 58, 1.15)}${cloud(108, 92, .8, .9)}${cloud(246, 116, .7, .85)}${cloud(320, 132, .55, .8)}</g>
@@ -217,7 +218,7 @@
       ${mountains}${tower()}${farTrees}${rightHouse}
       ${ground}${car}
       ${shophouses(SHOPS2, { vp: [VP[0] + 2, VP[1] - 1], x0: 270, y0: 209, h: 78 })}${shophouses(SHOPS, { vp: [595, 173], x0: -8, y0: 238, h: 152 })}${people}
-      ${palm(350, 236, 362, 150, 34, -1)}${palm(376, 240, 392, 112, 40, -1)}${palm(330, 230, 340, 176, 22, -1)}
+      ${trees}${palm(332, 232, 340, 150, 30, -1)}${palm(356, 240, 366, 112, 38, -1)}${palm(380, 244, 392, 88, 44, -1)}
       ${bushes}
       ${palm(52, 242, 66, 34, 64, 1)}${palm(-4, 242, 14, 70, 44, 1)}`;
 
@@ -248,7 +249,7 @@
         ${fern(14, 100, 8, .9, '#3f6a4a')}${fern(34, 104, 24, .7, '#5f8a62')}${fern(6, 70, -18, .6, '#6f9a6a')}
         ${leaf(30, 30, -50, 1, '#3f6a4a')}${leaf(18, 64, -30, .9, '#5c8a5a')}${leaf(70, 70, 20, 1, '#3f6a4a')}${leaf(60, 40, -70, .8, '#7aa070')}
         ${leaf(84, 52, -10, .8, '#4f7f55')}${leaf(52, 92, -40, .8, '#2f5a3a')}${leaf(92, 86, -60, .7, '#5c8a5a')}
-        <g transform="translate(70 54)">
+        <g transform="translate(66 56) scale(.78)">
           ${[0, 72, 144, 216, 288].map(r => `<path transform="rotate(${r})" d="M0 0C-12-6-20-20-12-29c5-5 12-4 15 0 6-5 13-3 14 3 3 10-5 20-17 26Z" fill="url(#${id}p)" stroke="#c9503f" stroke-width=".7"/>`).join('')}
           ${[0, 72, 144, 216, 288].map(r => `<path transform="rotate(${r + 8})" d="M0 0L-2-18" stroke="#c9503f" stroke-width=".6" opacity=".6"/>`).join('')}
           <circle r="4.5" fill="#b8392f"/><path d="M0 0C4-6 8-12 14-16" stroke="#e8b04a" stroke-width="1.6" fill="none"/><circle cx="14" cy="-16" r="2.4" fill="#f2c94c"/>

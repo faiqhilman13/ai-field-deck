@@ -107,7 +107,7 @@
   letter-spacing: -.02em;
   text-shadow: 0 0 1px rgba(150, 20, 20, .4);
 }
-[data-theme="tearoff"] .sh-num.two { font-size: clamp(130px, 46cqi, 200px); letter-spacing: -.04em; margin-top: 30px; }
+[data-theme="tearoff"] .sh-num.two { font-size: clamp(150px, 58cqi, 250px); letter-spacing: -.01em; margin-top: 14px; }
 [data-theme="tearoff"] .sh-dayname,
 [data-theme="tearoff"] .sh-dayname.red {
   margin-top: 0;
