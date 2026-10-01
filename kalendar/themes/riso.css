@@ -30,7 +30,7 @@
 [data-theme="riso"] .mnav { position: relative; z-index: 2; align-self: end; width: 26px; height: 26px; margin-bottom: 0; color: var(--r-blue); font: 700 24px/1 var(--f-cond); }
 [data-theme="riso"] .mnav { position: absolute; z-index: 3; bottom: 10px; left: 136px; border-radius: 50%; background: rgba(248, 240, 224, .85); }
 [data-theme="riso"] .mnav.next { left: 164px; }
-[data-theme="riso"] .t-art { right: calc(-1 * var(--pad)); top: -12px; width: 59%; }
+[data-theme="riso"] .t-art { right: calc(-1 * var(--pad)); top: -12px; width: min(59%, 236px); }
 [data-theme="riso"] .riso-hib { display: block; width: 100%; height: auto; }
 
 /* ------------------------------------------------------------- grid */
@@ -53,7 +53,7 @@
 [data-theme="riso"] .summary { min-height: 200px; margin-top: 0; padding: 14px 0 66px; border-top: 0; }
 [data-theme="riso"] .sum-main { position: static; margin-left: 44%; }
 [data-theme="riso"] .sum-main > :not(.sum-more) { position: relative; z-index: 1; }
-[data-theme="riso"] .s-art { left: -4px; top: 12px; width: 60%; z-index: 0; }
+[data-theme="riso"] .s-art { left: -4px; top: 12px; width: min(60%, 240px); z-index: 0; }
 [data-theme="riso"] .s-art svg { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
 [data-theme="riso"] .sum-h { display: flex; flex-direction: column; gap: 7px; margin: 0 0 10px; color: var(--r-blue); font: 700 17px/1 var(--f-sans); letter-spacing: .09em; }
 [data-theme="riso"] .sum-h span:first-child { letter-spacing: .16em; }
@@ -88,7 +88,7 @@
 [data-theme="riso"] .sh-dayname { position: relative; z-index: 1; margin-top: 10px; font-family: var(--f-cond); font-weight: 800; font-size: 34px; letter-spacing: .14em; color: var(--r-blue); }
 [data-theme="riso"] .sh-dayname.red { color: var(--r-red); }
 [data-theme="riso"] .sh-langs { position: relative; z-index: 1; justify-content: flex-start; gap: 18px; color: var(--r-blue); border-top: 3px solid var(--r-red); border-bottom: 1px solid rgba(36, 80, 166, .25); }
-[data-theme="riso"] .riso-dart { position: absolute; right: -14px; top: -6px; width: 58%; pointer-events: none; }
+[data-theme="riso"] .riso-dart { position: absolute; right: -14px; top: -6px; width: min(58%, 250px); pointer-events: none; }
 [data-theme="riso"] .riso-mini { position: relative; display: block; width: 100%; height: auto; }
 [data-theme="riso"] .sh-meta { justify-content: flex-start; color: var(--r-blue); opacity: .8; }
 [data-theme="riso"] .sh-hol { align-self: flex-start; }
