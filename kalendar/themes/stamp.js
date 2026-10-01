@@ -30,6 +30,11 @@
   /* the KHAMIS-style day stamp: an inked, double-ruled box */
   const dayStamp = (txt, cls = '') => `<span class="st-stamp ${cls}"><span>${txt}</span></span>`;
 
+  /* Barlow Condensed 800 has proportional figures ("1" is narrow, "4" wide), so the
+     big date gets a per-date size factor that keeps it spanning the form's width. */
+  const ADV = { 0: 46, 1: 29, 2: 45, 3: 45, 4: 51, 5: 45, 6: 45, 7: 42, 8: 45, 9: 45 };
+  const dmyFit = s => (427 / ([...s].reduce((a, ch) => a + (ADV[ch] || 0), 0) + 96)).toFixed(3);
+
   const formNo = c => `${String(c.y % 100).padStart(2, '0')}${String(c.doy).padStart(4, '0')}`;
 
   (window.SEHARI_THEMES = window.SEHARI_THEMES || {}).stamp = {
@@ -39,7 +44,7 @@
       <div class="sh-form"><span class="st-form-name">PELAN<br>JADUAL<br>HARIAN</span><span class="sh-no">No. <b>${formNo(c)}</b></span></div>
       <div class="sh-date">
         ${dayStamp(c.msDay.toUpperCase(), c.tone)}
-        <div class="sh-dmy" aria-label="${c.d} ${c.msMonth} ${c.y}">${c.pad2(c.d)}<i>/</i>${c.pad2(c.m + 1)}<i>/</i>${c.y}</div>
+        <div class="sh-dmy" style="--fit:${dmyFit(c.pad2(c.d) + c.pad2(c.m + 1) + c.y)}" aria-label="${c.d} ${c.msMonth} ${c.y}">${c.pad2(c.d)}<i>/</i>${c.pad2(c.m + 1)}<i>/</i>${c.y}</div>
       </div>
       <header class="sh-top"><span class="sh-my">${c.msMonth.toUpperCase()} ${c.y}</span><span lang="zh">${c.zhMonth}</span><span>${c.enMonth.toUpperCase()}</span></header>
       ${h ? `<p class="sh-hol">${c.esc(h.ms)}${h.approx ? '*' : ''}<small>${c.esc(h.en)}${h.scope === 'some' ? ' · sesetengah negeri' : ''}</small></p>` : ''}

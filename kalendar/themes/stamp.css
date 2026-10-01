@@ -16,7 +16,7 @@
   --f-st-sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
 
   --bd-ink: #4a1a14;
-  --paper: #f3ece0; --paper-back: #e8dccb;
+  --paper: #f2eadc; --paper-back: #e8dccb;
   --ink: #7b1c25; --num-ink: #6a1a20; --muted: #8a6a62; --rule: rgba(123, 28, 37, .3);
   --accent: #8b1a26; --sun: #c0262e; --sat: #6a1a20;
   --sel-bg: transparent; --sel-ink: #8b1a26;
@@ -72,7 +72,7 @@
 [data-theme="stamp"] .sh-num, [data-theme="stamp"] .sh-dayname, [data-theme="stamp"] .sh-langs, [data-theme="stamp"] .sh-mini-side { display: none; }
 [data-theme="stamp"] .sh-dmy {
   display: flex; justify-content: space-between; align-items: baseline;
-  margin: 0 -6px 0 -3px; font: 800 clamp(54px, 24.8cqi, 94px)/.82 var(--f-cond); letter-spacing: -.01em; color: var(--st-ink); white-space: nowrap;
+  margin: 0 -6px 0 -3px; font: 800 calc(clamp(54px, 24.8cqi, 94px) * var(--fit, 1))/.82 var(--f-cond); min-height: calc(clamp(54px, 24.8cqi, 94px) * .82); letter-spacing: -.01em; color: var(--st-ink); white-space: nowrap;
   -webkit-mask: var(--st-speckle) 37px 11px / 120px 120px, var(--st-mottle) 0 0 / 260px 260px; -webkit-mask-composite: source-in;
   mask: var(--st-speckle) 37px 11px / 120px 120px, var(--st-mottle) 0 0 / 260px 260px; mask-composite: intersect;
 }
@@ -99,7 +99,7 @@
 [data-theme="stamp"] .ev-list { position: relative; padding-left: 38px; }
 [data-theme="stamp"] .ev {
   position: relative; grid-template-columns: 70px minmax(0, 1fr) 26px; align-items: start; gap: 0;
-  min-height: 62px; padding: 0; border-bottom: 0;
+  min-height: 60px; padding: 0; border-bottom: 0;
 }
 [data-theme="stamp"] .ev + .ev { border-top: 1px solid var(--st-line); }
 [data-theme="stamp"] .ev::before { content: ""; position: absolute; left: -31px; top: 18px; width: 13px; height: 13px; border-radius: 50%; background: var(--st-ink); }
@@ -109,11 +109,11 @@
 [data-theme="stamp"] .ev:only-child::after { display: none; }
 [data-theme="stamp"] .ev:first-child { margin-top: 0; }
 [data-theme="stamp"] .ev-time {
-  align-self: stretch; padding: 16px 0 12px; border-right: 1px solid var(--st-line);
+  align-self: stretch; padding: 16px 0 8px; border-right: 1px solid var(--st-line);
   font: 700 19px/1 var(--f-st-sans); letter-spacing: .02em; color: var(--st-ink);
 }
-[data-theme="stamp"] .ev-body { padding: 15px 8px 12px 17px; font: 700 19px/1.1 var(--f-st-sans); color: var(--st-ink); }
-[data-theme="stamp"] .ev-body small { margin-top: 5px; font: 400 13.5px/1.2 var(--f-st); color: var(--st-soft); }
+[data-theme="stamp"] .ev-body { padding: 15px 8px 8px 17px; font: 700 19px/1.1 var(--f-st-sans); color: var(--st-ink); }
+[data-theme="stamp"] .ev-body small { margin-top: 4px; font: 400 13.5px/1.2 var(--f-st); color: var(--st-soft); }
 [data-theme="stamp"] .ev-check { margin-top: 16px; width: 18px; height: 18px; border: 1.5px solid #7a5550; border-radius: 2px; }
 [data-theme="stamp"] .ev-check[aria-checked="true"] { background: var(--st-ink); border-color: var(--st-ink); }
 [data-theme="stamp"] .ev-check[aria-checked="true"]::after { left: 4.5px; top: 1px; }
@@ -175,12 +175,12 @@
 [data-theme="stamp"] .sh-nav button { border-radius: 4px; border-color: var(--st-ink); color: var(--st-ink); font: 700 12px/1 var(--f-st); }
 
 /* ---------------------------------------------------------- bottom bar */
-[data-theme="stamp"] .bottombar { gap: 18px; padding-top: 10px; padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(rgba(243, 236, 224, 0), var(--paper) 22%); }
+[data-theme="stamp"] .bottombar { gap: 18px; padding-top: 10px; padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(rgba(242, 234, 220, 0), var(--paper) 22%); }
 [data-theme="stamp"] .seg { flex: 1 1 0; max-width: 64%; border-width: 1.5px; }
 [data-theme="stamp"] .seg > * { flex: 1; min-width: 0; padding: 15px 8px 14px; font: 500 18px/1 var(--f-st-sans); letter-spacing: .01em; }
 [data-theme="stamp"] .seg > * + * { border-left-width: 1.5px; }
 [data-theme="stamp"] .seg [aria-selected="true"] { font-weight: 500; }
-[data-theme="stamp"] .btn-acara { flex: 0 1 auto; justify-content: center; min-width: 34%; gap: 8px; padding: 14px 18px 13px; font: 500 19px/1 var(--f-st-sans); letter-spacing: 0; box-shadow: 0 2px 0 rgba(60, 10, 14, .35); }
+[data-theme="stamp"] .btn-acara { flex: 0 1 auto; justify-content: center; min-width: min(34%, 150px); gap: 8px; padding: 14px 18px 13px; font: 500 19px/1 var(--f-st-sans); letter-spacing: 0; box-shadow: 0 2px 0 rgba(60, 10, 14, .35); }
 [data-theme="stamp"] .btn-acara > span { font-size: 26px; line-height: 16px; font-weight: 300; }
 
 /* ===================================================== Bulan (month) view */
@@ -241,6 +241,12 @@
   [data-theme="stamp"] .card::after { inset: 11px; }
   [data-theme="stamp"] .seg > * { min-width: 0; padding: 13px 6px 12px; }
   [data-theme="stamp"] .btn-acara { padding: 11px 14px; }
+  [data-theme="stamp"] .ev-list { padding-left: 32px; }
+  [data-theme="stamp"] .ev { grid-template-columns: 60px minmax(0, 1fr) 24px; }
+  [data-theme="stamp"] .ev::before { left: -28px; }
+  [data-theme="stamp"] .ev::after { left: -23px; }
+  [data-theme="stamp"] .ev-time, [data-theme="stamp"] .ev-body { font-size: 17px; }
+  [data-theme="stamp"] .ev-body { padding-left: 12px; }
 }
 @media (max-width: 400px) {
   [data-theme="stamp"] .sum-main { padding-right: 76px; }
