@@ -33,7 +33,7 @@
 [data-theme="kuda"] .mtitle { padding: 9px 0 9px; border-bottom: 1.5px solid var(--k-red); grid-template-columns: 30px 1fr 30px; }
 [data-theme="kuda"] .mnav { width: 28px; height: 28px; color: var(--k-red); font-size: 24px; opacity: .6; }
 [data-theme="kuda"] .mt-main { color: var(--k-blue); font: 800 clamp(32px, 11.9cqi, 46px)/.95 var(--f-cond); letter-spacing: .035em; }
-[data-theme="kuda"] .mt-sub { gap: 8.5cqi; margin-top: 5px; color: var(--k-blue); font: 700 15px/1.2 var(--f-cond); letter-spacing: .08em; }
+[data-theme="kuda"] .mt-sub { gap: 8.5cqi; margin-top: 5px; color: var(--k-blue); font: 700 16.5px/1.2 var(--f-cond); letter-spacing: .08em; }
 [data-theme="kuda"] .mt-sub [lang="zh"] { font: 600 15px/1.2 var(--f-zh); letter-spacing: .1em; }
 [data-theme="kuda"] .mt-sub [lang="ta"] { font: 500 13.5px/1.2 var(--f-ta); letter-spacing: 0; }
 

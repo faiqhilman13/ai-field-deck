@@ -50,10 +50,9 @@
       <div class="st-mast"><span class="st-form-name">PELAN<br>JADUAL<br>BULANAN</span><span class="sh-no">No. <b>${c.y}${String(c.m + 1).padStart(2, '0')}</b></span></div>`,
     monthTitle: c => `
       ${c.nav(-1)}
-      <h2 class="mt-main"><span class="mt-month"><span class="full">${c.msMonth.toUpperCase()}</span><span class="short">${c.mon3}</span></span> <span class="mt-year">${c.y}</span></h2>
+      <h2 class="mt-main"><span class="mt-month"><span class="full">${c.msMonth.toUpperCase()}</span><span class="short">${c.mon3}</span></span> <span class="mt-year"><span>${c.y}</span></span></h2>
       ${c.nav(1)}
       <p class="mt-sub"><span lang="zh">${c.zhMonth}</span><span>${c.enMonth.toUpperCase()}</span><span lang="ta">${c.taMonth}</span></p>`,
-    titleArt: c => dayStamp('BULANAN', 'st-mstamp'),
     summaryArt: c => seal(c),
   };
 })();
