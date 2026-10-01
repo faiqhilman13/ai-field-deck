@@ -68,6 +68,17 @@
       ${c.holiday ? `<p class="sum-hol">★ ${c.esc(c.holiday.ms)}${c.holiday.approx ? '*' : ''}</p>` : ''}
       <div class="sum-events">${c.events()}</div>
       <button type="button" class="sum-more" data-goto="day">Fakta &amp; peribahasa <span aria-hidden="true">›</span></button>`,
-    dateArt: () => `<div class="sh-art">${hibiscus()}</div>`,
+    sheetHead: c => `
+      <header class="sh-top mn-top"><div><span class="sh-my">${c.msMonth.toUpperCase()} ${c.y}</span>
+        <span class="sh-alt"><span lang="zh">${c.zhMonth}</span><span>${c.enMonth.toUpperCase()}</span><span lang="ta">${c.taMonth}</span></span></div>
+        <div class="mn-tart">${moon()}</div></header>
+      <div class="sh-date">
+        <div class="sh-num ${c.tone}" aria-label="${c.d} ${c.msMonth} ${c.y}">${c.d}</div>
+        <div class="sh-dayname ${c.tone}">${c.msDay.toUpperCase()}</div>
+        <div class="sh-langs"><span>${c.enDay.toUpperCase()}</span><span lang="zh">${c.zhDay}</span><span lang="ta">${c.taDay}</span></div>
+        <div class="sh-art">${hibiscus()}</div>
+      </div>
+      <p class="sh-meta">${c.hijri ? `<span class="m-hij" title="Tarikh Hijrah">${c.hijri}</span>` : ''}${c.lunar ? `<span class="m-lun" lang="zh" title="Kalendar lunar Cina">${c.lunar}</span>` : ''}</p>
+      ${c.holiday ? `<p class="sh-hol">${c.esc(c.holiday.ms)}${c.holiday.approx ? '*' : ''}<small>${c.esc(c.holiday.en)}${c.holiday.scope === 'some' ? ' · sesetengah negeri' : ''}</small></p>` : ''}`,
   };
 })();

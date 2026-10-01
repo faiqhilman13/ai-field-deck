@@ -203,7 +203,7 @@
       poly([[W, 214], [W, Hh + 4], [300, Hh + 4], [330, 200]], '#4a5a3a', ' opacity=".16"'),
     ].join('');
 
-    const mountains = `<g transform="translate(0 14)"><path d="M196 176C220 160 240 150 262 142c14-5 24-2 34 4 10-8 22-14 34-10 18 6 34 18 54 26V178H196Z" fill="#7d9f9a" opacity=".85"/><path d="M230 178c14-8 30-12 44-10 20 2 40-6 60-4 20 2 34 6 50 10v6H230Z" fill="#5f8a6c"/></g>`;
+    const mountains = `<path d="M214 196C236 180 256 160 280 148c8-4 14-3 20 1 8 5 14 10 22 9 12-2 20 4 30 10 10 6 20 8 32 10V196Z" fill="#86a3a6"/><path d="M280 148c8-4 14-3 20 1-6 4-10 14-16 18-2-8-2-14-4-19Z" fill="#a9bfbd" opacity=".8"/><g transform="translate(0 14)"><path d="M196 176C220 160 240 150 262 142c14-5 24-2 34 4 10-8 22-14 34-10 18 6 34 18 54 26V178H196Z" fill="#7d9f9a" opacity=".85"/><path d="M230 178c14-8 30-12 44-10 20 2 40-6 60-4 20 2 34 6 50 10v6H230Z" fill="#5f8a6c"/></g>`;
     const farTrees = [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => `<circle cx="${244 + i * 8}" cy="${190 - (i % 3) * 2}" r="${6 + (i % 2) * 2}" fill="${i % 2 ? '#4f7a4a' : '#6a8f52'}"/>`).join('');
     const rightHouse = `<g transform="translate(0 6)"><path d="M330 192V174h44v18Z" fill="#efe2c4"/><path d="M326 175l8-9h36l8 9Z" fill="#b65a3c"/><g fill="#33454a"><rect x="335" y="178" width="5" height="7"/><rect x="345" y="178" width="5" height="7"/><rect x="355" y="178" width="5" height="7"/><rect x="365" y="178" width="5" height="7"/></g></g>`;
     const car = `<g transform="translate(296 198)"><rect x="0" y="0" width="13" height="5" rx="1.5" fill="#d9d2bf"/><rect x="2" y="-3" width="9" height="4" rx="1.5" fill="#bfb6a0"/><circle cx="3" cy="5" r="1.4" fill="#2e2a26"/><circle cx="10" cy="5" r="1.4" fill="#2e2a26"/></g>`;
@@ -214,7 +214,7 @@
     const art = `
       <rect width="${W}" height="${Hh}" fill="url(#${id}s)"/>
       <g filter="url(#${id}b)">${cloud(150, 58, 1.15)}${cloud(108, 92, .8, .9)}${cloud(246, 116, .7, .85)}${cloud(320, 132, .55, .8)}</g>
-      <path d="M0 70c40-6 90-2 120 6" stroke="#fff6e4" stroke-width="3" opacity=".4" fill="none"/>
+      <g fill="none" stroke-linecap="round" filter="url(#${id}b)"><path d="M0 70c40-6 90-2 120 6" stroke="#fff6e4" stroke-width="3" opacity=".4"/><path d="M220 30c30-4 70-2 110 4" stroke="#d9e6df" stroke-width="5" opacity=".35"/><path d="M250 150c30-6 60-4 100 2" stroke="#f6d2a8" stroke-width="6" opacity=".55"/><path d="M190 18c40-3 120-2 190 2" stroke="#3f6a68" stroke-width="8" opacity=".25"/></g>
       ${mountains}${tower()}${farTrees}${rightHouse}
       ${ground}${car}
       ${shophouses(SHOPS2, { vp: [VP[0] + 2, VP[1] - 1], x0: 270, y0: 209, h: 78 })}${shophouses(SHOPS, { vp: [595, 173], x0: -8, y0: 238, h: 152 })}${people}

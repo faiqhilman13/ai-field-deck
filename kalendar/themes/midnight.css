@@ -89,16 +89,21 @@
 [data-theme="midnight"] .btn-acara { flex: 0 1 34%; justify-content: center; gap: 10px; padding: 13px 12px 12px; font: 500 19px/1 var(--f-cond); letter-spacing: .02em; box-shadow: 0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.12); }
 
 /* ============================================================ day sheet */
-[data-theme="midnight"] .sh-top { padding: 12px 0 10px; border-bottom: 1px solid var(--hair); align-items: center; }
-[data-theme="midnight"] .sh-my { font: 700 24px/1 var(--f-display); letter-spacing: .015em; color: #f1e0b8; }
-[data-theme="midnight"] .sh-alt { font: 400 13px/1.1 var(--f-serif); color: #e7d8b6; letter-spacing: .08em; }
+[data-theme="midnight"] .sh-top { position: relative; padding: 14px 0 16px 3px; border-bottom: 1px solid var(--hair); align-items: center; }
+[data-theme="midnight"] .mn-top > div:first-child { position: relative; z-index: 1; }
+[data-theme="midnight"] .mn-tart { position: absolute; z-index: 0; right: -4px; top: -10px; width: 30%; pointer-events: none; }
+[data-theme="midnight"] .mn-tart svg { display: block; width: 100%; }
+[data-theme="midnight"] .sh-my { display: block; font: 700 clamp(25px, 8.4cqi, 34px)/1 var(--f-display); letter-spacing: .01em; color: #f1e0b8; white-space: nowrap; }
+[data-theme="midnight"] .sh-alt { flex-direction: row; align-items: center; gap: 0 clamp(12px, 5cqi, 22px); margin-top: 9px; font: 400 15px/1 var(--f-serif); color: #e7d8b6; letter-spacing: .06em; }
+[data-theme="midnight"] .sh-alt [lang="zh"] { font-family: var(--f-zh); font-size: 16px; }
+[data-theme="midnight"] .sh-alt [lang="ta"] { font-size: 13px; letter-spacing: 0; }
 [data-theme="midnight"] .sh-date { display: grid; grid-template-columns: 38% 1fr 30%; grid-template-rows: auto auto; align-items: center; text-align: left; border-bottom: 1px solid var(--hair); }
 [data-theme="midnight"] .sh-num { grid-row: 1 / 3; align-self: stretch; display: grid; place-items: center; margin: 0; padding: 16px 0 12px; font: 900 clamp(96px, 36cqi, 150px)/.8 var(--f-display); color: #e0392d; letter-spacing: -.02em; }
 [data-theme="midnight"] .sh-dayname { grid-column: 2; align-self: end; margin: 0; padding: 0 0 6px 14px; border-left: 1px solid var(--hair); font: 600 clamp(20px, 7cqi, 27px)/1 var(--f-cond); letter-spacing: .06em; color: #f1e0b8; height: 100%; display: flex; align-items: flex-end; }
 [data-theme="midnight"] .sh-dayname.red { color: #e0392d; }
 [data-theme="midnight"] .sh-langs { grid-column: 2; align-self: start; flex-direction: column; justify-content: flex-start; gap: 6px; margin: 0; padding: 4px 0 4px 14px; border: 0; border-left: 1px solid var(--hair); height: 100%; font: 400 15px/1 var(--f-cond); letter-spacing: .2em; color: #e7d8b6; }
-[data-theme="midnight"] .sh-langs [lang="zh"] { order: 2; font-family: var(--f-zh); letter-spacing: .3em; }
-[data-theme="midnight"] .sh-langs [lang="ta"] { order: 3; font-size: 12px; letter-spacing: 0; }
+[data-theme="midnight"] .sh-langs [lang="zh"] { font-family: var(--f-zh); letter-spacing: .3em; }
+[data-theme="midnight"] .sh-langs [lang="ta"] { font-size: 12px; letter-spacing: 0; }
 [data-theme="midnight"] .sh-art { grid-column: 3; grid-row: 1 / 3; align-self: stretch; display: grid; place-items: center; padding: 8px 0 8px 6px; border-left: 1px solid var(--hair); }
 [data-theme="midnight"] .sh-art svg { width: 100%; max-width: 112px; }
 [data-theme="midnight"] .sh-meta { justify-content: flex-start; gap: 4px 18px; margin: 0; padding: 9px 0; border-bottom: 1px solid var(--hair); font: 400 14px/1.3 var(--f-serif); color: var(--gold-hi); letter-spacing: .03em; }

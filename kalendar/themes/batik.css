@@ -122,3 +122,4 @@
 
 /* lining figures everywhere (the font shorthands above reset font-variant) */
 [data-theme="batik"] .card :is(.mt-main, .cell, .ev-time, .sum-h, .sh-num, .sh-my, .sh-meta, .sh-nav, .mm) { font-variant-numeric: lining-nums; }
+[data-theme="batik"] .c-body p, [data-theme="batik"] .pb-v { font-size: 15px; }
