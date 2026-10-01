@@ -8,7 +8,8 @@
   --st-soft: #8a6a62;     /* faint typed text */
   --st-line: rgba(123, 28, 37, .55);
   --st-dash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='29'%3E%3Crect y='27.5' width='1.2' height='1.2' fill='%23a0706a'/%3E%3C/svg%3E");
-  --st-speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -13 0 0 0 9.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --st-speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -14 0 0 0 10.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --st-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.045' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.3 0 0 0 1.68'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --st-paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --st-rule: linear-gradient(rgba(123, 28, 37, .75) 0 0);
   --f-st: "Courier Prime", "Courier New", var(--f-type);
@@ -36,7 +37,7 @@
     var(--st-paper-grain), var(--paper);
   background-size: auto, auto, 200px 200px, auto;
   border: 1px solid rgba(123, 28, 37, .35);
-  box-shadow: 0 1px 1px rgba(0,0,0,.15), 0 16px 28px -14px rgba(60, 20, 10, .5);
+  box-shadow: inset 0 0 46px rgba(140, 100, 60, .14), 0 1px 1px rgba(0,0,0,.15), 0 16px 28px -14px rgba(60, 20, 10, .5);
 }
 /* double printed frame of the form */
 [data-theme="stamp"] .card::before, [data-theme="stamp"] .card::after {
@@ -45,7 +46,7 @@
 [data-theme="stamp"] .card::before { inset: 11px; border: 2px solid rgba(123, 28, 37, .62); border-radius: 3px; -webkit-mask: var(--st-speckle) 0 0 / 90px 90px; mask: var(--st-speckle) 0 0 / 90px 90px; }
 [data-theme="stamp"] .card::after { display: none; }
 [data-theme="stamp"] .sheet, [data-theme="stamp"] .mpage { background: transparent; }
-[data-theme="stamp"] .sheet { padding: 4px 0 10px; color: var(--st-ink); }
+[data-theme="stamp"] .sheet { min-width: 0; padding: 4px 0 10px; color: var(--st-ink); }
 
 /* -------------------------------------------------------- form header */
 [data-theme="stamp"] .sh-form, [data-theme="stamp"] .st-mast {
@@ -57,23 +58,25 @@
 
 /* rubber stamp box (KHAMIS) */
 [data-theme="stamp"] .st-stamp {
-  position: absolute; z-index: 2; top: -22px; right: -6px;
+  position: absolute; z-index: 2; top: -32px; right: -12px;
   display: inline-block; padding: 3px; border: 2.5px solid currentColor; border-radius: 4px;
   color: var(--st-red); transform: rotate(-2deg);
-  -webkit-mask: var(--st-speckle) 0 0 / 160px 160px; mask: var(--st-speckle) 0 0 / 160px 160px;
+  -webkit-mask: var(--st-speckle) 0 0 / 160px 160px, var(--st-mottle) 40px 0 / 200px 200px; -webkit-mask-composite: source-in;
+  mask: var(--st-speckle) 0 0 / 160px 160px, var(--st-mottle) 40px 0 / 200px 200px; mask-composite: intersect;
 }
 [data-theme="stamp"] .st-stamp > span {
   display: block; padding: 3px 13px 0; border: 1.2px solid currentColor; border-radius: 2px;
-  font: 800 clamp(32px, 11.6cqi, 46px)/1 var(--f-cond); letter-spacing: .04em;
+  font: 800 clamp(34px, 13.4cqi, 52px)/.96 var(--f-cond); letter-spacing: .035em;
 }
 [data-theme="stamp"] .sh-date { order: 2; position: relative; padding-top: 32px; text-align: left; }
 [data-theme="stamp"] .sh-num, [data-theme="stamp"] .sh-dayname, [data-theme="stamp"] .sh-langs, [data-theme="stamp"] .sh-mini-side { display: none; }
 [data-theme="stamp"] .sh-dmy {
   display: flex; justify-content: space-between; align-items: baseline;
-  font: 800 clamp(56px, 23.6cqi, 88px)/.82 var(--f-cond); letter-spacing: -.005em; color: var(--st-ink); white-space: nowrap;
-  -webkit-mask: var(--st-speckle) 37px 11px / 120px 120px; mask: var(--st-speckle) 37px 11px / 120px 120px;
+  margin: 0 -6px 0 -3px; font: 800 clamp(54px, 24.8cqi, 94px)/.82 var(--f-cond); letter-spacing: -.01em; color: var(--st-ink); white-space: nowrap;
+  -webkit-mask: var(--st-speckle) 37px 11px / 120px 120px, var(--st-mottle) 0 0 / 260px 260px; -webkit-mask-composite: source-in;
+  mask: var(--st-speckle) 37px 11px / 120px 120px, var(--st-mottle) 0 0 / 260px 260px; mask-composite: intersect;
 }
-[data-theme="stamp"] .sh-dmy i { font-style: normal; font-weight: 500; }
+[data-theme="stamp"] .sh-dmy i { font-style: normal; font-weight: 500; margin: 0 .06em; color: #8a2a33; }
 
 /* month line between double rules */
 [data-theme="stamp"] .sh-top {
@@ -130,7 +133,7 @@
 /* --------------------------------------------- mini month + seal */
 [data-theme="stamp"] .sh-mini {
   order: 7; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0 10px;
-  margin: 8px -4px 0; padding: 14px 4px 4px; border: 0;
+  margin: 4px -4px 0; padding: 10px 4px 4px; border: 0;
   background: var(--st-rule) 0 0 / 62% 1.5px no-repeat;
 }
 [data-theme="stamp"] .st-mm { position: relative; padding-right: 14px; background: radial-gradient(circle, rgba(123, 28, 37, .55) .7px, transparent 1px) 100% 0 / 2px 4px repeat-y; }
@@ -141,7 +144,7 @@
 [data-theme="stamp"] .mm .r { font-weight: 700; }
 [data-theme="stamp"] .mm .r { color: var(--sun); }
 [data-theme="stamp"] .mm .on { background: none; color: inherit; border-radius: 2px; box-shadow: inset 0 0 0 1.5px var(--st-red); }
-[data-theme="stamp"] .st-seal { display: block; width: clamp(108px, 37cqi, 138px); margin: -6px -6px 0 0; color: #c22838; transform: rotate(-4deg); }
+[data-theme="stamp"] .st-seal { display: block; width: clamp(108px, 37cqi, 138px); margin: -14px -6px 0 0; color: #c22838; transform: rotate(-4deg); }
 
 /* ------------------------------------- fact & peribahasa: typed form sections */
 [data-theme="stamp"] .c-fact { order: 8; }
@@ -176,7 +179,7 @@
 [data-theme="stamp"] .seg { flex: 1 1 0; max-width: 64%; border-width: 1.5px; }
 [data-theme="stamp"] .seg > * { flex: 1; min-width: 0; padding: 15px 8px 14px; font: 500 18px/1 var(--f-st-sans); letter-spacing: .01em; }
 [data-theme="stamp"] .seg > * + * { border-left-width: 1.5px; }
-[data-theme="stamp"] .seg [aria-selected="true"] { font-weight: 600; }
+[data-theme="stamp"] .seg [aria-selected="true"] { font-weight: 500; }
 [data-theme="stamp"] .btn-acara { flex: 0 1 auto; justify-content: center; min-width: 34%; gap: 8px; padding: 14px 18px 13px; font: 500 19px/1 var(--f-st-sans); letter-spacing: 0; box-shadow: 0 2px 0 rgba(60, 10, 14, .35); }
 [data-theme="stamp"] .btn-acara > span { font-size: 26px; line-height: 16px; font-weight: 300; }
 

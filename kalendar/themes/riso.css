@@ -13,11 +13,11 @@
   --note-ink: #2450a6;
   /* ink speckle: mostly solid with small paper-coloured holes */
   --riso-speck: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -3.2 0 0 0 2.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --riso-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --riso-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 [data-theme="riso"] .card { --radius: 6px; --pad: 12px; background: var(--riso-grain), var(--paper); background-size: 180px 180px, auto; }
 [data-theme="riso"] .mpage, [data-theme="riso"] .sheet { background: var(--riso-grain), var(--paper); background-size: 180px 180px, auto; }
-[data-theme="riso"] .card::after { content: ""; position: absolute; z-index: 6; inset: 0; border-radius: inherit; background: var(--riso-grain); background-size: 120px 120px; mix-blend-mode: multiply; opacity: .25; pointer-events: none; }
+[data-theme="riso"] .card::after { content: ""; position: absolute; z-index: 6; inset: 0; border-radius: inherit; background: var(--riso-grain); background-size: 120px 120px; mix-blend-mode: multiply; opacity: .18; pointer-events: none; }
 
 /* ------------------------------------------------------------ title */
 [data-theme="riso"] .mtitle { grid-template-columns: auto auto auto 1fr; grid-template-areas: "main main main ." "sub sub sub ."; text-align: left; align-items: end; min-height: min(265px, 70.5cqi); padding: 0 0 12px; }
@@ -114,4 +114,8 @@
   [data-theme="riso"] .ev-time, [data-theme="riso"] .ev-body { font-size: 15px; }
   [data-theme="riso"] .sum-h { font-size: 15px; }
   [data-theme="riso"] .s-art { width: 52%; top: 22px; }
+}
+@media (min-width: 960px) {
+  [data-theme="riso"] .summary { min-height: 210px; padding-bottom: 14px; }
+  [data-theme="riso"] .sum-more { position: relative; margin-top: 12px; }
 }

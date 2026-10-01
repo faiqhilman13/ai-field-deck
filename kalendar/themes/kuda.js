@@ -80,7 +80,7 @@
     return `<text transform="translate(${x + dx} ${r1(top + dx)}) scale(${(w / ADV[ch]).toFixed(3)} ${(h / 65).toFixed(3)})" y="65">${ch}</text>`;
   }).join('');
   const mast = id => `<svg class="kd-art" viewBox="13 13 374 162" role="img" aria-label="Kalendar Kuda">
-    <g font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="100"><g fill="#8e1612">${letters(1)}</g><g fill="#d0262a">${letters(0)}</g></g>
+    <g font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="100"><g fill="#8e1612" stroke="#8e1612" stroke-width="2.5">${letters(1)}</g><g fill="#d0262a" stroke="#d0262a" stroke-width="2.5">${letters(0)}</g></g>
     <g fill="#163e70" font-family="Noto Serif SC, Songti SC, serif" font-weight="900">
       <g font-size="17" letter-spacing="2"><text x="30" y="97">耐用</text><text x="30" y="123">實用</text><text x="30" y="150">天天進步</text></g>
       <text x="184" y="115" font-size="18.5" letter-spacing="3" text-anchor="middle">馬牌日曆</text>
@@ -97,12 +97,12 @@
     sheetHead: c => {
       const id = 'kd' + c.uid(), h = c.holiday;
       return `<div class="kd-dh">
-        <div class="kd-dh-band"><span class="kd-dh-word">KALENDAR</span><span class="kd-dh-brand"><b lang="zh">馬牌日曆</b><span>KALENDAR KUDA</span></span><span class="kd-dh-horse">${horse(id)}</span></div>
+        <div class="kd-dh-band"><svg class="kd-dh-word" viewBox="0 0 132 40" role="img" aria-label="Kalendar"><text x="1" y="35" textLength="128" lengthAdjust="spacingAndGlyphs" font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="46" fill="#8e1612" transform="translate(.8 .8)">KALENDAR</text><text x="1" y="35" textLength="128" lengthAdjust="spacingAndGlyphs" font-family="Playfair Display, Georgia, serif" font-weight="900" font-size="46" fill="#d0262a">KALENDAR</text></svg><span class="kd-dh-brand"><b lang="zh">馬牌日曆</b><span>KALENDAR KUDA</span></span><span class="kd-dh-horse">${horse(id)}</span></div>
         <header class="kd-dh-my"><span class="sh-my">${c.msMonth.toUpperCase()} ${c.y}</span><span class="kd-dh-alt"><span lang="zh">${c.zhMonth}</span><span>${c.enMonth.toUpperCase()}</span><span lang="ta">${c.taMonth}</span></span></header>
         <div class="kd-dh-box">
-          <span class="kd-dh-v" lang="zh">${c.zhDay}</span>
+          <span class="kd-dh-v" lang="zh">${[...c.zhDay].map(ch => `<i>${ch}</i>`).join('')}</span>
           <div class="sh-num ${c.tone}" aria-label="${c.d} ${c.msMonth} ${c.y}">${c.d}</div>
-          <span class="kd-dh-v kd-dh-doy"><b>${c.doy}</b>HARI KE</span>
+          <span class="kd-dh-doy">HARI<br>KE<b>${c.doy}</b></span>
           <div class="kd-dh-day ${c.tone}">${c.msDay.toUpperCase()}</div>
           <div class="kd-dh-langs"><span lang="zh">${c.zhDay}</span><span>${c.enDay.toUpperCase()}</span><span lang="ta">${c.taDay}</span></div>
           ${c.hijri || c.lunar ? `<p class="kd-dh-meta">${c.hijri ? `<span title="Tarikh Hijrah">${c.hijri}</span>` : ''}${c.lunar ? `<span lang="zh" title="Kalendar lunar Cina">${c.lunar}</span>` : ''}</p>` : ''}

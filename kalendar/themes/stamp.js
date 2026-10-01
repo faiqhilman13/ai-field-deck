@@ -22,7 +22,7 @@
         <g stroke="none">
           <text font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="24" letter-spacing="5" text-anchor="middle"><textPath href="#${a}" startOffset="50%">${top}</textPath></text>
           <text font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="24" letter-spacing="5" text-anchor="middle"><textPath href="#${b}" startOffset="50%">${bottom}</textPath></text>
-          ${star(70, 72, 19)}${star(22, 72, 4)}${star(118, 72, 4)}
+          ${star(70, 72, 21)}${star(22, 72, 4)}${star(118, 72, 4)}
         </g>
       </g></svg>`;
   }

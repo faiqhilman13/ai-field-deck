@@ -26,7 +26,7 @@
 
 /* ---------------------------------------------------------------- masthead */
 [data-theme="kuda"] .mh-kuda { border-bottom: 1.5px solid var(--k-red); }
-[data-theme="kuda"] .kd-art { display: block; width: 100%; height: auto; color: #1f4f96; overflow: visible; }
+[data-theme="kuda"] .kd-art { display: block; width: 100%; height: auto; color: #1d4789; overflow: visible; }
 
 /* -------------------------------------------------------------- month page */
 [data-theme="kuda"] .mpage { padding-bottom: 0; }
@@ -56,7 +56,7 @@
 
 /* ---------------------------------------------------------- agenda summary */
 [data-theme="kuda"] .summary { margin-top: 8px; padding: 0 0 4px; border-top: 1.5px solid var(--k-red); }
-[data-theme="kuda"] .sum-h { margin: 0; padding: 10px 12px 8px; border-bottom: 1px solid var(--k-soft); color: var(--k-blue); font: 800 16.5px/1.2 var(--f-cond); letter-spacing: .15em; }
+[data-theme="kuda"] .sum-h { margin: 0; padding: 10px 62px 8px 12px; border-bottom: 1px solid var(--k-soft); color: var(--k-blue); font: 800 16.5px/1.2 var(--f-cond); letter-spacing: .15em; }
 [data-theme="kuda"] .sum-hol { margin: 8px 12px 0; color: var(--k-red); }
 [data-theme="kuda"] .sum-more { position: absolute; top: 11px; right: 10px; margin: 0; padding: 0; border: 0; font-size: 0; color: var(--k-red); }
 [data-theme="kuda"] .sum-more::before { content: "FAKTA"; font: 700 12.5px/1.2 var(--f-cond); letter-spacing: .1em; border-bottom: 1px dashed currentColor; }
@@ -84,11 +84,11 @@
 [data-theme="kuda"] .c-kick { font-family: var(--f-cond); font-style: normal; font-weight: 800; }
 [data-theme="kuda"] .sheet { padding: 0 0 12px; }
 [data-theme="kuda"] .kd-dh { display: flex; flex-direction: column; }
-[data-theme="kuda"] .kd-dh-band { display: grid; grid-template-columns: auto minmax(0, 1fr) 31cqi; align-items: center; gap: 10px; padding: 2px 4px 8px 8px; border-bottom: 1.5px solid var(--k-red); }
-[data-theme="kuda"] .kd-dh-word { font: 900 clamp(28px, 10cqi, 40px)/1 var(--f-display); color: var(--k-red); transform: scaleX(.78); transform-origin: 0 50%; margin-right: -9cqi; text-shadow: .8px .8px 0 #8e1612; }
+[data-theme="kuda"] .kd-dh-band { display: grid; grid-template-columns: auto minmax(0, 1fr) 26cqi; align-items: center; gap: 8px; padding: 8px 6px 8px 8px; border-bottom: 1.5px solid var(--k-red); }
+[data-theme="kuda"] .kd-dh-word { display: block; width: 32cqi; height: auto; }
 [data-theme="kuda"] .kd-dh-brand { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--k-blue); font: 700 10px/1 Arial, Helvetica, sans-serif; letter-spacing: .06em; white-space: nowrap; }
 [data-theme="kuda"] .kd-dh-brand b { font: 900 15px/1 var(--f-zh); letter-spacing: .14em; }
-[data-theme="kuda"] .kd-dh-horse { color: #1f4f96; }
+[data-theme="kuda"] .kd-dh-horse { color: #1d4789; }
 [data-theme="kuda"] .kd-dh-horse svg { display: block; width: 100%; height: auto; }
 [data-theme="kuda"] .kd-dh-my { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 0 9px; border-bottom: 1.5px solid var(--k-red); }
 [data-theme="kuda"] .kd-dh-my .sh-my { color: var(--k-blue); font: 800 clamp(28px, 9.6cqi, 38px)/.95 var(--f-cond); letter-spacing: .035em; }
@@ -96,10 +96,11 @@
 [data-theme="kuda"] .kd-dh-alt [lang="zh"] { font: 600 14px/1.2 var(--f-zh); }
 [data-theme="kuda"] .kd-dh-alt [lang="ta"] { font: 500 12.5px/1.2 var(--f-ta); letter-spacing: 0; }
 [data-theme="kuda"] .kd-dh-box { display: grid; grid-template-columns: 15cqi minmax(0, 1fr) 15cqi; align-items: stretch; margin-top: 8px; border-top: 1.5px solid var(--k-red); border-bottom: 1.5px solid var(--k-red); }
-[data-theme="kuda"] .kd-dh-v { display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; color: var(--k-red); font: 900 19px/1 var(--f-zh); letter-spacing: .3em; }
+[data-theme="kuda"] .kd-dh-v { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: .3em; color: var(--k-red); font: 900 clamp(18px, 6cqi, 24px)/1 var(--f-zh); }
+[data-theme="kuda"] .kd-dh-v i { font-style: normal; }
 [data-theme="kuda"] .kd-dh-v:first-child { border-right: 1px solid var(--k-red); }
-[data-theme="kuda"] .kd-dh-doy { flex-direction: row; gap: 4px; border-left: 1px solid var(--k-red); color: var(--k-blue); font: 700 11px/1 var(--f-cond); letter-spacing: .2em; }
-[data-theme="kuda"] .kd-dh-doy b { font: 800 18px/1 var(--f-cond); letter-spacing: .04em; }
+[data-theme="kuda"] .kd-dh-doy { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border-left: 1px solid var(--k-red); color: var(--k-blue); font: 700 11px/1.15 var(--f-cond); letter-spacing: .18em; text-align: center; }
+[data-theme="kuda"] .kd-dh-doy b { margin-top: 4px; font: 800 20px/1 var(--f-cond); letter-spacing: .02em; color: var(--k-red); }
 [data-theme="kuda"] .kd-dh .sh-num { margin: 0; padding: 12px 0 2px; text-align: center; font: 600 clamp(120px, 46cqi, 190px)/.9 var(--f-serif); -webkit-text-stroke: 3px currentColor; letter-spacing: -.02em; color: var(--k-blue); }
 [data-theme="kuda"] .kd-dh .sh-num.red { color: var(--k-red); }
 [data-theme="kuda"] .kd-dh-day, [data-theme="kuda"] .kd-dh-langs, [data-theme="kuda"] .kd-dh-meta { grid-column: 1 / -1; }
