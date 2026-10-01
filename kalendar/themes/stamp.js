@@ -1,7 +1,7 @@
 /* Style: Rubber Stamp. Hooks get a context `c` from app.js (see README, 'Styles'). */
 (() => {
   /* rough, inked edge for anything drawn with a rubber stamp */
-  const inkFilter = (id, seed = 3) => `<filter id="${id}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="${seed}" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2.6 0 0 0 1.75" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in" result="s"/><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="${seed + 4}" result="w"/><feDisplacementMap in="s" in2="w" scale="2.2"/></filter>`;
+  const inkFilter = (id, seed = 3) => `<filter id="${id}" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="${seed}" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -10 0 0 0 7.1" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in" result="s"/><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="${seed + 4}" result="w"/><feDisplacementMap in="s" in2="w" scale="2.2"/></filter>`;
 
   /* the circular "JADUAL HARIAN" office seal */
   function seal(c, top = 'JADUAL', bottom = 'HARIAN') {
@@ -15,16 +15,14 @@
       return `<path d="${p}Z"/>`;
     };
     return `<svg class="st-seal" viewBox="0 0 140 140" aria-hidden="true"><defs>${inkFilter(f, 7)}
-      <path id="${a}" d="M30 70a40 40 0 0 1 80 0"/><path id="${b}" d="M15 70a55 55 0 0 0 110 0"/></defs>
+      <path id="${a}" d="M33 70a37 37 0 0 1 74 0"/><path id="${b}" d="M14 70a56 56 0 0 0 112 0"/></defs>
       <g filter="url(#${f})" fill="currentColor" stroke="currentColor">
-        <circle cx="70" cy="70" r="66" fill="none" stroke-width="4.2"/>
-        <circle cx="70" cy="70" r="60" fill="none" stroke-width="1.4"/>
-        <circle cx="70" cy="70" r="27" fill="none" stroke-width="2.4"/>
-        <circle cx="70" cy="70" r="23" fill="none" stroke-width="1"/>
+        <circle cx="70" cy="70" r="66" fill="none" stroke-width="5"/>
+        <circle cx="70" cy="70" r="59.5" fill="none" stroke-width="1.6"/>
         <g stroke="none">
-          <text font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="21" letter-spacing="4" text-anchor="middle"><textPath href="#${a}" startOffset="50%">${top}</textPath></text>
-          <text font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="21" letter-spacing="4" text-anchor="middle"><textPath href="#${b}" startOffset="50%">${bottom}</textPath></text>
-          ${star(70, 71, 18)}${star(20, 72, 5)}${star(120, 72, 5)}
+          <text font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="24" letter-spacing="5" text-anchor="middle"><textPath href="#${a}" startOffset="50%">${top}</textPath></text>
+          <text font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="24" letter-spacing="5" text-anchor="middle"><textPath href="#${b}" startOffset="50%">${bottom}</textPath></text>
+          ${star(70, 72, 19)}${star(22, 72, 4)}${star(118, 72, 4)}
         </g>
       </g></svg>`;
   }

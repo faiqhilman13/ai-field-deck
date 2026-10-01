@@ -130,4 +130,5 @@
   [data-theme="midnight"] .mt-sub { gap: 0 10px; font-size: 14px; }
   [data-theme="midnight"] .mn-names { padding-left: 10px; letter-spacing: .14em; }
   [data-theme="midnight"] .seg > * { font-size: 16px; }
+  [data-theme="midnight"] .sh-langs, [data-theme="midnight"] .sh-dayname { padding-left: 10px; letter-spacing: .12em; }
 }

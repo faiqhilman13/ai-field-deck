@@ -82,3 +82,52 @@
 [data-theme="kuda"] .sh-dayname { font-family: var(--f-cond); color: var(--k-blue); }
 [data-theme="kuda"] .sh-my { color: var(--k-red); }
 [data-theme="kuda"] .c-kick { font-family: var(--f-cond); font-style: normal; font-weight: 800; }
+[data-theme="kuda"] .sheet { padding: 0 0 12px; }
+[data-theme="kuda"] .kd-dh { display: flex; flex-direction: column; }
+[data-theme="kuda"] .kd-dh-band { display: grid; grid-template-columns: auto minmax(0, 1fr) 31cqi; align-items: center; gap: 10px; padding: 2px 4px 8px 8px; border-bottom: 1.5px solid var(--k-red); }
+[data-theme="kuda"] .kd-dh-word { font: 900 clamp(28px, 10cqi, 40px)/1 var(--f-display); color: var(--k-red); transform: scaleX(.78); transform-origin: 0 50%; margin-right: -9cqi; text-shadow: .8px .8px 0 #8e1612; }
+[data-theme="kuda"] .kd-dh-brand { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--k-blue); font: 700 10px/1 Arial, Helvetica, sans-serif; letter-spacing: .06em; white-space: nowrap; }
+[data-theme="kuda"] .kd-dh-brand b { font: 900 15px/1 var(--f-zh); letter-spacing: .14em; }
+[data-theme="kuda"] .kd-dh-horse { color: #1f4f96; }
+[data-theme="kuda"] .kd-dh-horse svg { display: block; width: 100%; height: auto; }
+[data-theme="kuda"] .kd-dh-my { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 0 9px; border-bottom: 1.5px solid var(--k-red); }
+[data-theme="kuda"] .kd-dh-my .sh-my { color: var(--k-blue); font: 800 clamp(28px, 9.6cqi, 38px)/.95 var(--f-cond); letter-spacing: .035em; }
+[data-theme="kuda"] .kd-dh-alt { display: flex; gap: 8cqi; color: var(--k-blue); font: 700 14px/1.2 var(--f-cond); letter-spacing: .08em; }
+[data-theme="kuda"] .kd-dh-alt [lang="zh"] { font: 600 14px/1.2 var(--f-zh); }
+[data-theme="kuda"] .kd-dh-alt [lang="ta"] { font: 500 12.5px/1.2 var(--f-ta); letter-spacing: 0; }
+[data-theme="kuda"] .kd-dh-box { display: grid; grid-template-columns: 15cqi minmax(0, 1fr) 15cqi; align-items: stretch; margin-top: 8px; border-top: 1.5px solid var(--k-red); border-bottom: 1.5px solid var(--k-red); }
+[data-theme="kuda"] .kd-dh-v { display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; color: var(--k-red); font: 900 19px/1 var(--f-zh); letter-spacing: .3em; }
+[data-theme="kuda"] .kd-dh-v:first-child { border-right: 1px solid var(--k-red); }
+[data-theme="kuda"] .kd-dh-doy { flex-direction: row; gap: 4px; border-left: 1px solid var(--k-red); color: var(--k-blue); font: 700 11px/1 var(--f-cond); letter-spacing: .2em; }
+[data-theme="kuda"] .kd-dh-doy b { font: 800 18px/1 var(--f-cond); letter-spacing: .04em; }
+[data-theme="kuda"] .kd-dh .sh-num { margin: 0; padding: 12px 0 2px; text-align: center; font: 600 clamp(120px, 46cqi, 190px)/.9 var(--f-serif); -webkit-text-stroke: 3px currentColor; letter-spacing: -.02em; color: var(--k-blue); }
+[data-theme="kuda"] .kd-dh .sh-num.red { color: var(--k-red); }
+[data-theme="kuda"] .kd-dh-day, [data-theme="kuda"] .kd-dh-langs, [data-theme="kuda"] .kd-dh-meta { grid-column: 1 / -1; }
+[data-theme="kuda"] .kd-dh-day { padding: 9px 0 8px; border-top: 1.5px solid var(--k-red); text-align: center; color: var(--k-blue); font: 800 clamp(26px, 9cqi, 34px)/1 var(--f-cond); letter-spacing: .3em; text-indent: .3em; }
+[data-theme="kuda"] .kd-dh-day.red { color: var(--k-red); }
+[data-theme="kuda"] .kd-dh-langs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--k-red); color: var(--k-blue); font: 700 14px/1.2 var(--f-cond); letter-spacing: .1em; text-align: center; }
+[data-theme="kuda"] .kd-dh-langs > * { padding: 7px 2px 6px; }
+[data-theme="kuda"] .kd-dh-langs > * + * { border-left: 1px solid var(--k-red); }
+[data-theme="kuda"] .kd-dh-langs [lang="zh"] { font-family: var(--f-zh); font-weight: 600; }
+[data-theme="kuda"] .kd-dh-langs [lang="ta"] { font: 500 12.5px/1.3 var(--f-ta); letter-spacing: 0; }
+[data-theme="kuda"] .kd-dh-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 18px; margin: 0; padding: 7px 4px 6px; border-top: 1px solid var(--k-soft); color: #5a6a8a; font: 600 13px/1.3 var(--f-cond); letter-spacing: .06em; }
+[data-theme="kuda"] .kd-dh-meta [lang="zh"] { font-family: var(--f-zh); color: var(--k-red); }
+[data-theme="kuda"] .kd-dh .sh-hol { clip-path: none; margin: 10px auto 0; padding: 6px 16px 5px; border-radius: 3px; background: var(--k-red); box-shadow: 0 0 0 1.5px var(--paper), 0 0 0 2.5px var(--k-red); }
+
+[data-theme="kuda"] .sh-sec { margin-top: 14px; }
+[data-theme="kuda"] .sh-h { margin: 0; padding: 0 12px 7px; border-bottom: 1px solid var(--k-soft); color: var(--k-blue); font: 800 15px/1.2 var(--f-cond); letter-spacing: .16em; }
+[data-theme="kuda"] .sh-events { border-top: 1.5px solid var(--k-red); padding-top: 9px; }
+[data-theme="kuda"] .c-card { margin-top: 14px; padding: 12px 12px 10px; background: rgba(255, 248, 232, .55); border: 1.5px solid var(--k-red); border-radius: 2px; box-shadow: inset 0 0 0 3px rgba(255, 248, 232, .6), inset 0 0 0 4px rgba(208, 38, 42, .45); }
+[data-theme="kuda"] .c-kick { color: var(--k-red); font: 800 20px/1.1 var(--f-cond); font-style: normal; letter-spacing: .04em; text-transform: uppercase; }
+[data-theme="kuda"] .c-tag { color: var(--k-blue); }
+[data-theme="kuda"] .c-icon { color: var(--k-blue); background: none; border: 1.5px solid var(--k-blue); }
+[data-theme="kuda"] .c-body p, [data-theme="kuda"] .pb-v { color: var(--k-ink); font: 500 16.5px/1.45 var(--f-cond); letter-spacing: .015em; }
+[data-theme="kuda"] .pb-p { color: var(--k-blue); font: 600 22px/1.25 var(--f-serif); font-style: normal; }
+[data-theme="kuda"] .pb-k { color: var(--k-red); }
+[data-theme="kuda"] .pb-hand { color: var(--k-blue); }
+[data-theme="kuda"] .redraw { color: var(--k-red); }
+[data-theme="kuda"] .sh-note { padding-top: 9px; border-top: 1.5px solid var(--k-red); }
+[data-theme="kuda"] .sh-note .sh-h { border-bottom: 0; }
+[data-theme="kuda"] .sh-note textarea { padding: 0 12px; background: repeating-linear-gradient(180deg, transparent 0 27px, var(--k-soft) 27px 28px); color: var(--k-blue); }
+[data-theme="kuda"] .sh-nav { border-top: 1.5px solid var(--k-red); padding: 10px 2px 0; color: var(--k-blue); }
+[data-theme="kuda"] .sh-nav button { border-radius: 4px; }

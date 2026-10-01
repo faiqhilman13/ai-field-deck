@@ -8,7 +8,7 @@
   --st-soft: #8a6a62;     /* faint typed text */
   --st-line: rgba(123, 28, 37, .55);
   --st-dash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='29'%3E%3Crect y='27.5' width='1.2' height='1.2' fill='%23a0706a'/%3E%3C/svg%3E");
-  --st-speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -9 0 0 0 6.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --st-speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -13 0 0 0 9.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --st-paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --st-rule: linear-gradient(rgba(123, 28, 37, .75) 0 0);
   --f-st: "Courier Prime", "Courier New", var(--f-type);
@@ -57,7 +57,7 @@
 
 /* rubber stamp box (KHAMIS) */
 [data-theme="stamp"] .st-stamp {
-  position: absolute; z-index: 2; top: -30px; right: -6px;
+  position: absolute; z-index: 2; top: -22px; right: -6px;
   display: inline-block; padding: 3px; border: 2.5px solid currentColor; border-radius: 4px;
   color: var(--st-red); transform: rotate(-2deg);
   -webkit-mask: var(--st-speckle) 0 0 / 160px 160px; mask: var(--st-speckle) 0 0 / 160px 160px;
@@ -66,7 +66,7 @@
   display: block; padding: 3px 13px 0; border: 1.2px solid currentColor; border-radius: 2px;
   font: 800 clamp(32px, 11.6cqi, 46px)/1 var(--f-cond); letter-spacing: .04em;
 }
-[data-theme="stamp"] .sh-date { order: 2; position: relative; padding-top: 40px; text-align: left; }
+[data-theme="stamp"] .sh-date { order: 2; position: relative; padding-top: 32px; text-align: left; }
 [data-theme="stamp"] .sh-num, [data-theme="stamp"] .sh-dayname, [data-theme="stamp"] .sh-langs, [data-theme="stamp"] .sh-mini-side { display: none; }
 [data-theme="stamp"] .sh-dmy {
   display: flex; justify-content: space-between; align-items: baseline;
@@ -122,10 +122,10 @@
 [data-theme="stamp"] .sh-note .sh-h { margin: 0 0 1px 2px; font-size: 0; letter-spacing: 0; }
 [data-theme="stamp"] .sh-note .sh-h::after { content: "NOTA"; font: 400 14px/1 var(--f-st); letter-spacing: .08em; color: var(--st-text); }
 [data-theme="stamp"] .sh-note textarea {
-  min-height: 87px; height: 87px; padding: 0 4px; background: var(--st-dash) 0 0 / 7px 29px repeat;
+  min-height: 87px; height: 87px; padding: 0 4px; resize: none; background: var(--st-dash) 0 0 / 7px 29px repeat;
   font: 400 18px/29px var(--f-hand); color: var(--note-ink);
 }
-[data-theme="stamp"] .sh-note textarea::placeholder { color: var(--st-soft); opacity: .45; }
+[data-theme="stamp"] .sh-note textarea::placeholder { color: var(--st-soft); opacity: .35; }
 
 /* --------------------------------------------- mini month + seal */
 [data-theme="stamp"] .sh-mini {
@@ -141,7 +141,7 @@
 [data-theme="stamp"] .mm .r { font-weight: 700; }
 [data-theme="stamp"] .mm .r { color: var(--sun); }
 [data-theme="stamp"] .mm .on { background: none; color: inherit; border-radius: 2px; box-shadow: inset 0 0 0 1.5px var(--st-red); }
-[data-theme="stamp"] .st-seal { display: block; width: clamp(108px, 37cqi, 138px); margin: -6px -6px 0 0; color: #c4283a; transform: rotate(-6deg); opacity: .9; }
+[data-theme="stamp"] .st-seal { display: block; width: clamp(108px, 37cqi, 138px); margin: -6px -6px 0 0; color: #c22838; transform: rotate(-4deg); }
 
 /* ------------------------------------- fact & peribahasa: typed form sections */
 [data-theme="stamp"] .c-fact { order: 8; }

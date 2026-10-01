@@ -93,5 +93,22 @@
   (window.SEHARI_THEMES = window.SEHARI_THEMES || {}).kuda = {
     _horse: horse('kdx'),
     masthead: c => `<div class="mh mh-kuda">${mast('kd' + c.uid())}</div>`,
+    // Hari view: the same printed sheet, one day per page
+    sheetHead: c => {
+      const id = 'kd' + c.uid(), h = c.holiday;
+      return `<div class="kd-dh">
+        <div class="kd-dh-band"><span class="kd-dh-word">KALENDAR</span><span class="kd-dh-brand"><b lang="zh">馬牌日曆</b><span>KALENDAR KUDA</span></span><span class="kd-dh-horse">${horse(id)}</span></div>
+        <header class="kd-dh-my"><span class="sh-my">${c.msMonth.toUpperCase()} ${c.y}</span><span class="kd-dh-alt"><span lang="zh">${c.zhMonth}</span><span>${c.enMonth.toUpperCase()}</span><span lang="ta">${c.taMonth}</span></span></header>
+        <div class="kd-dh-box">
+          <span class="kd-dh-v" lang="zh">${c.zhDay}</span>
+          <div class="sh-num ${c.tone}" aria-label="${c.d} ${c.msMonth} ${c.y}">${c.d}</div>
+          <span class="kd-dh-v kd-dh-doy"><b>${c.doy}</b>HARI KE</span>
+          <div class="kd-dh-day ${c.tone}">${c.msDay.toUpperCase()}</div>
+          <div class="kd-dh-langs"><span lang="zh">${c.zhDay}</span><span>${c.enDay.toUpperCase()}</span><span lang="ta">${c.taDay}</span></div>
+          ${c.hijri || c.lunar ? `<p class="kd-dh-meta">${c.hijri ? `<span title="Tarikh Hijrah">${c.hijri}</span>` : ''}${c.lunar ? `<span lang="zh" title="Kalendar lunar Cina">${c.lunar}</span>` : ''}</p>` : ''}
+        </div>
+        ${h ? `<p class="sh-hol">${c.esc(h.ms)}${h.approx ? '*' : ''}<small>${c.esc(h.en)}${h.scope === 'some' ? ' · sesetengah negeri' : ''}</small></p>` : ''}
+      </div>`;
+    },
   };
 })();
