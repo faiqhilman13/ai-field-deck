@@ -1,22 +1,25 @@
-/* Sehari Selembar: a Malaysian wall calendar with a fact and a peribahasa for every day. */
+/* Sehari Selembar: a Malaysian calendar with a fact and a peribahasa for every day, in nine nostalgic styles. */
 (() => {
   'use strict';
 
   const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
   const mod = (n, m) => ((n % m) + m) % m;
   const pad2 = n => String(n).padStart(2, '0');
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const wideScreen = matchMedia('(min-width: 1040px)');
+  const wide = matchMedia('(min-width: 960px)');
 
   /* ------------------------------------------------------------------ names */
   const MS_MONTH = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
   const MS_MON3 = ['JAN', 'FEB', 'MAC', 'APR', 'MEI', 'JUN', 'JUL', 'OGO', 'SEP', 'OKT', 'NOV', 'DIS'];
   const EN_MONTH = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const TA_MONTH = ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆகஸ்ட்', 'செப்டம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'];
   const MS_DAY = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
   const EN_DAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const MS_DAY1 = ['A', 'I', 'S', 'R', 'K', 'J', 'S'];
+  const TA_DAY = ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'];
+  const WD_MON = ['I', 'S', 'R', 'K', 'J', 'S', 'A'];
   const ZH_NUM = ['〇', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
   const ZH_DAY = ['日', '一', '二', '三', '四', '五', '六'];
   const ZH_LUNAR_MONTH = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
@@ -169,7 +172,6 @@
     return (holidayYears[y] = out);
   }
   const holiday = (y, m, d) => holidaysFor(y)[iso(y, m, d)] || null;
-
   /* ------------------------------------------------------- daily content */
   const FACTS = Array.isArray(window.KALENDAR_FACTS) && window.KALENDAR_FACTS.length
     ? window.KALENDAR_FACTS
@@ -197,16 +199,16 @@
   if (!factPool.length) factPool.push(0);
   const factOrder = shuffled(factPool.length, 31081957);
   const periOrder = shuffled(PERI.length, 16091963);
-  const reroll = { fact: {}, peri: {} };
+  const rerolls = { fact: {}, peri: {} };
 
   function factFor(p) {
-    const k = iso(p.y, p.m, p.d), shift = reroll.fact[k] || 0;
+    const k = iso(p.y, p.m, p.d), shift = rerolls.fact[k] || 0;
     const pin = pinnedFact[pad2(p.m + 1) + '-' + pad2(p.d)];
     if (pin != null && !shift) return FACTS[pin];
     return FACTS[factPool[factOrder[mod(dayNum(p.y, p.m, p.d) + shift * 89, factPool.length)]]];
   }
   function periFor(p) {
-    const shift = reroll.peri[iso(p.y, p.m, p.d)] || 0;
+    const shift = rerolls.peri[iso(p.y, p.m, p.d)] || 0;
     return PERI[periOrder[mod(dayNum(p.y, p.m, p.d) + shift * 97, PERI.length)]];
   }
 
@@ -279,7 +281,6 @@
     };
   })();
 
-  /* ------------------------------------------------------------- artwork */
   const ICONS = {
     Sejarah: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c2.2 2.4-1.8 4.2 0 6.6s-1.8 4.2 0 6.6-1.8 3.6 0 5.4"/><path d="M10 22h12"/><path d="M14.5 22v3.5c0 1.5 3 1.5 3 0V22"/><path d="M14 28.5c1.4 1 2.6 1 4 0"/></svg>',
     Alam: '<svg viewBox="0 0 32 32"><g fill="currentColor">' + [0, 72, 144, 216, 288].map(r => `<ellipse cx="16" cy="9" rx="5.2" ry="7" transform="rotate(${r} 16 16)"/>`).join('') + '</g><circle cx="16" cy="16" r="3" fill="#fdebd2"/><path d="M16 16 L23 6" stroke="#fdebd2" stroke-width="1.6" stroke-linecap="round"/><circle cx="23.5" cy="5.5" r="1.6" fill="#f2c94c"/></svg>',
@@ -295,139 +296,250 @@
     '<svg viewBox="0 0 32 50" aria-hidden="true"><rect x="13" y="2" width="6" height="5" fill="#8a8f96"/><path d="M9 7h14v4H9z" fill="#5f646b"/><path d="M5 18q0-8 11-8t11 8v26q0 3-3 3H8q-3 0-3-3Z" fill="#2f8a4f"/><rect x="5" y="24" width="22" height="9" fill="#f4ecd6"/><text x="16" y="31.2" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="7.4" fill="#d0281f">GAS</text><path d="M8 13q8-3 16 0" stroke="#7fc79a" stroke-width="1.2" fill="none"/><rect x="7" y="46" width="18" height="3" fill="#1f5c35"/></svg>',
     '<svg viewBox="0 0 32 38" aria-hidden="true"><ellipse cx="16" cy="6" rx="12" ry="3.5" fill="#c9ccd1"/><path d="M4 6v24q12 5 24 0V6q-12 4-24 0Z" fill="#1d58a8"/><path d="M4 12q12 4 24 0v12q-12 4-24 0Z" fill="#fff8e0"/><text x="16" y="21.6" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="6.4" fill="#d0281f">SUSU</text><path d="M6 31q10 3 20 0" stroke="#a9c3ea" stroke-width="1" fill="none"/></svg>',
   ];
-  const FLOWER = '<svg viewBox="0 0 32 32" aria-hidden="true"><g fill="#d0281f">' + [0, 72, 144, 216, 288].map(r => `<ellipse cx="16" cy="9" rx="5" ry="7" transform="rotate(${r} 16 16)"/>`).join('') + '</g><circle cx="16" cy="16" r="2.6" fill="#f2c94c"/></svg>';
-  const RING = '<svg class="ring" viewBox="0 0 100 80" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M64 9C34 1 7 16 8 40c1 24 30 37 58 32 25-4 31-30 21-47C79 9 58 4 38 12"/></svg>';
   const REDRAW_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.6-3.7M13.2 1.8v3.6H9.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const RING = '<svg class="ring" viewBox="0 0 100 80" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M64 9C34 1 7 16 8 40c1 24 30 37 58 32 25-4 31-30 21-47C79 9 58 4 38 12"/></svg>';
 
-  /* ----------------------------------------------------------- month page */
-  function dayCell(y, m, d, cls, area) {
-    const w = weekday(y, m, d);
-    const h = holiday(y, m, d);
-    const l = lunar(y, m, d);
-    const hj = hijri(y, m, d);
-    const k = iso(y, m, d);
-    const isToday = same({ y, m, d }, today());
-    const classes = ['day', cls,
-      (h || w === 0) ? 'red' : w === 6 ? 'blue' : '',
-      isToday ? 'today' : '',
-      notes[k] ? 'note' : '',
-      same({ y, m, d }, padDate) ? 'sel' : ''].filter(Boolean).join(' ');
-    const label = `${MS_DAY[w]}, ${d} ${MS_MONTH[m]} ${y}${h ? ', ' + h.ms : ''}${isToday ? ', hari ini' : ''}`;
-    const lun = l ? `<span class="lun${l.day === 1 ? ' new' : ''}" lang="zh">${l.day === 1 ? lunarMonthZh(l) : lunarDayZh(l.day)}</span>` : '';
-    const hij = hj ? `<span class="hij${hj.day === 1 ? ' new' : ''}">${hj.day === 1 ? HIJRI_MONTH[hj.month - 1] : hj.day}</span>` : '';
-    const hol = h ? `<span class="hol">${esc(h.ms)}${h.approx ? '*' : ''}</span>` : '';
-    return `<button type="button" class="${classes}" data-date="${k}"${area ? ` style="${area}"` : ''} aria-label="${esc(label)}">${hij}<span class="num">${d}</span>${lun}${hol}${isToday ? RING : ''}</button>`;
+  /* ------------------------------------------------------------- themes */
+  const THEMES = [
+    { id: 'tearoff', name: 'Tear-off', ms: 'Kalendar koyak harian', start: 'day', color: '#c62a22' },
+    { id: 'kuda', name: 'Kalendar Kuda', ms: 'Merah, biru, klasik', start: 'month', color: '#d62b20' },
+    { id: 'kopitiam', name: 'Kopitiam Ledger', ms: 'Buku akaun kedai kopi', start: 'month', color: '#1f5c3a' },
+    { id: 'runcit', name: 'Kedai Runcit', ms: 'Kuning terang, rak barang', start: 'month', color: '#d0281f' },
+    { id: 'batik', name: 'Batik Margin', ms: 'Tenang, berbunga batik', start: 'month', color: '#1f2a4d' },
+    { id: 'postcard', name: 'Postcard Month', ms: 'Poskad lama Malaysia', start: 'month', color: '#e5604d' },
+    { id: 'stamp', name: 'Rubber Stamp', ms: 'Borang & cop getah', start: 'day', color: '#7a1f1f' },
+    { id: 'riso', name: 'Riso Pop', ms: 'Cetakan riso merah-biru', start: 'month', color: '#e2372b' },
+    { id: 'midnight', name: 'Midnight Almanac', ms: 'Almanak waktu malam', start: 'month', color: '#191714' },
+  ];
+  let theme = THEMES[1];
+
+  /* ------------------------------------------------------------ artwork */
+  let uidN = 0;
+  const uid = () => 'sx' + (++uidN);
+
+  function hibiscus({ petal = '#d0281f', centre = '#f2c94c', line = '', sw = 1.6, cls = '' } = {}) {
+    const rot = [0, 72, 144, 216, 288];
+    const petals = rot.map(r => `<path transform="rotate(${r} 50 50)" d="M50 50C37 41 28 20 40 9c5-5 15-5 20 0 12 11 3 32-10 41Z" fill="${line ? 'none' : petal}" stroke="${line || 'rgba(0,0,0,.18)'}" stroke-width="${sw}"/>`).join('');
+    const veins = rot.map(r => `<path transform="rotate(${r} 50 50)" d="M50 45V20" stroke="${line || 'rgba(0,0,0,.2)'}" stroke-width="${sw * 0.6}" fill="none"/>`).join('');
+    return `<svg class="hib ${cls}" viewBox="0 0 100 100" aria-hidden="true">${petals}${veins}<path d="M50 50C57 40 65 30 76 21" stroke="${line || centre}" stroke-width="${sw * 1.5}" fill="none" stroke-linecap="round"/><circle cx="77" cy="20" r="4" fill="${line ? 'none' : centre}" stroke="${line || 'none'}" stroke-width="${sw}"/><circle cx="50" cy="50" r="5.5" fill="${line ? 'none' : '#7a0f0f'}" stroke="${line || 'none'}" stroke-width="${sw}"/></svg>`;
+  }
+  const HORSE = '<svg class="horse" viewBox="0 0 140 100" aria-hidden="true"><path fill="currentColor" d="M116 14l-2-10 6 7c6 7 12 17 16 27 1 4-2 8-6 8-6-1-12-3-16 0-4 4-6 10-8 16 2 4 6 6 12 2l8-6 4 2-10 10c-6 4-14 4-18 0l2 12 8 12-4 2-10-12-4-12c-10 2-24 2-34 0l-8 8-12 10-4-2 10-12 2-10-4 10 2 18-4 2-4-18 2-16c-4-6-4-12-2-16-8 0-18 6-28 18 4-14 14-24 28-26 16-2 38 2 52-2 6-4 10-12 14-18 4-4 8-6 12-4Z"/><path d="M104 19c-7 2-11 7-13 13M109 15c-7 1-11 5-14 10M100 25c-6 3-9 7-10 12" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="125" cy="25" r="1.8" fill="#fffdf7"/></svg>';
+  const CUP = '<svg class="cup" viewBox="0 0 90 80" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M34 6c-4 6 4 9 0 15M46 3c-4 6 4 9 0 15M58 6c-4 6 4 9 0 15"/><path d="M18 28h54v10c0 16-12 26-27 26S18 54 18 38Z" fill="currentColor" fill-opacity=".12"/><path d="M72 33c8 0 12 4 12 9s-5 9-13 8"/><path d="M6 68c12 8 66 8 78 0M3 67h84"/><path d="M27 41c3 9 9 13 17 14" opacity=".5"/></svg>';
+  const SHELF_EXTRA = [
+    '<svg viewBox="0 0 20 50" aria-hidden="true"><rect x="7" y="2" width="6" height="8" fill="#c0392b"/><path d="M7 10C3 16 3 18 3 22v24q0 2 2 2h10q2 0 2-2V22c0-4 0-6-4-12Z" fill="#3b2314"/><rect x="3" y="26" width="14" height="12" fill="#f2c94c"/><text x="10" y="34.4" text-anchor="middle" font-size="5" font-weight="800" fill="#c0392b" font-family="Barlow Condensed,sans-serif">KICAP</text></svg>',
+    '<svg viewBox="0 0 44 26" aria-hidden="true"><rect x="2" y="4" width="40" height="20" rx="4" fill="#d0281f"/><rect x="2" y="2" width="40" height="4" rx="2" fill="#c9ccd1"/><text x="22" y="18" text-anchor="middle" font-size="9" font-weight="800" fill="#fff5c8" font-family="Barlow Condensed,sans-serif">SARDIN</text></svg>',
+    '<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="6" width="36" height="32" rx="2" fill="#1d58a8"/><rect x="2" y="3" width="36" height="6" rx="1" fill="#c9ccd1"/><rect x="6" y="14" width="28" height="16" fill="#fff8e0"/><text x="20" y="25" text-anchor="middle" font-size="7.5" font-weight="800" fill="#d0281f" font-family="Barlow Condensed,sans-serif">BISKUT</text></svg>',
+    '<svg viewBox="0 0 32 38" aria-hidden="true"><ellipse cx="16" cy="6" rx="12" ry="3.5" fill="#c9ccd1"/><path d="M4 6v24q12 5 24 0V6q-12 4-24 0Z" fill="#1b6b3a"/><path d="M4 12q12 4 24 0v12q-12 4-24 0Z" fill="#f2c94c"/><text x="16" y="21.6" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="6.4" fill="#1b6b3a">KOKO</text></svg>',
+  ];
+  function postcardScene() {
+    const id = uid();
+    const shops = ['#e9b4a0', '#f1d38e', '#a9cbb7', '#f0c9a8', '#b9c7e0', '#e7a98f'].map((c, i) => {
+      const x = 34 + i * 46, h = [70, 78, 72, 80, 74, 68][i], top = 150 - h;
+      const win = [0, 1, 2].map(j => `<path d="M${x + 6 + j * 13} ${top + 34}v-10a5 5 0 0 1 10 0v10Z" fill="#fff6e2" stroke="#6d5a46" stroke-width=".8"/><rect x="${x + 5 + j * 13}" y="${top + 24}" width="2.4" height="10" fill="#4e7a62"/>`).join('');
+      const arch = [0, 1].map(j => `<path d="M${x + 6 + j * 20} 150v-16a8 8 0 0 1 16 0v16Z" fill="#5a4636" opacity=".75"/>`).join('');
+      return `<rect x="${x}" y="${top}" width="46" height="${h}" fill="${c}" stroke="#7a6550" stroke-width=".8"/><rect x="${x - 1}" y="${top}" width="48" height="6" fill="#fff4dd" stroke="#7a6550" stroke-width=".6"/><path d="M${x} ${top + 44}h46" stroke="#7a6550" stroke-width="1.4"/>${win}${arch}`;
+    }).join('');
+    const palm = (x, s) => `<g transform="translate(${x} 0) scale(${s} 1)" fill="none" stroke="#2f5a34" stroke-linecap="round"><path d="M0 182C2 150 -2 118 8 92" stroke-width="4" stroke="#7a5a3a"/><path d="M8 92c-14-8-28-4-36 6M8 92c-6-14-20-18-32-16M8 92c6-14 20-18 32-12M8 92c16-4 26 4 30 14M8 92c2-14-2-24-12-28" stroke-width="3.4"/></g>`;
+    return `<svg class="pc-scene" viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc6dc"/><stop offset=".7" stop-color="#f4e7c8"/></linearGradient><pattern id="${id}h" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".8" fill="#3b2a12"/></pattern></defs><rect width="400" height="190" fill="url(#${id})"/><g fill="#fff" opacity=".8"><ellipse cx="70" cy="34" rx="34" ry="9"/><ellipse cx="96" cy="28" rx="22" ry="8"/><ellipse cx="230" cy="22" rx="30" ry="7"/></g><path d="M338 30v120" stroke="#8a7f6a" stroke-width="7"/><path d="M338 6v26" stroke="#8a7f6a" stroke-width="2"/><ellipse cx="338" cy="42" rx="15" ry="8" fill="#e8e1cf" stroke="#8a7f6a" stroke-width="1.5"/><ellipse cx="338" cy="36" rx="10" ry="4" fill="#cfc6b0"/>${shops}<path d="M0 190L150 150h100l150 40Z" fill="#cdbfa1"/><path d="M200 156v8M200 172v10" stroke="#fff6e2" stroke-width="2"/><path d="M0 150h400" stroke="#7a6550" stroke-width="1"/>${palm(10, 1)}${palm(386, -1)}<rect width="400" height="190" fill="url(#${id}h)" opacity=".07"/></svg>`;
+  }
+  const SKYLINE = '<svg class="skyline" viewBox="0 0 160 120" aria-hidden="true"><g fill="#2b55a6"><path d="M22 120V44h16v76Z"/><path d="M24 44V32h12v12Z"/><path d="M26 32V22h8v10Z"/><path d="M29.5 22V4h1v18Z"/><path d="M52 120V44h16v76Z"/><path d="M54 44V32h12v12Z"/><path d="M56 32V22h8v10Z"/><path d="M59.5 22V4h1v18Z"/><rect x="38" y="70" width="14" height="3"/></g><g stroke="#f6f1e7" stroke-width="1" opacity=".55"><path d="M24 56h12M24 64h12M24 80h12M24 88h12M24 96h12M24 104h12M54 56h12M54 64h12M54 80h12M54 88h12M54 96h12M54 104h12"/></g><g fill="none" stroke="#2b55a6" stroke-width="2.4" stroke-linejoin="round"><rect x="74" y="86" width="80" height="26" rx="5" fill="#f6f1e7"/><path d="M80 92h10v8H80zM94 92h10v8H94zM108 92h10v8h-10zM122 92h10v8h-10zM138 92h10v12h-10z"/></g><g fill="#2b55a6"><circle cx="90" cy="113" r="5"/><circle cx="138" cy="113" r="5"/><rect x="0" y="117" width="160" height="3"/></g></svg>';
+  const MOON = '<svg class="moon" viewBox="0 0 120 90" aria-hidden="true"><path d="M70 8a32 32 0 1 0 26 52A26 26 0 1 1 70 8Z" fill="#e3bd62"/><g fill="none" stroke="#d4a84a" stroke-width="1.6" stroke-linecap="round" opacity=".85"><path d="M4 66c8-6 18-6 24 0 6-6 16-6 22 0M30 80c6-5 14-5 20 0 6-5 14-5 20 0"/><path d="M14 60c3-6 10-7 14-2"/></g><g fill="#e3bd62"><circle cx="104" cy="14" r="1.6"/><circle cx="20" cy="22" r="1.2"/><circle cx="112" cy="44" r="1"/></g></svg>';
+  function stampSeal() {
+    const id = uid();
+    return `<svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="${id}" d="M60 60m-41 0a41 41 0 1 1 82 0a41 41 0 1 1-82 0"/></defs><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="3.2"/><circle cx="60" cy="60" r="30" fill="none" stroke="currentColor" stroke-width="1.6"/><text font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="15" letter-spacing="3" fill="currentColor"><textPath href="#${id}" startOffset="2%">JADUAL ★ HARIAN ★ JADUAL ★</textPath></text><path d="M60 42l5 12 13 1-10 8 3 13-11-7-11 7 3-13-10-8 13-1Z" fill="currentColor"/></svg>`;
   }
 
-  function miniCal(y, m) {
-    const first = weekday(y, m, 1), n = daysIn(y, m);
-    let g = MS_DAY1.map((c, i) => `<i${i === 0 ? ' class="r"' : ''}>${c}</i>`).join('');
-    for (let i = 0; i < first; i++) g += '<span></span>';
-    for (let d = 1; d <= n; d++) g += `<span${(first + d - 1) % 7 === 0 || holiday(y, m, d) ? ' class="r"' : ''}>${d}</span>`;
-    return `<span class="mini-t">${MS_MON3[m]} ${y}</span><span class="mini-g">${g}</span>`;
+  function mastheadHTML(t) {
+    if (t === 'kuda') return `<div class="mh mh-kuda"><p class="kd-side" lang="zh">耐用<br>實用<br>天天進步</p><p class="kd-word">KALENDAR</p><div class="kd-horse">${HORSE}</div><p class="kd-sub"><span>KALENDAR KUDA</span><b lang="zh">馬牌日曆</b></p></div>`;
+    if (t === 'kopitiam') return `<div class="mh mh-kopi"><div class="kp-words"><p class="kp-small">KEDAI KOPI</p><p class="kp-big">SINAR PAGI</p><p class="kp-zh" lang="zh">新早咖啡店</p></div>${CUP}<p class="kp-tag">KOPI · ROTI · KAWAN · JADUAL HIDUP</p></div>`;
+    if (t === 'runcit') return `<div class="mh mh-runcit"><p class="rc-hari">HARI HARI</p><p class="rc-kedai">KEDAI RUNCIT <span lang="zh">杂货店</span></p><div class="rc-shelf">${GOODS.join('')}${SHELF_EXTRA.join('')}</div><p class="rc-tag">BERAS · GULA · MINYAK MASAK · TEPUNG · MINUMAN · BARANG HARIAN</p></div>`;
+    if (t === 'postcard') return `<div class="mh mh-post">${postcardScene()}<p class="pc-hello"><span>Selamat Datang</span><span>ke</span><b>MALAYSIA</b></p></div>`;
+    return '';
+  }
+  function titleArt(t) {
+    if (t === 'riso') return `<div class="t-art"><span class="riso-sun"></span>${hibiscus({ petal: '#2b55a6', centre: '#e2372b' })}</div>`;
+    if (t === 'midnight') return `<div class="t-art">${MOON}</div>`;
+    return '';
+  }
+  function summaryArt(t) {
+    if (t === 'riso') return `<div class="s-art">${SKYLINE}</div>`;
+    if (t === 'postcard') return `<div class="s-art">${hibiscus({ petal: '#e5604d', centre: '#f2c94c' })}</div>`;
+    if (t === 'midnight') return `<div class="s-art">${hibiscus({ line: '#d4a84a', sw: 1.4 })}</div>`;
+    return '';
   }
 
-  function filler(kind, k, area) {
-    if (kind === 'lead') {
-      return `<div class="filler lead k${k}" style="${area}" aria-hidden="true">${k >= 3 ? '<span class="ad-burst">MURAH!</span>' : ''}${k >= 2 ? '<span class="ad-h">Ah Seng</span>' : ''}<span class="goods">${GOODS.join('')}</span>${k >= 2 ? '<span class="ad-s">Barang runcit lengkap</span>' : ''}</div>`;
-    }
-    if (k >= 2) return `<div class="filler memo" style="${area}" aria-hidden="true"><b>Catatan<i lang="zh">备忘</i></b></div>`;
-    return `<div class="filler orn" style="${area}" aria-hidden="true">${FLOWER}</div>`;
+  /* ------------------------------------------------------- events (Acara) */
+  const events = store.get('events', {}) || {};
+  const eventsFor = k => (events[k] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+  const saveEvents = () => store.set('events', events);
+
+  function eventsListHTML(k) {
+    const evs = eventsFor(k);
+    if (!evs.length) return '<p class="ev-empty">Tiada acara lagi. Tekan <b>+ Acara</b> untuk tambah.</p>';
+    return `<ul class="ev-list">${evs.map(e => `<li class="ev${e.done ? ' done' : ''}">
+      <span class="ev-time">${esc(e.time)}</span>
+      <button type="button" class="ev-body" data-edit="${esc(e.id)}" data-date="${k}"><span class="ev-title">${esc(e.title)}</span>${e.place ? `<small>${esc(e.place)}</small>` : ''}</button>
+      <button type="button" class="ev-check" role="checkbox" aria-checked="${!!e.done}" aria-label="Selesai: ${esc(e.title)}" data-check="${esc(e.id)}" data-date="${k}"></button>
+    </li>`).join('')}</ul>`;
   }
 
-  function pageHTML(y, m) {
-    const first = weekday(y, m, 1), n = daysIn(y, m);
-    const slots = {};
-    for (let d = 1; d <= n; d++) {
-      const idx = first + d - 1;
-      const col = Math.min(4, Math.floor(idx / 7)); // a sixth week folds into the fifth: the 24/31 cell
-      (slots[col + '-' + (idx % 7)] = slots[col + '-' + (idx % 7)] || []).push(d);
+  /* --------------------------------------------------------- month page */
+  function cellHTML(y, m, d) {
+    const w = weekday(y, m, d), k = iso(y, m, d), h = holiday(y, m, d);
+    const isToday = same({ y, m, d }, NOW);
+    const sel = same({ y, m, d }, padDate);
+    const n = (events[k] || []).length;
+    const cls = ['cell', (h || w === 0) ? 'red' : '', w === 6 ? 'sat' : '', isToday ? 'today' : '', sel ? 'sel' : '', n ? 'has-ev' : '', h ? 'hol' : ''].filter(Boolean).join(' ');
+    const label = `${MS_DAY[w]}, ${d} ${MS_MONTH[m]} ${y}${h ? ', ' + h.ms : ''}${n ? `, ${n} acara` : ''}${isToday ? ', hari ini' : ''}`;
+    return `<button type="button" class="${cls}" data-date="${k}" aria-label="${esc(label)}" aria-pressed="${sel}"><span class="num">${d}</span>${n ? '<i class="dot" aria-hidden="true"></i>' : ''}</button>`;
+  }
+  function gridHTML(y, m) {
+    const first = (weekday(y, m, 1) + 6) % 7, n = daysIn(y, m);
+    const prev = shiftMonth(y, m, -1), prevN = daysIn(prev.y, prev.m);
+    let h = WD_MON.map((c, i) => `<span class="wd${i === 6 ? ' sun' : ''}" aria-hidden="true">${c}</span>`).join('');
+    const total = Math.ceil((first + n) / 7) * 7;
+    for (let i = 0; i < total; i++) {
+      const d = i - first + 1;
+      if (d < 1 || d > n) h += `<span class="cell out" aria-hidden="true"><span class="num">${d < 1 ? prevN + d : d - n}</span></span>`;
+      else h += cellHTML(y, m, d);
     }
-    let grid = '';
-    for (let r = 0; r < 7; r++) {
-      grid += `<div class="lbl${r === 0 ? ' sun' : r === 6 ? ' sat' : ''}" style="grid-area:${r + 1}/1"><b>${MS_DAY[r].toUpperCase()}</b><span>${EN_DAY[r].slice(0, 3)}<i lang="zh">${ZH_DAY[r]}</i></span></div>`;
+    return `<div class="mgrid">${h}</div>`;
+  }
+  function ledgerHTML(y, m) {
+    let h = '<div class="lg-head" aria-hidden="true"><span></span><span></span><span>ACARA</span></div>';
+    for (let d = 1, n = daysIn(y, m); d <= n; d++) {
+      const w = weekday(y, m, d), k = iso(y, m, d), hol = holiday(y, m, d);
+      const sel = same({ y, m, d }, padDate), isToday = same({ y, m, d }, NOW);
+      const evs = eventsFor(k);
+      const lines = (sel ? evs : evs.slice(0, 1)).map(e => `<span class="lg-ev${e.done ? ' done' : ''}"><b>${esc(e.time)}</b> ${esc(e.title)}</span>`).join('') + (!sel && evs.length > 1 ? `<span class="lg-more">+${evs.length - 1} lagi</span>` : '');
+      h += `<button type="button" class="lrow${(hol || w === 0) ? ' red' : ''}${sel ? ' sel' : ''}${isToday ? ' today' : ''}" data-date="${k}" aria-pressed="${sel}" aria-label="${esc(`${MS_DAY[w]}, ${d} ${MS_MONTH[m]}${hol ? ', ' + hol.ms : ''}${evs.length ? `, ${evs.length} acara` : ''}`)}">
+        <span class="lg-n"><span>${d}</span>${sel ? RING : ''}</span><span class="lg-d">${sel ? MS_DAY[w] : MS_DAY[w].toUpperCase()}</span>
+        <span class="lg-a">${hol ? `<span class="lg-hol">${esc(hol.ms)}${hol.approx ? '*' : ''}</span>` : ''}${lines}</span></button>`;
     }
-    for (let c = 0; c < 5; c++) {
-      for (let r = 0; r < 7; r++) {
-        const s = slots[c + '-' + r];
-        if (!s) continue;
-        const area = `grid-area:${r + 1}/${c + 2}`;
-        grid += s.length === 1
-          ? dayCell(y, m, s[0], '', area)
-          : `<div class="split" style="${area}">${dayCell(y, m, s[0], 'half a')}${dayCell(y, m, s[1], 'half b')}<svg class="diag" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="100" x2="100" y2="0"/></svg></div>`;
-      }
-    }
-    if (first > 0) grid += filler('lead', first, `grid-area:1/2/${first + 1}/3`);
-    const lastIdx = first + n - 1, lastCol = Math.floor(lastIdx / 7), lastRow = lastIdx % 7;
-    if (lastCol <= 4 && lastRow < 6) grid += filler('tail', 6 - lastRow, `grid-area:${lastRow + 2}/${lastCol + 2}/8/${lastCol + 3}`);
-    for (let c = lastCol + 1; c <= 4; c++) grid += filler('tail', 7, `grid-area:1/${c + 2}/8/${c + 3}`);
-
-    const prev = shiftMonth(y, m, -1), next = shiftMonth(y, m, 1);
-    const hols = Object.entries(holidaysFor(y)).filter(([k]) => k.startsWith(`${y}-${pad2(m + 1)}-`)).sort(([a], [b]) => a.localeCompare(b));
-    const anyApprox = hols.some(([, h]) => h.approx);
-    const list = hols.length
-      ? hols.map(([k, h]) => `<li><b>${+k.slice(8)}</b><span>${esc(h.ms)}${h.approx ? '*' : ''}</span></li>`).join('')
-      : '<li class="none">Tiada cuti umum bulan ini</li>';
-
-    return `<div class="page" data-ym="${y}-${pad2(m + 1)}">
-      <div class="mhead">
-        <button type="button" class="mini prev" data-nav="-1" aria-label="Bulan lepas: ${MS_MONTH[prev.m]} ${prev.y}">${miniCal(prev.y, prev.m)}</button>
-        <div class="mtitle"><span class="mnum">${m + 1}</span><span class="mname"><b>${MS_MONTH[m].toUpperCase()}</b><small>${EN_MONTH[m]} · <span lang="zh">${zhMonth(m + 1)}</span></small></span><span class="myear">${y}</span></div>
-        <button type="button" class="mini next" data-nav="1" aria-label="Bulan depan: ${MS_MONTH[next.m]} ${next.y}">${miniCal(next.y, next.m)}</button>
+    return `<div class="ledger">${h}</div>`;
+  }
+  function monthPageHTML(t, y, m) {
+    return `<div class="mpage" data-ym="${y}-${pad2(m + 1)}">
+      <div class="mtitle">
+        <button type="button" class="mnav prev" data-nav="-1" aria-label="Bulan lepas">‹</button>
+        <h2 class="mt-main"><span class="mt-month"><span class="full">${MS_MONTH[m].toUpperCase()}</span><span class="short">${MS_MON3[m]}</span></span> <span class="mt-year">${y}</span></h2>
+        <button type="button" class="mnav next" data-nav="1" aria-label="Bulan depan">›</button>
+        <p class="mt-sub"><span lang="zh">${zhMonth(m + 1)}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="ta">${TA_MONTH[m]}</span></p>
+        ${titleArt(t)}
       </div>
-      <div class="grid">${grid}</div>
-      <div class="mfoot">
-        <div class="mfoot-h">Cuti Umum · Public Holidays</div>
-        <ul>${list}</ul>
-        <div class="mfoot-n">${anyApprox ? '* Tertakluk kepada pengisytiharan anak bulan. ' : ''}Angka kecil hijau: tarikh Hijrah · aksara Cina: tarikh lunar.</div>
-        <div class="mfoot-shop">Terima kasih atas sokongan anda! · <span lang="zh">谢谢惠顾</span></div>
-      </div>
+      ${t === 'kopitiam' ? ledgerHTML(y, m) : gridHTML(y, m)}
     </div>`;
   }
 
+  function summaryHTML(t, p) {
+    const w = weekday(p.y, p.m, p.d), h = holiday(p.y, p.m, p.d), k = iso(p.y, p.m, p.d);
+    const tone = (h || w === 0) ? 'red' : '';
+    return `<div class="sum-main">
+      <div class="sum-big"><span class="sb-num ${tone}">${p.d}</span><span class="sb-names"><b>${MS_DAY[w].toUpperCase()}</b><span>${EN_DAY[w].toUpperCase()}</span><span lang="zh">星期${ZH_DAY[w]}</span></span></div>
+      <h3 class="sum-h">${MS_DAY[w].toUpperCase()}, ${p.d} ${MS_MONTH[p.m].toUpperCase()} ${p.y}</h3>
+      ${h ? `<p class="sum-hol">★ ${esc(h.ms)}${h.approx ? '*' : ''}</p>` : ''}
+      <div class="sum-events">${eventsListHTML(k)}</div>
+      <button type="button" class="sum-more" data-goto="day">Fakta &amp; peribahasa hari ini <span aria-hidden="true">›</span></button>
+    </div>${summaryArt(t)}`;
+  }
+
+  /* -------------------------------------------------------- day sheet */
+  function miniMonthHTML(y, m, d) {
+    const first = (weekday(y, m, 1) + 6) % 7, n = daysIn(y, m);
+    let g = WD_MON.map((c, i) => `<i${i === 6 ? ' class="r"' : ''}>${c}</i>`).join('');
+    for (let i = 0; i < first; i++) g += '<span></span>';
+    for (let x = 1; x <= n; x++) {
+      const red = weekday(y, m, x) === 0 || holiday(y, m, x);
+      g += `<span class="${[red ? 'r' : '', x === d ? 'on' : ''].join(' ').trim()}">${x}</span>`;
+    }
+    return `<div class="mm" aria-hidden="true">${g}</div>`;
+  }
+  function factCard(p) {
+    const f = factFor(p);
+    const cat = CAT_EN[f.cat] ? f.cat : 'Tempat';
+    return `<section class="c-card c-fact" aria-label="Fakta Malaysia">
+      <div class="c-head"><span class="c-kick">Tahukah Anda?</span><span class="c-tag">${esc(cat)} · ${CAT_EN[cat]}</span></div>
+      <div class="c-body"><span class="c-icon" aria-hidden="true">${ICONS[cat]}</span><p>${esc(f.t)}</p></div>
+      <div class="c-foot"><button type="button" class="redraw" data-kind="fact">Fakta lain ${REDRAW_ICON}</button></div>
+    </section>`;
+  }
+  function periCard(p) {
+    const r = periFor(p);
+    return `<section class="c-card c-peri" aria-label="Peribahasa hari ini">
+      <div class="c-head"><span class="c-kick">Peribahasa Hari Ini</span>${r.jenis ? `<span class="c-tag">${esc(r.jenis)}</span>` : ''}</div>
+      <p class="pb-p">${esc(r.p)}</p>
+      <p class="pb-k">Maksud</p><p class="pb-v">${esc(r.maksud)}</p>
+      ${r.en ? `<p class="pb-k" lang="en">Explanation</p><p class="pb-v" lang="en">${esc(r.en)}</p>` : ''}
+      ${r.contoh ? `<p class="pb-k">Contoh ayat</p><p class="pb-v pb-hand">${esc(r.contoh)}</p>` : ''}
+      <div class="c-foot"><button type="button" class="redraw" data-kind="peri">Peribahasa lain ${REDRAW_ICON}</button></div>
+    </section>`;
+  }
+  function sheetHTML(t, p) {
+    const { y, m, d } = p;
+    const w = weekday(y, m, d), h = holiday(y, m, d), l = lunar(y, m, d), hj = hijri(y, m, d);
+    const tone = (h || w === 0) ? 'red' : w === 6 ? 'sat' : '';
+    const k = iso(y, m, d);
+    const doy = dayNum(y, m, d) - dayNum(y, 0, 1) + 1;
+    const left = dayNum(y, 11, 31) - dayNum(y, m, d);
+    return `
+      <div class="sh-form"><span>PELAN<br>JADUAL<br>HARIAN</span><span class="sh-no">No. ${pad2(y % 100)}${String(doy).padStart(4, '0')}</span></div>
+      <header class="sh-top"><span class="sh-my">${MS_MONTH[m].toUpperCase()} ${y}</span><span class="sh-alt"><span lang="zh">${zhMonth(m + 1)}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="ta">${TA_MONTH[m]}</span></span></header>
+      <div class="sh-date">
+        <span class="sh-stamp">${MS_DAY[w].toUpperCase()}</span>
+        <div class="sh-num ${tone}" aria-label="${d} ${MS_MONTH[m]} ${y}">${d}</div>
+        <div class="sh-dmy">${pad2(d)} / ${pad2(m + 1)} / ${y}</div>
+        <div class="sh-dayname ${tone}">${MS_DAY[w].toUpperCase()}</div>
+        <div class="sh-langs"><span lang="zh">星期${ZH_DAY[w]}</span><span>${EN_DAY[w].toUpperCase()}</span><span lang="ta">${TA_DAY[w]}</span></div>
+        ${t === 'midnight' ? hibiscus({ line: '#d4a84a', sw: 1.4, cls: 'sh-art' }) : ''}
+      </div>
+      <p class="sh-meta">${hj ? `<span class="m-hij" title="Tarikh Hijrah">${hj.day} ${HIJRI_MONTH[hj.month - 1]} ${hj.year} H</span>` : ''}${l ? `<span class="m-lun" lang="zh" title="Kalendar lunar Cina">${lunarYearName(y, m, d)}${lunarMonthZh(l)}${lunarDayZh(l.day)}</span>` : ''}</p>
+      ${h ? `<p class="sh-hol">${esc(h.ms)}${h.approx ? '*' : ''}<small>${esc(h.en)}${h.scope === 'some' ? ' · sesetengah negeri' : ''}</small></p>` : ''}
+      <div class="sh-mini">${miniMonthHTML(y, m, d)}<div class="sh-mini-side"><span>${MS_MONTH[m].toUpperCase()}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="zh">${zhMonth(m + 1)}</span></div>${t === 'stamp' ? stampSeal() : ''}</div>
+      <section class="sh-sec sh-events"><h3 class="sh-h">Acara</h3><div class="sh-ev-list">${eventsListHTML(k)}</div></section>
+      ${factCard(p)}
+      ${periCard(p)}
+      <label class="sh-sec sh-note"><span class="sh-h">Catatan · Nota</span><textarea data-note="${k}" rows="3" spellcheck="false" placeholder="cth: bayar bil air, kenduri Mak Long…">${esc(notes[k] || '')}</textarea></label>
+      <nav class="sh-nav" aria-label="Tukar hari"><button type="button" data-step="-1"><span aria-hidden="true">‹</span> Semalam</button><span>Hari ke-${doy} · ${left} hari lagi</span><button type="button" data-step="1">Esok <span aria-hidden="true">›</span></button></nav>`;
+  }
+
   /* --------------------------------------------------------- state & DOM */
+  const shell = $('#shell');
+  const card = $('#card');
   const pages = $('#pages');
   const pageBase = $('#pageBase');
   const flipShade = $('#flipShade');
-  const cal = $('#cal');
-  const wallEl = $('.wall');
-  const padWrap = $('#padWrap');
-  const padStack = $('#padStack');
+  const summary = $('#summary');
+  const dayStack = $('#dayStack');
 
-  const now = today();
-  const view = { y: now.y, m: now.m };
-  let padDate = now;
+  const NOW = today();
+  const view = { y: NOW.y, m: NOW.m };
+  let padDate = NOW;
   let flip = null;
   let pendingView = null;
   let suppressClickUntil = 0;
 
+  const monthVisible = () => wide.matches || card.dataset.tab === 'month';
+  const dayVisible = () => wide.matches || card.dataset.tab === 'day';
+
   function renderBase() {
-    // keep keyboard focus on the same control across a re-render
     const a = document.activeElement;
     const keep = a && pageBase.contains(a) ? (a.dataset.nav ? `[data-nav="${a.dataset.nav}"]` : a.dataset.date ? `[data-date="${a.dataset.date}"]` : null) : null;
-    pageBase.innerHTML = pageHTML(view.y, view.m);
-    if (keep) {
-      const next = pageBase.querySelector(keep) || pageBase.querySelector('.day');
-      if (next) next.focus({ preventScroll: true });
-    }
+    pageBase.innerHTML = monthPageHTML(theme.id, view.y, view.m);
+    if (keep) { const next = pageBase.querySelector(keep); if (next) next.focus({ preventScroll: true }); }
   }
+  function renderSummary() { summary.innerHTML = summaryHTML(theme.id, padDate); }
   function markSelection() {
-    pageBase.querySelectorAll('.day.sel').forEach(b => b.classList.remove('sel'));
-    const b = pageBase.querySelector(`.day[data-date="${iso(padDate.y, padDate.m, padDate.d)}"]`);
-    if (b) b.classList.add('sel');
-  }
-  function nudge() {
-    if (reducedMotion.matches) return;
-    cal.classList.remove('nudge');
-    void cal.offsetWidth;
-    cal.classList.add('nudge');
+    if (theme.id === 'kopitiam') { renderBase(); return; }
+    $$('.sel', pageBase).forEach(b => { b.classList.remove('sel'); b.setAttribute('aria-pressed', 'false'); });
+    const b = pageBase.querySelector(`[data-date="${iso(padDate.y, padDate.m, padDate.d)}"]`);
+    if (b) { b.classList.add('sel'); b.setAttribute('aria-pressed', 'true'); }
   }
 
   /* ------------------------------------------------- page curl (the flip)
-     The page is cut into horizontal strips, each nested inside the one above
-     and hinged on its top edge. Rotating every strip a little more than its
-     parent bends the paper; letting the bottom strips lead makes it curl up
-     from the bottom edge, the way you lift a wall-calendar page. */
+     The month page is cut into horizontal strips, each nested inside the one
+     above and hinged on its top edge. Rotating every strip a little more than
+     its parent bends the paper; letting the bottom strips lead makes it curl
+     up from the bottom edge, the way you lift a wall-calendar page. */
   function buildFlipper(html, H) {
     const N = H > 520 ? 16 : 12;
     const h = H / N;
@@ -463,16 +575,12 @@
     }
     return { root, strips };
   }
-
   const easeInOut = u => 0.5 - Math.cos(Math.PI * u) / 2;
   function setCurl(s, t) {
     s.t = t;
     const strips = s.f.strips, N = strips.length, K = 0.7, MAX = 172;
     const A = new Array(N);
-    for (let i = 0; i < N; i++) {
-      const lag = (1 - i / (N - 1)) * K;
-      A[i] = MAX * easeInOut(clamp(t * (1 + K) - lag, 0, 1));
-    }
+    for (let i = 0; i < N; i++) A[i] = MAX * easeInOut(clamp(t * (1 + K) - (1 - i / (N - 1)) * K, 0, 1));
     const rad = a => a * Math.PI / 180;
     const fs = A.map(a => 0.5 * Math.sin(rad(Math.min(a, 90))));
     const bs = A.map(a => (a > 90 ? 0.04 + 0.16 * (1 - Math.sin(rad(a))) : 0.2));
@@ -481,14 +589,13 @@
       const st = strips[i];
       st.el.style.transform = `rotateX(${(A[i] - (i ? A[i - 1] : 0)).toFixed(3)}deg)`;
       const ft = (fs[i] + fs[Math.max(0, i - 1)]) / 2, fb = (fs[i] + fs[Math.min(N - 1, i + 1)]) / 2;
-      st.shade.style.background = `linear-gradient(rgba(70,40,0,${ft.toFixed(3)}),rgba(70,40,0,${fb.toFixed(3)}))`;
+      st.shade.style.background = `linear-gradient(rgba(40,25,0,${ft.toFixed(3)}),rgba(40,25,0,${fb.toFixed(3)}))`;
       const bt = (bs[i] + bs[Math.max(0, i - 1)]) / 2, bb = (bs[i] + bs[Math.min(N - 1, i + 1)]) / 2;
-      st.bshade.style.background = `linear-gradient(rgba(70,40,0,${bb.toFixed(3)}),rgba(70,40,0,${bt.toFixed(3)}))`;
+      st.bshade.style.background = `linear-gradient(rgba(40,25,0,${bb.toFixed(3)}),rgba(40,25,0,${bt.toFixed(3)}))`;
       st.front.style.opacity = st.back.style.opacity = fade;
     }
-    flipShade.style.opacity = t > 0 && t < 1 ? (0.55 * Math.pow(1 - t, 1.4)).toFixed(3) : 0;
+    flipShade.style.opacity = t > 0 && t < 1 ? (0.5 * Math.pow(1 - t, 1.4)).toFixed(3) : 0;
   }
-
   function tween(from, to, ms, fn, ease = easeInOut) {
     return new Promise(resolve => {
       const t0 = performance.now();
@@ -500,7 +607,6 @@
       requestAnimationFrame(step);
     });
   }
-
   function beginFlip(target) {
     if (flip) return null;
     const dir = (target.y - view.y) * 12 + (target.m - view.m) > 0 ? 1 : -1;
@@ -511,16 +617,15 @@
       view.y = target.y; view.m = target.m;
       renderBase();
     } else {
-      s.f = buildFlipper(pageHTML(target.y, target.m), H);
+      s.f = buildFlipper(monthPageHTML(theme.id, target.y, target.m), H);
     }
     pages.appendChild(s.f.root);
-    wallEl.classList.add('flipping');
+    card.classList.add('flipping');
     flip = s;
     setCurl(s, s.t);
     Sound.rustle();
     return s;
   }
-
   async function endFlip(s, complete, ms) {
     const to = complete === (s.dir > 0) ? 1 : 0;
     const dur = ms || 260 + 620 * Math.abs(to - s.t);
@@ -529,27 +634,21 @@
     if (s.dir < 0 && complete) { view.y = s.target.y; view.m = s.target.m; renderBase(); }
     s.f.root.remove();
     flipShade.style.opacity = 0;
-    wallEl.classList.remove('flipping');
+    card.classList.remove('flipping');
     flip = null;
-    if (complete) nudge();
-    if (pendingView) {
-      const p = pendingView;
-      pendingView = null;
-      showMonth(p.y, p.m);
-    }
+    if (pendingView) { const p = pendingView; pendingView = null; showMonth(p.y, p.m); }
   }
-
   function showMonth(y, m, animate = true) {
     if (flip) { pendingView = { y, m }; return; }
     if (y === view.y && m === view.m) return;
-    if (!animate || reducedMotion.matches) {
+    if (!animate || reducedMotion.matches || !monthVisible()) {
       view.y = y; view.m = m;
       renderBase();
-      if (animate) pageBase.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 260, easing: 'ease-out' });
+      if (animate && monthVisible()) pageBase.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 260, easing: 'ease-out' });
       return;
     }
     const s = beginFlip({ y, m });
-    if (s) endFlip(s, true, 1050);
+    if (s) endFlip(s, true, 1000);
   }
   function stepMonth(n) {
     const base = pendingView || (flip ? (flip.dir > 0 ? view : flip.target) : view);
@@ -561,16 +660,14 @@
   let drag = null;
   pages.addEventListener('pointerdown', e => {
     if (e.button !== 0 || flip) return;
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, mode: null, grip: e.target.closest('.dogear') != null, H: pageBase.offsetHeight };
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, mode: null, H: pageBase.offsetHeight };
   });
   pages.addEventListener('pointermove', e => {
     if (!drag || e.pointerId !== drag.id) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     if (!drag.mode) {
-      const canLift = e.pointerType !== 'touch' || drag.grip;
-      if (canLift && Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) {
-        const target = shiftMonth(view.y, view.m, dy < 0 ? 1 : -1);
-        drag.s = beginFlip(target);
+      if (e.pointerType !== 'touch' && Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) {
+        drag.s = beginFlip(shiftMonth(view.y, view.m, dy < 0 ? 1 : -1));
         if (!drag.s) { drag = null; return; }
         drag.mode = 'lift';
         try { pages.setPointerCapture(drag.id); } catch { /* ignore */ }
@@ -579,7 +676,7 @@
       } else return;
     }
     if (drag.mode === 'lift') {
-      const span = drag.H * (reducedMotion.matches ? 0.4 : 0.8);
+      const span = drag.H * 0.8;
       setCurl(drag.s, clamp(drag.s.dir > 0 ? -dy / span : 1 - dy / span, 0, 1));
       e.preventDefault();
     }
@@ -590,8 +687,7 @@
     drag = null;
     if (d.mode) suppressClickUntil = performance.now() + 350;
     if (d.mode === 'lift') {
-      const t = d.s.t;
-      endFlip(d.s, e.type !== 'pointercancel' && (d.s.dir > 0 ? t > 0.28 : t < 0.72));
+      endFlip(d.s, e.type !== 'pointercancel' && (d.s.dir > 0 ? d.s.t > 0.28 : d.s.t < 0.72));
     } else if (d.mode === 'swipe' && e.type !== 'pointercancel') {
       const dx = e.clientX - d.x;
       if (Math.abs(dx) > 50) stepMonth(dx < 0 ? 1 : -1);
@@ -601,82 +697,22 @@
   pages.addEventListener('pointercancel', endDrag);
   pages.addEventListener('click', e => {
     if (performance.now() < suppressClickUntil) { e.preventDefault(); e.stopPropagation(); return; }
-    if (e.target.closest('.dogear')) { stepMonth(1); return; }
     const nav = e.target.closest('[data-nav]');
     if (nav) { stepMonth(+nav.dataset.nav); return; }
-    const b = e.target.closest('.day[data-date]');
-    if (b) {
-      const p = parseIso(b.dataset.date);
-      if (isPadVisible()) setPad(p);
-      else { setPad(p, 'none'); openPad(b); }
-    }
+    const b = e.target.closest('[data-date]');
+    if (!b) return;
+    const p = parseIso(b.dataset.date);
+    if (same(p, padDate) && !wide.matches) { setTab('day'); return; }
+    selectDate(p);
   }, true);
 
-  /* ------------------------------------------------------ tear-off pad */
-  function factCard(p) {
-    const f = factFor(p);
-    const cat = CAT_EN[f.cat] ? f.cat : 'Tempat';
-    const [d, m, y] = [p.d, MS_MON3[p.m], p.y];
-    return `<section class="stamp" aria-label="Fakta Malaysia">
-      <div class="stamp-in">
-        <svg class="postmark" viewBox="0 0 104 56" aria-hidden="true"><circle cx="28" cy="28" r="24" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="28" cy="28" r="17.5" fill="none" stroke="currentColor" stroke-width=".8"/><text x="28" y="20" text-anchor="middle" style="font-size:6px">TAIPING</text><text x="28" y="30.5" text-anchor="middle">${d} ${m}</text><text x="28" y="40" text-anchor="middle" style="font-size:8px">${y}</text><path d="M56 16q6-4 12 0t12 0 12 0 12 0M56 28q6-4 12 0t12 0 12 0 12 0M56 40q6-4 12 0t12 0 12 0 12 0" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-        <div class="stamp-top"><span class="stamp-kicker">Tahukah Anda?</span><span class="stamp-cat">${esc(cat)} · ${CAT_EN[cat]}</span></div>
-        <div class="stamp-body"><span class="stamp-icon" aria-hidden="true">${ICONS[cat]}</span><p class="stamp-text">${esc(f.t)}</p></div>
-        <div class="stamp-foot"><span class="stamp-val">MALAYSIA</span><button type="button" class="redraw" data-kind="fact">Fakta lain ${REDRAW_ICON}</button></div>
-      </div>
-    </section>`;
-  }
-  function periCard(p) {
-    const r = periFor(p);
-    return `<section class="exbook" aria-label="Peribahasa hari ini">
-      <div class="ex-label"><span class="ex-title">Peribahasa Hari Ini</span>${r.jenis ? `<span class="ex-jenis">${esc(r.jenis)}</span>` : ''}</div>
-      <p class="ex-p">${esc(r.p)}</p>
-      <div class="ex-row"><span class="ex-k"><u>Maksud</u></span><p>${esc(r.maksud)}</p></div>
-      ${r.en ? `<div class="ex-row"><span class="ex-k" lang="en"><u>Explanation</u></span><p lang="en">${esc(r.en)}</p></div>` : ''}
-      ${r.contoh ? `<div class="ex-row hand"><span class="ex-k"><u>Contoh ayat</u></span><p>${esc(r.contoh)}</p></div>` : ''}
-      <svg class="ex-tick" viewBox="0 0 38 30" aria-hidden="true"><path d="M3 16l9 10L35 3"/></svg>
-      <div class="ex-foot"><button type="button" class="redraw" data-kind="peri">Peribahasa lain ${REDRAW_ICON}</button></div>
-    </section>`;
-  }
-  function memoCard(p) {
-    const k = iso(p.y, p.m, p.d);
-    return `<section class="memo">
-      <svg class="memo-clip" viewBox="0 0 18 44" aria-hidden="true"><path d="M6 30V8a4 4 0 0 1 8 0v26a6 6 0 0 1-12 0V12"/></svg>
-      <label for="note-${k}">Catatan<i lang="zh">备忘</i></label>
-      <textarea id="note-${k}" data-note="${k}" rows="3" spellcheck="false" placeholder="cth: bayar bil air, kenduri Mak Long…">${esc(notes[k] || '')}</textarea>
-    </section>`;
-  }
-
-  // vertical Chinese text, one character per line (sturdier than writing-mode with fallback fonts)
-  const stack = (txt, tag) => [...txt].map(c => `<${tag}>${c}</${tag}>`).join('');
-
-  function sheetHTML(p) {
-    const { y, m, d } = p;
-    const w = weekday(y, m, d), h = holiday(y, m, d), l = lunar(y, m, d), hj = hijri(y, m, d);
-    const tone = (h || w === 0) ? 'red' : w === 6 ? 'blue' : '';
-    const doy = dayNum(y, m, d) - dayNum(y, 0, 1) + 1;
-    const left = dayNum(y, 11, 31) - dayNum(y, m, d);
-    const isToday = same(p, today());
-    return `
-      <header class="sh-head"><span class="sh-month">${MS_MONTH[m]}<small>${y}</small></span><span class="sh-sub">${EN_MONTH[m]} · <i lang="zh">${zhMonth(m + 1)}</i></span></header>
-      <div class="sh-main">
-        ${hj ? `<div class="sh-hijri" title="Tarikh Hijrah (anggaran)"><b>${hj.day}</b><span>${HIJRI_MONTH[hj.month - 1]}</span><small>${hj.year} H</small></div>` : '<span></span>'}
-        <div class="sh-num ${tone}" aria-label="${d} ${MS_MONTH[m]} ${y}">${d}</div>
-        ${l ? `<div class="sh-lunar" lang="zh" title="Kalendar lunar Cina">${stack(lunarYearName(y, m, d), 'small')}<i></i>${stack(lunarMonthZh(l) + lunarDayZh(l.day), 'b')}</div>` : '<span></span>'}
-        ${isToday ? '<span class="sh-stamp-today">Hari Ini</span>' : ''}
-      </div>
-      <p class="sh-day"><b class="${tone}">${MS_DAY[w]}</b> · ${EN_DAY[w]} · <i lang="zh">星期${ZH_DAY[w]}</i></p>
-      ${h ? `<p class="sh-hol">${esc(h.ms)}${h.approx ? '*' : ''}<small>${esc(h.en)}${h.scope === 'some' ? ' · sesetengah negeri' : ''}</small></p>` : ''}
-      <div class="sh-cards">${factCard(p)}${periCard(p)}${memoCard(p)}</div>
-      <footer class="sh-foot"><span>Hari ke-${doy} · ${left} hari lagi</span><span>Ah Seng · <i lang="zh" style="font-style:normal">谢谢惠顾</i></span></footer>`;
-  }
-
+  /* ------------------------------------------------------- day sheets */
   function stackShadow(p) {
     const left = dayNum(p.y, 11, 31) - dayNum(p.y, p.m, p.d);
-    const n = clamp(Math.ceil(left / 45), 1, 8);
+    const n = clamp(Math.ceil(left / 60), 1, 6);
     const layers = [];
-    for (let i = 1; i <= n; i++) layers.push(`0 ${i * 1.6}px 0 ${i % 2 ? '#e7ddc0' : '#d9cdaa'}`);
-    layers.push(`0 ${n * 1.6 + 3}px 6px rgba(0,0,0,.28)`);
+    for (let i = 1; i <= n; i++) layers.push(`0 ${i * 1.5}px 0 var(--edge-${i % 2 ? 'a' : 'b'})`);
+    layers.push(`0 ${n * 1.5 + 4}px 10px rgba(0,0,0,.22)`);
     return layers.join(',');
   }
   function makeSheet(p) {
@@ -685,29 +721,25 @@
     el.dataset.date = iso(p.y, p.m, p.d);
     el.style.setProperty('--stack-shadow', stackShadow(p));
     el.setAttribute('aria-label', `${MS_DAY[weekday(p.y, p.m, p.d)]}, ${p.d} ${MS_MONTH[p.m]} ${p.y}`);
-    el.innerHTML = sheetHTML(p);
+    el.innerHTML = sheetHTML(theme.id, p);
     return el;
   }
-  const topSheet = () => padStack.querySelector('.sheet:not(.leaving):last-of-type') || [...padStack.querySelectorAll('.sheet:not(.leaving)')].pop();
+  const topSheet = () => $$('.sheet:not(.leaving)', dayStack).pop();
 
-  function setPad(p, how = 'auto') {
+  function renderDay(how) {
+    const p = padDate;
     const old = topSheet();
-    if (how === 'auto') how = !old ? 'none' : same(p, padDate) ? 'none' : cmpDate(p, padDate) > 0 ? 'tear' : 'drop';
-    padDate = p;
-    markSelection();
-    // keep the wall calendar on the month being read
-    if (p.y !== view.y || p.m !== view.m) showMonth(p.y, p.m, isPadVisible() && wideScreen.matches);
-    if (!old || how === 'none' || reducedMotion.matches) {
-      if (old && !same(parseIso(old.dataset.date), p)) old.replaceWith(makeSheet(p));
-      else if (!old) padStack.appendChild(makeSheet(p));
+    if (!old || how === 'none' || reducedMotion.matches || !dayVisible()) {
+      $$('.sheet', dayStack).forEach(s => s.remove());
+      dayStack.appendChild(makeSheet(p));
       return;
     }
     const fresh = makeSheet(p);
     if (how === 'tear') {
-      padStack.insertBefore(fresh, old);
+      dayStack.insertBefore(fresh, old);
       tearAway(old);
     } else {
-      padStack.appendChild(fresh);
+      dayStack.appendChild(fresh);
       Sound.rustle(0.35);
       fresh.animate([
         { transform: 'translate(0, -40px) rotate(-3deg)', opacity: 0 },
@@ -716,36 +748,41 @@
       ], { duration: 560, easing: 'cubic-bezier(.3,.7,.4,1)' }).finished.then(() => old.remove(), () => old.remove());
     }
   }
-
   function tearAway(sheet) {
     const from = getComputedStyle(sheet).transform;
     const start = from && from !== 'none' ? from : 'translate(0,0) rotate(0deg)';
-    const scroll = sheet.scrollTop;
     sheet.classList.add('leaving', 'tearing');
-    sheet.scrollTop = scroll;
     sheet.style.transition = 'none';
     Sound.rip();
-    const a = sheet.animate([
+    sheet.animate([
       { transform: start, offset: 0 },
       { transform: 'translate(0, 2px) rotate(1.8deg)', offset: 0.16 },
       { transform: 'translate(3px, 9px) rotate(5.5deg)', offset: 0.34 },
       { transform: 'translate(-24px, 46px) rotate(11deg)', offset: 0.52 },
       { transform: 'translate(-120px, 115vh) rotate(-22deg)', offset: 1 },
-    ], { duration: 1050, easing: 'cubic-bezier(.4,.05,.6,1)', fill: 'forwards' });
-    a.finished.then(() => sheet.remove(), () => sheet.remove());
+    ], { duration: 1050, easing: 'cubic-bezier(.4,.05,.6,1)', fill: 'forwards' })
+      .finished.then(() => sheet.remove(), () => sheet.remove());
   }
 
-  const stepDay = n => setPad(addDays(padDate, n));
+  function selectDate(p, how = 'auto') {
+    if (how === 'auto') how = same(p, padDate) ? 'none' : cmpDate(p, padDate) > 0 ? 'tear' : 'drop';
+    padDate = p;
+    if (p.y !== view.y || p.m !== view.m) showMonth(p.y, p.m, monthVisible());
+    markSelection();
+    renderSummary();
+    renderDay(how);
+  }
+  const stepDay = n => selectDate(addDays(padDate, n));
 
-  /* swipe the sheet: left tears it off, right brings yesterday back */
+  /* swipe a sheet: left tears it off, right brings yesterday back */
   let sw = null;
-  padStack.addEventListener('pointerdown', e => {
+  dayStack.addEventListener('pointerdown', e => {
     if (e.button !== 0 || e.target.closest('textarea, button, a, input')) return;
     const el = e.target.closest('.sheet');
     if (!el || el.classList.contains('leaving')) return;
     sw = { id: e.pointerId, x: e.clientX, y: e.clientY, el, mode: null };
   });
-  padStack.addEventListener('pointermove', e => {
+  dayStack.addEventListener('pointermove', e => {
     if (!sw || e.pointerId !== sw.id) return;
     const dx = e.clientX - sw.x, dy = e.clientY - sw.y;
     if (!sw.mode) {
@@ -770,165 +807,229 @@
     s.el.style.transform = '';
     if (e.type !== 'pointercancel' && s.dx > 70) stepDay(-1);
   };
-  padStack.addEventListener('pointerup', endSwipe);
-  padStack.addEventListener('pointercancel', endSwipe);
+  dayStack.addEventListener('pointerup', endSwipe);
+  dayStack.addEventListener('pointercancel', endSwipe);
 
-  padStack.addEventListener('click', e => {
+  /* clicks shared by the summary and the sheets */
+  function onPanelClick(e) {
+    const step = e.target.closest('[data-step]');
+    if (step) { stepDay(+step.dataset.step); return; }
+    if (e.target.closest('[data-goto="day"]')) { setTab('day'); return; }
+    const chk = e.target.closest('[data-check]');
+    if (chk) { toggleDone(chk.dataset.date, chk.dataset.check); return; }
+    const ed = e.target.closest('[data-edit]');
+    if (ed) { openEventDialog(ed.dataset.date, ed.dataset.edit); return; }
     const btn = e.target.closest('.redraw');
-    if (!btn) return;
+    if (btn) reroll(btn);
+  }
+  summary.addEventListener('click', onPanelClick);
+  dayStack.addEventListener('click', onPanelClick);
+
+  function reroll(btn) {
     const kind = btn.dataset.kind;
-    const card = btn.closest(kind === 'fact' ? '.stamp' : '.exbook');
+    const cardEl = btn.closest('.c-card');
     const k = iso(padDate.y, padDate.m, padDate.d);
-    reroll[kind][k] = (reroll[kind][k] || 0) + 1;
+    rerolls[kind][k] = (rerolls[kind][k] || 0) + 1;
     const swap = () => {
       const tmp = document.createElement('div');
       tmp.innerHTML = kind === 'fact' ? factCard(padDate) : periCard(padDate);
       const next = tmp.firstElementChild;
-      card.replaceWith(next);
+      cardEl.replaceWith(next);
+      next.querySelector('.redraw').focus({ preventScroll: true });
       return next;
     };
     Sound.rustle(0.3);
-    if (reducedMotion.matches) { swap().querySelector('.redraw').focus(); return; }
-    card.animate([{ transform: getComputedStyle(card).transform, opacity: 1 }, { transform: 'translateY(-10px) rotate(-4deg) scale(.96)', opacity: 0 }], { duration: 200, easing: 'ease-in', fill: 'forwards' })
-      .finished.then(() => {
-        const next = swap();
-        next.querySelector('.redraw').focus({ preventScroll: true });
-        next.animate([{ transform: 'translateY(14px) rotate(3deg) scale(.97)', opacity: 0 }, { transform: getComputedStyle(next).transform, opacity: 1 }], { duration: 320, easing: 'cubic-bezier(.3,1.3,.5,1)' });
-      });
-  });
+    if (reducedMotion.matches) { swap(); return; }
+    cardEl.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-10px) rotate(-3deg) scale(.97)', opacity: 0 }], { duration: 200, easing: 'ease-in', fill: 'forwards' })
+      .finished.then(() => swap().animate([{ transform: 'translateY(14px) rotate(2deg) scale(.97)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 320, easing: 'cubic-bezier(.3,1.3,.5,1)' }));
+  }
 
   let noteTimer = 0;
-  padStack.addEventListener('input', e => {
+  dayStack.addEventListener('input', e => {
     const ta = e.target.closest('textarea[data-note]');
     if (!ta) return;
     clearTimeout(noteTimer);
     noteTimer = setTimeout(() => {
-      const k = ta.dataset.note, v = ta.value.trim();
-      if (v) notes[k] = ta.value; else delete notes[k];
+      const k = ta.dataset.note;
+      if (ta.value.trim()) notes[k] = ta.value; else delete notes[k];
       store.set('notes', notes);
-      const b = pageBase.querySelector(`.day[data-date="${k}"]`);
-      if (b) b.classList.toggle('note', !!v);
     }, 250);
   });
 
-  /* mobile: the pad drops down over the calendar */
-  let lastOpener = null;
-  const setBehindInert = on => ['.masthead', '#calWrap', '.smallprint', '#cicak'].forEach(sel => { $(sel).inert = on; });
-  const isPadVisible = () => wideScreen.matches || padWrap.classList.contains('open');
-  function openPad(opener) {
-    if (wideScreen.matches) return;
-    lastOpener = opener || document.activeElement;
-    padWrap.classList.add('open');
-    padWrap.setAttribute('role', 'dialog');
-    padWrap.setAttribute('aria-modal', 'true');
-    document.body.classList.add('pad-open');
-    setBehindInert(true);
-    Sound.rustle(0.4);
-    setTimeout(() => $('#padClose').focus({ preventScroll: true }), 60);
+  /* ------------------------------------------------------- event dialog */
+  const dlg = $('#eventDialog');
+  const form = $('#eventForm');
+  let editing = null;
+  function openEventDialog(k, id) {
+    const p = parseIso(k);
+    const ev = id ? (events[k] || []).find(e => e.id === id) : null;
+    editing = { k, id: ev ? ev.id : null };
+    $('#evTitle').textContent = ev ? 'Ubah Acara' : 'Acara Baharu';
+    $('#evWhen').textContent = `${MS_DAY[weekday(p.y, p.m, p.d)]}, ${p.d} ${MS_MONTH[p.m]} ${p.y}`;
+    form.time.value = ev ? ev.time : '09:00';
+    form.title.value = ev ? ev.title : '';
+    form.place.value = ev ? ev.place || '' : '';
+    $('#evDelete').hidden = !ev;
+    dlg.showModal();
+    setTimeout(() => form.title.focus(), 30);
   }
-  function closePad() {
-    if (!padWrap.classList.contains('open')) return;
-    padWrap.classList.remove('open');
-    padWrap.removeAttribute('role');
-    padWrap.removeAttribute('aria-modal');
-    document.body.classList.remove('pad-open');
-    setBehindInert(false);
-    if (padDate.y !== view.y || padDate.m !== view.m) showMonth(padDate.y, padDate.m, false);
-    if (lastOpener && document.contains(lastOpener)) lastOpener.focus({ preventScroll: true });
+  function refreshEvents(k) {
+    renderSummary();
+    if (theme.id === 'kopitiam' || pageBase.querySelector(`[data-date="${k}"]`)) renderBase();
+    $$(`.sheet[data-date="${k}"] .sh-ev-list`, dayStack).forEach(el => { el.innerHTML = eventsListHTML(k); });
   }
-  $('#padClose').addEventListener('click', closePad);
-  $('#padBackdrop').addEventListener('click', closePad);
-  wideScreen.addEventListener('change', () => {
-    if (wideScreen.matches) closePad();
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const title = form.title.value.trim();
+    if (!title || !editing) return;
+    const list = events[editing.k] = events[editing.k] || [];
+    const data = { time: form.time.value || '09:00', title, place: form.place.value.trim() };
+    const ev = editing.id && list.find(x => x.id === editing.id);
+    if (ev) Object.assign(ev, data);
+    else list.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), done: false, ...data });
+    saveEvents();
+    refreshEvents(editing.k);
+    Sound.rustle(0.2);
+    dlg.close();
   });
+  $('#evCancel').addEventListener('click', () => dlg.close());
+  $('#evDelete').addEventListener('click', () => {
+    if (!editing || !editing.id) return;
+    events[editing.k] = (events[editing.k] || []).filter(x => x.id !== editing.id);
+    if (!events[editing.k].length) delete events[editing.k];
+    saveEvents();
+    refreshEvents(editing.k);
+    dlg.close();
+  });
+  function toggleDone(k, id) {
+    const ev = (events[k] || []).find(x => x.id === id);
+    if (!ev) return;
+    ev.done = !ev.done;
+    saveEvents();
+    refreshEvents(k);
+  }
+  $('#addEvent').addEventListener('click', () => openEventDialog(iso(padDate.y, padDate.m, padDate.d)));
+
+  /* -------------------------------------------------------------- tabs */
+  function setTab(tab) {
+    const changed = card.dataset.tab !== tab;
+    card.dataset.tab = tab;
+    $$('.seg [role="tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+    if (changed && !wide.matches) {
+      if (tab === 'day') renderDay('none');
+      if (tab === 'month' && (padDate.y !== view.y || padDate.m !== view.m)) showMonth(padDate.y, padDate.m, false);
+      const pane = tab === 'day' ? $('#paneDay') : $('#paneMonth');
+      if (!reducedMotion.matches) pane.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
+      if (card.getBoundingClientRect().top < 0) card.scrollIntoView({ block: 'start', behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    }
+  }
+  $$('.seg [role="tab"]').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+
+  /* ------------------------------------------------------------ themes */
+  function applyTheme(id) {
+    theme = THEMES.find(t => t.id === id) || THEMES[1];
+    shell.dataset.theme = theme.id;
+    document.body.dataset.bg = theme.id;
+    const meta = $('meta[name="theme-color"]');
+    if (meta) meta.content = theme.color;
+    $('#masthead').innerHTML = mastheadHTML(theme.id);
+    renderBase();
+    renderSummary();
+    renderDay('none');
+    setTab(theme.start);
+  }
+
+  /* --------------------------------------------------------- onboarding */
+  const onboard = $('#onboard');
+  const obGrid = $('#obGrid');
+  let obChoice = null;
+  function previewHTML(t) {
+    const bar = '<nav class="bottombar"><div class="seg"><span class="tab"' + (t.start === 'day' ? ' aria-selected="true"' : '') + '>Hari</span><span class="tab"' + (t.start === 'month' ? ' aria-selected="true"' : '') + '>Bulan</span></div><span class="btn-acara">+ Acara</span></nav>';
+    if (t.start === 'day') return `<div class="card preview" data-tab="day"><section class="pane pane-day"><div class="day-stack"><article class="sheet">${sheetHTML(t.id, padDate)}</article></div></section>${bar}</div>`;
+    return `<div class="card preview" data-tab="month"><section class="pane pane-month"><div class="masthead">${mastheadHTML(t.id)}</div><div class="pages"><div class="page-base">${monthPageHTML(t.id, view.y, view.m)}</div></div><div class="summary">${summaryHTML(t.id, padDate)}</div></section>${bar}</div>`;
+  }
+  const fitPreviews = () => $$('.ob-prev', obGrid).forEach(el => el.style.setProperty('--s', (el.clientWidth / 400).toFixed(4)));
+  function openOnboarding(first) {
+    obChoice = theme.id;
+    obGrid.innerHTML = THEMES.map((t, i) => `<div class="ob-tile" role="radio" tabindex="${t.id === obChoice ? 0 : -1}" aria-checked="${t.id === obChoice}" aria-label="${i + 1}. ${t.name}: ${t.ms}" data-id="${t.id}">
+      <span class="ob-prev" data-theme="${t.id}" inert><span class="ob-scale">${previewHTML(t)}</span></span>
+      <span class="ob-name" aria-hidden="true"><b>${i + 1}</b> · ${t.name}</span><span class="ob-desc" aria-hidden="true">${t.ms}</span></div>`).join('');
+    $('#obClose').hidden = first;
+    onboard.hidden = false;
+    document.body.classList.add('ob-open');
+    shell.inert = true;
+    requestAnimationFrame(fitPreviews);
+    paintChoice();
+    setTimeout(() => (obGrid.querySelector('[aria-checked="true"]') || obGrid.firstElementChild).focus({ preventScroll: true }), 50);
+  }
+  function paintChoice() {
+    $$('.ob-tile', obGrid).forEach(b => { const on = b.dataset.id === obChoice; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+    const t = THEMES.find(x => x.id === obChoice);
+    $('#obPicked').textContent = t ? `Dipilih: ${t.name}` : '';
+  }
+  function closeOnboarding() {
+    onboard.hidden = true;
+    document.body.classList.remove('ob-open');
+    shell.inert = false;
+    obGrid.innerHTML = '';
+  }
+  obGrid.addEventListener('click', e => {
+    const tile = e.target.closest('.ob-tile');
+    if (!tile) return;
+    obChoice = tile.dataset.id;
+    paintChoice();
+    Sound.rustle(0.2);
+  });
+  obGrid.addEventListener('dblclick', e => { if (e.target.closest('.ob-tile')) $('#obGo').click(); });
+  obGrid.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const tile = e.target.closest('.ob-tile');
+      if (tile) { e.preventDefault(); obChoice = tile.dataset.id; paintChoice(); if (e.key === 'Enter') $('#obGo').click(); }
+      return;
+    }
+    const keys = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 3, ArrowUp: -3 };
+    if (!(e.key in keys)) return;
+    e.preventDefault();
+    const i = clamp(THEMES.findIndex(t => t.id === obChoice) + keys[e.key], 0, THEMES.length - 1);
+    obChoice = THEMES[i].id;
+    paintChoice();
+    obGrid.children[i].focus();
+  });
+  $('#obGo').addEventListener('click', () => {
+    const changed = obChoice !== theme.id;
+    store.set('theme', obChoice);
+    closeOnboarding();
+    if (changed || !store.get('seen', false)) applyTheme(obChoice);
+    store.set('seen', true);
+    if (!reducedMotion.matches) card.animate([{ opacity: 0, transform: 'translateY(14px) rotate(-.6deg)' }, { opacity: 1, transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.3,1.2,.5,1)' });
+    $('#themeBtn').focus({ preventScroll: true });
+  });
+  $('#obClose').addEventListener('click', () => { closeOnboarding(); $('#themeBtn').focus(); });
+  window.addEventListener('resize', () => { if (!onboard.hidden) fitPreviews(); });
 
   /* ------------------------------------------------------------ controls */
-  $('#prevMonth').addEventListener('click', () => stepMonth(-1));
-  $('#nextMonth').addEventListener('click', () => stepMonth(1));
-  $('#todayBtn').addEventListener('click', e => {
+  $('#themeBtn').addEventListener('click', () => openOnboarding(false));
+  $('#todayBtn').addEventListener('click', () => {
     const t = today();
     showMonth(t.y, t.m);
-    if (wideScreen.matches) setPad(t);
-    else { setPad(t, 'none'); openPad(e.currentTarget); }
+    selectDate(t);
   });
-  $('#prevDay').addEventListener('click', () => stepDay(-1));
-  $('#nextDay').addEventListener('click', () => stepDay(1));
-  $('#todayDay').addEventListener('click', () => setPad(today()));
   const soundBtn = $('#soundBtn');
   const paintSound = () => { soundBtn.setAttribute('aria-pressed', String(Sound.on)); soundBtn.textContent = Sound.on ? 'Bunyi: Ya' : 'Bunyi: Tidak'; };
   soundBtn.addEventListener('click', () => { Sound.toggle(); paintSound(); Sound.rustle(0.25); });
   paintSound();
 
   document.addEventListener('keydown', e => {
-    if (e.target.closest && e.target.closest('textarea, input, [contenteditable]')) return;
-    if (e.key === 'Escape') { closePad(); return; }
+    if (e.target.closest && e.target.closest('textarea, input, [contenteditable], dialog')) return;
+    if (e.key === 'Escape' && !onboard.hidden && !$('#obClose').hidden) { closeOnboarding(); $('#themeBtn').focus(); return; }
+    if (!onboard.hidden) return;
     if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     const dir = e.key === 'ArrowRight' ? 1 : -1;
     e.preventDefault();
-    if (e.shiftKey || !isPadVisible()) stepMonth(dir); else stepDay(dir);
+    if (e.shiftKey || !dayVisible()) stepMonth(dir); else stepDay(dir);
   });
-
-  /* ------------------------------------------------------------ the cicak */
-  (() => {
-    const cicak = $('#cicak');
-    const wall = $('.wall');
-    let timer = 0;
-    let pos = { x: 0, y: 0 };
-    function spots() {
-      const W = wall.clientWidth;
-      const wr = wall.getBoundingClientRect();
-      const rel = r => ({ l: r.left - wr.left, r: r.right - wr.left, t: r.top - wr.top, b: r.bottom - wr.top });
-      const c = rel($('#cal').getBoundingClientRect());
-      const out = [];
-      const rnd = (a, b) => a + Math.random() * (b - a);
-      if (c.l > 70) out.push({ x: rnd(12, c.l - 50), y: rnd(c.t + 40, c.t + 520) });
-      if (wideScreen.matches) {
-        const p = rel($('#pad .pad-board').getBoundingClientRect());
-        if (p.l - c.r > 50) out.push({ x: rnd(c.r + 6, p.l - 40), y: rnd(c.t + 120, c.t + 600) });
-        if (W - p.r > 70) out.push({ x: rnd(p.r + 14, W - 44), y: rnd(p.t + 30, p.t + 520) });
-      } else if (W - c.r > 70) out.push({ x: rnd(c.r + 14, W - 44), y: rnd(c.t + 40, c.t + 520) });
-      const sky = rel($('#cal .scene').getBoundingClientRect());
-      out.push({ x: rnd(sky.l + 16, sky.r - 56), y: rnd(sky.t + 6, sky.t + (sky.b - sky.t) * 0.35) });
-      const f = rel($('.smallprint').getBoundingClientRect());
-      if (f.t - c.b > 50) out.push({ x: rnd(W * 0.15, W * 0.85), y: rnd(c.b + 6, f.t - 48) });
-      return out;
-    }
-    function moveTo(p, fast) {
-      const dx = p.x - pos.x, dy = p.y - pos.y;
-      const ang = Math.atan2(dy, dx) * 180 / Math.PI + 90;
-      pos = p;
-      cicak.style.transitionDuration = fast ? '.7s' : '1.3s';
-      cicak.classList.add('moving');
-      cicak.style.setProperty('--cr', ang.toFixed(1) + 'deg');
-      cicak.style.setProperty('--cx', p.x.toFixed(0) + 'px');
-      cicak.style.setProperty('--cy', p.y.toFixed(0) + 'px');
-      setTimeout(() => cicak.classList.remove('moving'), fast ? 700 : 1300);
-    }
-    function wander() {
-      clearTimeout(timer);
-      if (!reducedMotion.matches && !document.hidden) {
-        const s = spots();
-        moveTo(s[Math.floor(Math.random() * s.length)]);
-      }
-      timer = setTimeout(wander, 9000 + Math.random() * 12000);
-    }
-    cicak.addEventListener('click', () => {
-      Sound.chirp();
-      cicak.classList.add('talk');
-      setTimeout(() => {
-        cicak.classList.remove('talk');
-        if (!reducedMotion.matches) { const s = spots(); moveTo(s[Math.floor(Math.random() * s.length)], true); }
-      }, 1500);
-    });
-    const s = spots();
-    pos = s[0];
-    cicak.style.transition = 'none';
-    cicak.style.setProperty('--cx', pos.x.toFixed(0) + 'px');
-    cicak.style.setProperty('--cy', pos.y.toFixed(0) + 'px');
-    requestAnimationFrame(() => requestAnimationFrame(() => { cicak.style.transition = ''; }));
-    timer = setTimeout(wander, 4000);
-  })();
+  wide.addEventListener('change', () => { renderDay('none'); if (!wide.matches) setTab(card.dataset.tab); });
 
   /* ---------------------------------------------------------- installable */
   let installEvt = null;
@@ -949,10 +1050,10 @@
   }
 
   /* --------------------------------------------------------------- start */
-  renderBase();
-  markSelection();
-  setPad(padDate, 'none');
+  const saved = store.get('theme', null);
+  applyTheme(saved || 'kuda');
+  if (!saved || !THEMES.some(t => t.id === saved)) openOnboarding(true);
 
-  // expose a tiny hook for automated checks
-  window.__sehari = { showMonth, stepMonth, setPad, stepDay, view, get padDate() { return padDate; }, beginFlip, setCurl, endFlip };
+  // a tiny hook for automated checks
+  window.__sehari = { showMonth, stepMonth, selectDate, stepDay, applyTheme, setTab, view, get padDate() { return padDate; }, beginFlip, setCurl, endFlip, openOnboarding };
 })();

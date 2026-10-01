@@ -1,7 +1,7 @@
 {
   "name": "Sehari Selembar · Kalendar Fakta & Peribahasa",
   "short_name": "Sehari Selembar",
-  "description": "Kalendar dinding gaya lama: fakta Malaysia dan peribahasa untuk setiap hari.",
+  "description": "Kalendar gaya lama Malaysia: fakta, peribahasa dan jadual acara untuk setiap hari, dalam sembilan gaya.",
   "lang": "ms",
   "start_url": "./",
   "scope": "./",

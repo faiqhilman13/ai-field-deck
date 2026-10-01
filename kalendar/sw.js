@@ -1,5 +1,5 @@
 /* Sehari Selembar service worker: works offline, refreshes in the background. */
-const CACHE = 'sehari-v1';
+const CACHE = 'sehari-v2';
 const SHELL = [
   './',
   'index.html',

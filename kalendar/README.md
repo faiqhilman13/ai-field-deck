@@ -1,20 +1,29 @@
 # Sehari Selembar
 
-A Malaysian kedai-runcit wall calendar, rebuilt as an installable web app. Every day has a sheet to tear off, with a **Tahukah Anda?** fact about Malaysia and a **peribahasa** with its maksud, an English explanation and an example sentence.
+A nostalgic Malaysian calendar app with nine styles to choose from. Every day has a sheet to tear off, with a **Tahukah Anda?** fact about Malaysia and a **peribahasa** with its maksud, an English explanation and an example sentence.
 
 It is static HTML, CSS and JS with no build step. Netlify publishes it at `/kalendar/`.
 
-## What's on the wall
+## Nine styles
 
-- **Monthly calendar.** The layout copies the classic printed one:
-  - weekday rows and week columns
-  - a split `24/31` cell when a month runs to six weeks
-  - the sponsor's goods filling the empty cells
-  - the red 999 banner and red public holidays
-  - small Hijri dates (green) and Chinese lunar dates
-- **Flipping months.** Drag the page up, grab the dog-ear, swipe sideways or use the buttons. The page is cut into hinged strips that curl up from the bottom edge and over the binding.
-- **Daily tear-off pad.** Tap a date, or swipe a sheet left to tear it off. The sheet holds a fact stamp, a peribahasa written up in a school exercise book, and a *Catatan* memo. Memos save in the browser, and dates with a memo get a ballpoint mark on the calendar.
-- **Small touches.** A cicak on the wall (tap it), synthesised paper sounds that you can switch off, a dark "night" wall, and reduced-motion support.
+The first visit opens a picker showing live previews of nine styles. You can change style any time with the **Gaya** button.
+
+1. **Tear-off.** A red-bound daily pad with a huge red date.
+2. **Kalendar Kuda.** A red grid with blue numbers and the horse.
+3. **Kopitiam Ledger.** A green ledger book where each day is a row.
+4. **Kedai Runcit.** "HARI HARI" in yellow and red, with a shelf of goods.
+5. **Batik Margin.** A serif title with a navy-and-gold batik border.
+6. **Postcard Month.** A shophouse street postcard header.
+7. **Rubber Stamp.** A *Pelan Jadual Harian* form with a KHAMIS stamp and a seal.
+8. **Riso Pop.** Red and blue riso print, a hibiscus, the twin towers and a bus.
+9. **Midnight Almanac.** Dark, with a crescent moon and gold line-art.
+
+Every style has the same pieces:
+- a **Bulan** view: the month grid, or a ledger in Kopitiam, plus the selected day's agenda
+- a **Hari** view: the daily sheet with the date in Malay, English, Chinese and Tamil, the Hijri and lunar dates, the day's agenda, a *Tahukah Anda?* fact, a peribahasa and a notes field
+- **+ Acara** to add events: a time, a title and an optional place. Tap an event to edit or delete it, and tick it when it's done.
+
+Months flip with a page curl: swipe the page sideways, drag it up with a mouse, or use the arrows. Days tear off: swipe a sheet left, or use Esok and Semalam. On a wide screen, Bulan and Hari sit side by side.
 
 ## Files
 
