@@ -1,0 +1,62 @@
+/* Style 3 · Kopitiam Ledger: everything here is scoped to [data-theme="kopitiam"]. */
+[data-theme="kopitiam"] {
+  --bd-ink: #1f3d2b;
+  --paper: #eef0df; --paper-back: #e3e6cf;
+  --ink: #1f3d2b; --muted: #5e7563; --rule: rgba(31, 92, 58, .35);
+  --accent: #1f5c3a; --sun: #c0392b;
+  --sel-bg: #1f5c3a; --sel-ink: #fff;
+  --f-title: var(--f-cond); --f-num: var(--f-cond); --f-ui: var(--f-cond);
+  --card-bg: #f6f7ea; --card-line: rgba(31, 92, 58, .3);
+  --seg-line: #1f5c3a; --seg-ink: #1f5c3a; --seg-on-bg: #1f5c3a;
+  --btn-radius: 4px;
+  --note-ink: #a6271f;
+}
+[data-theme="kopitiam"] .card { --radius: 2px; border: 2px solid #1f5c3a; outline: 1px solid #1f5c3a; outline-offset: -7px; }
+[data-theme="kopitiam"] .mh-kopi { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; padding: 4px 6px 0; }
+[data-theme="kopitiam"] .mh-kopi p { margin: 0; }
+[data-theme="kopitiam"] .kp-small { font: 400 clamp(16px, 5cqi, 22px)/1 var(--f-slab); color: #1f5c3a; letter-spacing: .06em; }
+[data-theme="kopitiam"] .kp-big { font: 400 clamp(30px, 10.5cqi, 46px)/1 var(--f-slab); color: #1f5c3a; letter-spacing: .02em; text-shadow: 2px 2px 0 rgba(31, 92, 58, .18); }
+[data-theme="kopitiam"] .kp-zh { font: 900 clamp(16px, 5cqi, 21px)/1.3 var(--f-zh); color: #c0392b; letter-spacing: .3em; }
+[data-theme="kopitiam"] .cup { width: 24cqi; max-width: 96px; color: #1f5c3a; }
+[data-theme="kopitiam"] .kp-tag { grid-column: 1 / -1; padding: 6px 0; border-top: 1.5px solid #1f5c3a; border-bottom: 1.5px solid #1f5c3a; font: 700 11.5px/1 var(--f-cond); letter-spacing: .26em; text-align: center; color: #1f5c3a; margin-top: 8px !important; }
+[data-theme="kopitiam"] .mtitle { margin-top: 12px; border: 1.5px solid #1f5c3a; padding: 6px 0; }
+[data-theme="kopitiam"] .mt-main { font-size: clamp(20px, 6.4cqi, 26px); letter-spacing: .14em; color: #1f3d2b; }
+[data-theme="kopitiam"] .mt-sub { display: none; }
+[data-theme="kopitiam"] .mnav { color: #1f3d2b; }
+[data-theme="kopitiam"] .ledger {
+  margin-top: -1.5px;
+  border: 1.5px solid #1f5c3a;
+  border-top: 0;
+  background: repeating-linear-gradient(180deg, transparent 0 33px, rgba(31, 92, 58, .22) 33px 34px);
+}
+[data-theme="kopitiam"] .lg-head, [data-theme="kopitiam"] .lrow { display: grid; grid-template-columns: 42px 30% 1fr; }
+[data-theme="kopitiam"] .lg-head { font: 700 10.5px/1 var(--f-cond); letter-spacing: .2em; color: #5e7563; }
+[data-theme="kopitiam"] .lg-head span { padding: 6px 8px; border-right: 1.5px solid rgba(31, 92, 58, .5); }
+[data-theme="kopitiam"] .lg-head span:last-child { border-right: 0; text-align: right; }
+[data-theme="kopitiam"] .lrow { width: 100%; min-height: 34px; margin: 0; padding: 0; border: 0; border-top: 1px solid rgba(31, 92, 58, .22); background: none; text-align: left; cursor: pointer; color: #1f3d2b; }
+[data-theme="kopitiam"] .lrow > span { display: flex; align-items: center; padding: 6px 8px; border-right: 1.5px solid rgba(31, 92, 58, .5); }
+[data-theme="kopitiam"] .lrow > span:last-child { border-right: 0; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; }
+[data-theme="kopitiam"] .lg-n { position: relative; justify-content: center; font: 700 17px/1 var(--f-cond); }
+[data-theme="kopitiam"] .lg-d { font: 700 12px/1 var(--f-cond); letter-spacing: .12em; }
+[data-theme="kopitiam"] .lg-a { font: 400 13.5px/1.25 var(--f-serif); }
+[data-theme="kopitiam"] .lg-ev b { font: 700 13px/1 var(--f-cond); margin-right: 4px; }
+[data-theme="kopitiam"] .lg-ev.done { text-decoration: line-through; opacity: .55; }
+[data-theme="kopitiam"] .lg-more { font: 600 11px/1 var(--f-cond); letter-spacing: .1em; color: #5e7563; }
+[data-theme="kopitiam"] .lg-hol { font: 700 11px/1.2 var(--f-cond); letter-spacing: .08em; text-transform: uppercase; color: #c0392b; }
+[data-theme="kopitiam"] .lrow.red .lg-n, [data-theme="kopitiam"] .lrow.red .lg-d { color: #c0392b; }
+[data-theme="kopitiam"] .lrow:hover { background: rgba(31, 92, 58, .06); }
+[data-theme="kopitiam"] .lrow.today:not(.sel) .lg-n span { text-decoration: underline 2px #c0392b; text-underline-offset: 4px; }
+[data-theme="kopitiam"] .lrow.sel { min-height: 54px; background: rgba(31, 92, 58, .12); }
+[data-theme="kopitiam"] .lrow.sel .lg-n { font-size: 22px; }
+[data-theme="kopitiam"] .lrow.sel .lg-d { font: 600 italic 18px/1 var(--f-serif); letter-spacing: 0; }
+[data-theme="kopitiam"] .ring { position: absolute; left: 50%; top: 50%; width: 34px; height: 30px; transform: translate(-50%, -52%) rotate(-8deg); overflow: visible; }
+[data-theme="kopitiam"] .ring path { fill: none; stroke: #c62a22; stroke-width: 2.2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+[data-theme="kopitiam"] .sum-events { display: none; }
+[data-theme="kopitiam"] .summary { border-top: 0; padding-top: 4px; }
+[data-theme="kopitiam"] .sum-h { font-size: 13px; color: #1f5c3a; }
+[data-theme="kopitiam"] .c-kick { font-family: var(--f-slab); font-style: normal; font-weight: 400; color: #1f5c3a; }
+[data-theme="kopitiam"] .sh-num { font-family: var(--f-slab); font-weight: 400; color: #1f5c3a; }
+[data-theme="kopitiam"] .sh-num.red { color: #c0392b; }
+[data-theme="kopitiam"] .sh-dayname { font-family: var(--f-slab); font-weight: 400; color: #1f5c3a; }
+[data-theme="kopitiam"] .sh-my { color: #1f5c3a; letter-spacing: .14em; }
+[data-theme="kopitiam"] .c-card { background-image: repeating-linear-gradient(180deg, transparent 0 25px, rgba(31, 92, 58, .14) 25px 26px); }

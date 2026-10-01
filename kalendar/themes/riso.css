@@ -1,0 +1,41 @@
+/* Style 8 · Riso Pop: everything here is scoped to [data-theme="riso"]. */
+[data-theme="riso"] {
+  --bd-ink: #2b55a6;
+  --paper: #f7f2e7; --paper-back: #ece5d4;
+  --ink: #2b55a6; --num-ink: #2b55a6; --muted: #6f86b8; --rule: #e2372b;
+  --accent: #e2372b; --sun: #e2372b;
+  --sel-bg: #e2372b; --sel-ink: #fff;
+  --f-title: var(--f-cond); --f-num: var(--f-cond); --f-ui: var(--f-cond);
+  --card-bg: #fbf7ee; --card-line: rgba(43, 85, 166, .35);
+  --seg-line: #2b55a6; --seg-ink: #2b55a6; --seg-on-bg: #2b55a6;
+  --btn-radius: 4px;
+  --note-ink: #2b55a6;
+}
+[data-theme="riso"] .card { --radius: 3px; }
+[data-theme="riso"] .card::after { content: ""; position: absolute; z-index: 6; inset: 0; border-radius: inherit; background: var(--grain); background-size: 140px 140px; mix-blend-mode: multiply; opacity: .55; pointer-events: none; }
+[data-theme="riso"] .mtitle { grid-template-columns: auto auto 1fr; grid-template-areas: "main main main" "sub sub sub" "prev next ."; text-align: left; min-height: 46cqi; align-items: start; }
+[data-theme="riso"] .mt-main { position: relative; z-index: 1; color: #e2372b; font-weight: 800; line-height: .82; text-shadow: 2px 1px 0 rgba(43, 85, 166, .28); }
+[data-theme="riso"] .mt-month .full { display: none; }
+[data-theme="riso"] .mt-month .short { display: block; font-size: clamp(90px, 33cqi, 140px); letter-spacing: -.01em; }
+[data-theme="riso"] .mt-year { display: block; font-size: clamp(44px, 15cqi, 64px); margin-top: 4px; }
+[data-theme="riso"] .mt-sub { position: relative; z-index: 1; justify-content: flex-start; color: #2b55a6; font-size: 14px; font-weight: 700; flex-wrap: wrap; max-width: 62%; }
+[data-theme="riso"] .mnav { position: relative; z-index: 2; color: #2b55a6; }
+[data-theme="riso"] .t-art { right: -6px; top: 6px; width: 54%; }
+[data-theme="riso"] .t-art .hib { position: relative; width: 92%; margin-top: 18%; opacity: .94; transform: rotate(-14deg); }
+[data-theme="riso"] .riso-sun { position: absolute; right: 0; top: 0; width: 42%; aspect-ratio: 1; border-radius: 50%; background: #e2372b; opacity: .92; }
+[data-theme="riso"] .mgrid { border-top: 2px solid #e2372b; padding-top: 2px; }
+[data-theme="riso"] .wd { color: #2b55a6; font-size: 15px; border-bottom: 2px solid #e2372b; }
+[data-theme="riso"] .wd.sun { color: #e2372b; }
+[data-theme="riso"] .cell { font-weight: 700; font-size: clamp(18px, 6.4cqi, 27px); }
+[data-theme="riso"] .cell.out { visibility: visible; color: #a9b6d3; cursor: default; }
+[data-theme="riso"] .summary { display: grid; grid-template-columns: 36% 1fr; gap: 12px; border-top: 2px solid #e2372b; }
+[data-theme="riso"] .sum-main { grid-column: 2; grid-row: 1; }
+[data-theme="riso"] .s-art { position: static; grid-column: 1; grid-row: 1; align-self: end; }
+[data-theme="riso"] .s-art svg { width: 100%; display: block; mix-blend-mode: multiply; }
+[data-theme="riso"] .sum-h { color: #2b55a6; font-weight: 800; letter-spacing: .12em; }
+[data-theme="riso"] .ev-check { border-color: #2b55a6; }
+[data-theme="riso"] .sh-num { font-family: var(--f-cond); font-weight: 800; color: #e2372b; text-shadow: 3px 2px 0 rgba(43, 85, 166, .3); }
+[data-theme="riso"] .sh-num:not(.red) { color: #2b55a6; text-shadow: 3px 2px 0 rgba(226, 55, 43, .35); }
+[data-theme="riso"] .sh-dayname { font-family: var(--f-cond); color: #e2372b; }
+[data-theme="riso"] .sh-my { color: #e2372b; font-size: 24px; }
+[data-theme="riso"] .c-kick { font-family: var(--f-cond); font-style: normal; font-weight: 800; font-size: 20px; letter-spacing: .06em; text-transform: uppercase; }

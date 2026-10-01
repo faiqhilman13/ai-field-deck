@@ -1,0 +1,48 @@
+/* Style 1 · Tear-Off: everything here is scoped to [data-theme="tearoff"]. */
+[data-theme="tearoff"] {
+  --bd-ink: #3a2c1e;
+  --paper: #f7efdc; --paper-back: #efe5cc;
+  --ink: #221c16; --muted: #7d6e5c; --rule: rgba(70, 45, 20, .25);
+  --accent: #c62a22; --sun: #c62a22;
+  --sel-bg: transparent; --sel-ink: #c62a22;
+  --f-title: var(--f-display); --f-num: var(--f-display); --f-ui: var(--f-serif);
+  --card-bg: #fbf6ea; --card-line: rgba(70, 45, 20, .2);
+  --seg-on-bg: #221c16; --seg-line: #221c16;
+  --btn-radius: 6px;
+}
+[data-theme="tearoff"] .card { --radius: 4px; padding-top: 58px; box-shadow: 0 2px 0 #e9dfc4, 0 4px 0 #dfd3b4, 0 6px 0 #d4c6a4, 0 18px 30px -12px rgba(40, 25, 10, .5); }
+[data-theme="tearoff"] .card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40px;
+  border-radius: 4px 4px 0 0;
+  background:
+    radial-gradient(circle at 16% 50%, #3a1712 0 6px, rgba(0,0,0,.25) 6.5px, transparent 8px),
+    radial-gradient(circle at 84% 50%, #3a1712 0 6px, rgba(0,0,0,.25) 6.5px, transparent 8px),
+    linear-gradient(180deg, #d7372d, #b52219);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.18);
+}
+[data-theme="tearoff"] .card::after {
+  content: "";
+  position: absolute;
+  top: 40px; left: 0; right: 0;
+  height: 9px;
+  background: #e8dcc1;
+  -webkit-mask: var(--torn) 0 0 / 100% 100%;
+  mask: var(--torn) 0 0 / 100% 100%;
+  transform: scaleY(-1);
+}
+[data-theme="tearoff"] .mt-main { font-weight: 900; letter-spacing: .04em; font-size: clamp(26px, 8cqi, 36px); }
+[data-theme="tearoff"] .cell { font-weight: 700; font-family: var(--f-serif); }
+[data-theme="tearoff"] .cell.sel::before { background: none; box-shadow: inset 0 0 0 2px #c62a22; }
+[data-theme="tearoff"] .wd { font-family: var(--f-serif); }
+[data-theme="tearoff"] .sh-my { font-family: var(--f-display); font-weight: 900; font-size: 22px; letter-spacing: .1em; }
+[data-theme="tearoff"] .sh-num { color: #c62a22; font-size: clamp(150px, 56cqi, 230px); }
+[data-theme="tearoff"] .sh-num:not(.red) { color: #c62a22; }
+[data-theme="tearoff"] .sh-dayname { color: #c62a22; }
+[data-theme="tearoff"] .sh-langs { font-family: var(--f-serif); }
+[data-theme="tearoff"] .sh-mini { display: grid; }
+[data-theme="tearoff"] .sh-mini-side { font-family: var(--f-serif); font-weight: 600; }
+[data-theme="tearoff"] .mm { font-family: var(--f-serif); }
+[data-theme="tearoff"] .mm .on { background: none; box-shadow: inset 0 0 0 1.5px #c62a22; color: #c62a22; }

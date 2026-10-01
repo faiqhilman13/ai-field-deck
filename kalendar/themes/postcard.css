@@ -1,0 +1,36 @@
+/* Style 6 · Postcard Month: everything here is scoped to [data-theme="postcard"]. */
+[data-theme="postcard"] {
+  --bd-ink: #233447;
+  --paper: #f8eedb; --paper-back: #eee2c8;
+  --ink: #1f2b3a; --muted: #6d7380; --rule: rgba(31, 43, 58, .18);
+  --accent: #e5604d; --sun: #c0392b;
+  --sel-bg: #f19c90; --sel-ink: #fff;
+  --f-title: var(--f-display); --f-num: var(--f-serif); --f-ui: var(--f-serif);
+  --card-bg: #fffaf0; --card-line: rgba(229, 96, 77, .35);
+  --seg-line: #c9b896; --seg-ink: #1f2b3a; --seg-on-bg: #f2e6cc; --seg-on-ink: #1f2b3a; --seg-bg: #fffaf0;
+  --btn-radius: 6px;
+}
+[data-theme="postcard"] .card { border: 9px solid #fffaf1; --radius: 6px; padding-top: 0; box-shadow: 0 1px 2px rgba(0,0,0,.2), 0 20px 34px -14px rgba(20, 40, 60, .45); }
+[data-theme="postcard"] .mh-post { position: relative; margin: 0 calc(-1 * var(--pad)); aspect-ratio: 400 / 190; overflow: hidden; }
+[data-theme="postcard"] .pc-scene { display: block; width: 100%; height: 100%; }
+[data-theme="postcard"] .pc-hello { position: absolute; top: 6%; right: 5%; margin: 0; display: flex; flex-direction: column; align-items: flex-end; color: #213a5c; transform: rotate(-4deg); }
+[data-theme="postcard"] .pc-hello span { font: 400 clamp(17px, 5.4cqi, 24px)/1 var(--f-script); }
+[data-theme="postcard"] .pc-hello b { font: 800 clamp(18px, 6cqi, 26px)/1 var(--f-cond); letter-spacing: .14em; color: #1f2b3a; text-shadow: 1px 1px 0 #fff; }
+[data-theme="postcard"] .mtitle { padding-top: 12px; }
+[data-theme="postcard"] .mt-main { font-weight: 900; font-size: clamp(28px, 9.6cqi, 46px); white-space: nowrap; }
+[data-theme="postcard"] .mgrid { border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+[data-theme="postcard"] .wd, [data-theme="postcard"] .cell { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+[data-theme="postcard"] .wd { font: 600 13.5px/1 var(--f-serif); }
+[data-theme="postcard"] .cell { font-weight: 500; aspect-ratio: 1 / .78; font-size: clamp(16px, 5.6cqi, 22px); }
+[data-theme="postcard"] .cell.out { visibility: visible; }
+[data-theme="postcard"] .cell.out .num { visibility: hidden; }
+[data-theme="postcard"] .cell::before { inset: 3px; width: auto; aspect-ratio: auto; border-radius: 2px; transform: none; }
+[data-theme="postcard"] .cell.sel::before { transform: none; }
+[data-theme="postcard"] .cell:not(.sel):not(.out):hover::before { transform: none; }
+[data-theme="postcard"] .summary { border-top: 0; padding-left: 26%; min-height: 120px; }
+[data-theme="postcard"] .s-art { left: -10px; bottom: 4px; width: 27%; }
+[data-theme="postcard"] .s-art svg { width: 100%; transform: rotate(-12deg); }
+[data-theme="postcard"] .sum-h { font: 600 13px/1.2 var(--f-serif); letter-spacing: .1em; }
+[data-theme="postcard"] .sh-my { font-family: var(--f-display); font-weight: 900; font-size: 24px; }
+[data-theme="postcard"] .sheet { padding-top: 14px; }
+[data-theme="postcard"] .c-card { border-style: dashed; }

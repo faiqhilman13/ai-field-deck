@@ -1,0 +1,42 @@
+/* Style 2 · Kalendar Kuda: everything here is scoped to [data-theme="kuda"]. */
+[data-theme="kuda"] {
+  --bd-ink: #8f1d17;
+  --paper: #fffdf7; --paper-back: #f3eee2;
+  --ink: #1b3f8e; --num-ink: #1f4fa3; --muted: #5d6f9c; --rule: #d62b20;
+  --accent: #d62b20; --sun: #d62b20;
+  --sel-bg: transparent; --sel-ink: #1f4fa3;
+  --f-title: var(--f-cond); --f-num: var(--f-cond); --f-ui: var(--f-cond);
+  --card-bg: #fffaf0; --card-line: rgba(214, 43, 32, .45);
+  --seg-line: #d62b20; --seg-ink: #d62b20; --seg-on-bg: #d62b20;
+  --btn-radius: 4px;
+  --dot: #d62b20;
+}
+[data-theme="kuda"] .card { --radius: 3px; border: 3px solid #d62b20; outline: 1.5px solid #d62b20; outline-offset: -9px; padding-top: 22px; }
+[data-theme="kuda"] .mh-kuda { display: grid; grid-template-columns: auto minmax(0, 1fr) 27cqi; grid-template-areas: "side word horse" "side sub horse"; align-items: center; column-gap: 10px; padding: 0 4px 10px; border-bottom: 2.5px solid #d62b20; position: relative; }
+[data-theme="kuda"] .mh-kuda p { margin: 0; }
+[data-theme="kuda"] .kd-side { grid-area: side; white-space: nowrap; font: 900 13px/1.5 var(--f-zh); color: #d62b20; letter-spacing: .1em; }
+[data-theme="kuda"] .kd-word { grid-area: word; font: 400 clamp(26px, 9.4cqi, 42px)/1 var(--f-slab); color: #d62b20; letter-spacing: .01em; text-shadow: 1.5px 1.5px 0 #fff, 3px 3px 0 rgba(214, 43, 32, .25); }
+[data-theme="kuda"] .kd-horse { grid-area: horse; align-self: center; min-width: 0; color: #1f4fa3; transform: scaleX(1.05); }
+[data-theme="kuda"] .kd-horse svg { width: 100%; display: block; }
+[data-theme="kuda"] .kd-sub { grid-area: sub; display: flex; flex-direction: column; font: 700 10.5px/1.25 var(--f-cond); letter-spacing: .12em; color: #1f4fa3; }
+[data-theme="kuda"] .kd-sub b { font: 900 15px/1.2 var(--f-zh); letter-spacing: .14em; color: #d62b20; }
+[data-theme="kuda"] .mtitle { border-bottom: 2.5px solid #d62b20; padding-bottom: 8px; }
+[data-theme="kuda"] .mt-main { color: #1f4fa3; font-size: clamp(32px, 11cqi, 46px); }
+[data-theme="kuda"] .mt-sub { color: #1f4fa3; font-weight: 700; }
+[data-theme="kuda"] .mgrid { border-left: 1.5px solid #d62b20; border-top: 0; }
+[data-theme="kuda"] .wd, [data-theme="kuda"] .cell { border-right: 1.5px solid #d62b20; border-bottom: 1.5px solid #d62b20; }
+[data-theme="kuda"] .wd { color: #1f4fa3; font-size: 15px; font-weight: 800; }
+[data-theme="kuda"] .wd.sun { color: #d62b20; }
+[data-theme="kuda"] .cell { font-weight: 800; font-size: clamp(19px, 6.6cqi, 28px); }
+[data-theme="kuda"] .cell.out { visibility: visible; }
+[data-theme="kuda"] .cell.out .num { visibility: hidden; }
+[data-theme="kuda"] .cell::before { display: none; }
+[data-theme="kuda"] .cell.sel { box-shadow: inset 0 0 0 2.5px #d62b20; color: #1f4fa3; }
+[data-theme="kuda"] .cell.sel.red { color: #d62b20; }
+[data-theme="kuda"] .cell:not(.sel):not(.out):hover { background: rgba(214, 43, 32, .07); }
+[data-theme="kuda"] .summary { border-top: 0; }
+[data-theme="kuda"] .sum-h { color: #1f4fa3; font-weight: 800; }
+[data-theme="kuda"] .c-kick { font-family: var(--f-slab); font-style: normal; font-weight: 400; }
+[data-theme="kuda"] .sh-num { font-family: var(--f-cond); font-weight: 800; color: #1f4fa3; }
+[data-theme="kuda"] .sh-dayname { font-family: var(--f-cond); color: #1f4fa3; }
+[data-theme="kuda"] .sh-my { color: #d62b20; }

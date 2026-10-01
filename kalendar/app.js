@@ -323,49 +323,34 @@
     const veins = rot.map(r => `<path transform="rotate(${r} 50 50)" d="M50 45V20" stroke="${line || 'rgba(0,0,0,.2)'}" stroke-width="${sw * 0.6}" fill="none"/>`).join('');
     return `<svg class="hib ${cls}" viewBox="0 0 100 100" aria-hidden="true">${petals}${veins}<path d="M50 50C57 40 65 30 76 21" stroke="${line || centre}" stroke-width="${sw * 1.5}" fill="none" stroke-linecap="round"/><circle cx="77" cy="20" r="4" fill="${line ? 'none' : centre}" stroke="${line || 'none'}" stroke-width="${sw}"/><circle cx="50" cy="50" r="5.5" fill="${line ? 'none' : '#7a0f0f'}" stroke="${line || 'none'}" stroke-width="${sw}"/></svg>`;
   }
-  const HORSE = '<svg class="horse" viewBox="0 0 140 100" aria-hidden="true"><path fill="currentColor" d="M116 14l-2-10 6 7c6 7 12 17 16 27 1 4-2 8-6 8-6-1-12-3-16 0-4 4-6 10-8 16 2 4 6 6 12 2l8-6 4 2-10 10c-6 4-14 4-18 0l2 12 8 12-4 2-10-12-4-12c-10 2-24 2-34 0l-8 8-12 10-4-2 10-12 2-10-4 10 2 18-4 2-4-18 2-16c-4-6-4-12-2-16-8 0-18 6-28 18 4-14 14-24 28-26 16-2 38 2 52-2 6-4 10-12 14-18 4-4 8-6 12-4Z"/><path d="M104 19c-7 2-11 7-13 13M109 15c-7 1-11 5-14 10M100 25c-6 3-9 7-10 12" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="125" cy="25" r="1.8" fill="#fffdf7"/></svg>';
-  const CUP = '<svg class="cup" viewBox="0 0 90 80" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M34 6c-4 6 4 9 0 15M46 3c-4 6 4 9 0 15M58 6c-4 6 4 9 0 15"/><path d="M18 28h54v10c0 16-12 26-27 26S18 54 18 38Z" fill="currentColor" fill-opacity=".12"/><path d="M72 33c8 0 12 4 12 9s-5 9-13 8"/><path d="M6 68c12 8 66 8 78 0M3 67h84"/><path d="M27 41c3 9 9 13 17 14" opacity=".5"/></svg>';
-  const SHELF_EXTRA = [
-    '<svg viewBox="0 0 20 50" aria-hidden="true"><rect x="7" y="2" width="6" height="8" fill="#c0392b"/><path d="M7 10C3 16 3 18 3 22v24q0 2 2 2h10q2 0 2-2V22c0-4 0-6-4-12Z" fill="#3b2314"/><rect x="3" y="26" width="14" height="12" fill="#f2c94c"/><text x="10" y="34.4" text-anchor="middle" font-size="5" font-weight="800" fill="#c0392b" font-family="Barlow Condensed,sans-serif">KICAP</text></svg>',
-    '<svg viewBox="0 0 44 26" aria-hidden="true"><rect x="2" y="4" width="40" height="20" rx="4" fill="#d0281f"/><rect x="2" y="2" width="40" height="4" rx="2" fill="#c9ccd1"/><text x="22" y="18" text-anchor="middle" font-size="9" font-weight="800" fill="#fff5c8" font-family="Barlow Condensed,sans-serif">SARDIN</text></svg>',
-    '<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="6" width="36" height="32" rx="2" fill="#1d58a8"/><rect x="2" y="3" width="36" height="6" rx="1" fill="#c9ccd1"/><rect x="6" y="14" width="28" height="16" fill="#fff8e0"/><text x="20" y="25" text-anchor="middle" font-size="7.5" font-weight="800" fill="#d0281f" font-family="Barlow Condensed,sans-serif">BISKUT</text></svg>',
-    '<svg viewBox="0 0 32 38" aria-hidden="true"><ellipse cx="16" cy="6" rx="12" ry="3.5" fill="#c9ccd1"/><path d="M4 6v24q12 5 24 0V6q-12 4-24 0Z" fill="#1b6b3a"/><path d="M4 12q12 4 24 0v12q-12 4-24 0Z" fill="#f2c94c"/><text x="16" y="21.6" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="6.4" fill="#1b6b3a">KOKO</text></svg>',
-  ];
-  function postcardScene() {
-    const id = uid();
-    const shops = ['#e9b4a0', '#f1d38e', '#a9cbb7', '#f0c9a8', '#b9c7e0', '#e7a98f'].map((c, i) => {
-      const x = 34 + i * 46, h = [70, 78, 72, 80, 74, 68][i], top = 150 - h;
-      const win = [0, 1, 2].map(j => `<path d="M${x + 6 + j * 13} ${top + 34}v-10a5 5 0 0 1 10 0v10Z" fill="#fff6e2" stroke="#6d5a46" stroke-width=".8"/><rect x="${x + 5 + j * 13}" y="${top + 24}" width="2.4" height="10" fill="#4e7a62"/>`).join('');
-      const arch = [0, 1].map(j => `<path d="M${x + 6 + j * 20} 150v-16a8 8 0 0 1 16 0v16Z" fill="#5a4636" opacity=".75"/>`).join('');
-      return `<rect x="${x}" y="${top}" width="46" height="${h}" fill="${c}" stroke="#7a6550" stroke-width=".8"/><rect x="${x - 1}" y="${top}" width="48" height="6" fill="#fff4dd" stroke="#7a6550" stroke-width=".6"/><path d="M${x} ${top + 44}h46" stroke="#7a6550" stroke-width="1.4"/>${win}${arch}`;
-    }).join('');
-    const palm = (x, s) => `<g transform="translate(${x} 0) scale(${s} 1)" fill="none" stroke="#2f5a34" stroke-linecap="round"><path d="M0 182C2 150 -2 118 8 92" stroke-width="4" stroke="#7a5a3a"/><path d="M8 92c-14-8-28-4-36 6M8 92c-6-14-20-18-32-16M8 92c6-14 20-18 32-12M8 92c16-4 26 4 30 14M8 92c2-14-2-24-12-28" stroke-width="3.4"/></g>`;
-    return `<svg class="pc-scene" viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc6dc"/><stop offset=".7" stop-color="#f4e7c8"/></linearGradient><pattern id="${id}h" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".8" fill="#3b2a12"/></pattern></defs><rect width="400" height="190" fill="url(#${id})"/><g fill="#fff" opacity=".8"><ellipse cx="70" cy="34" rx="34" ry="9"/><ellipse cx="96" cy="28" rx="22" ry="8"/><ellipse cx="230" cy="22" rx="30" ry="7"/></g><path d="M338 30v120" stroke="#8a7f6a" stroke-width="7"/><path d="M338 6v26" stroke="#8a7f6a" stroke-width="2"/><ellipse cx="338" cy="42" rx="15" ry="8" fill="#e8e1cf" stroke="#8a7f6a" stroke-width="1.5"/><ellipse cx="338" cy="36" rx="10" ry="4" fill="#cfc6b0"/>${shops}<path d="M0 190L150 150h100l150 40Z" fill="#cdbfa1"/><path d="M200 156v8M200 172v10" stroke="#fff6e2" stroke-width="2"/><path d="M0 150h400" stroke="#7a6550" stroke-width="1"/>${palm(10, 1)}${palm(386, -1)}<rect width="400" height="190" fill="url(#${id}h)" opacity=".07"/></svg>`;
-  }
-  const SKYLINE = '<svg class="skyline" viewBox="0 0 160 120" aria-hidden="true"><g fill="#2b55a6"><path d="M22 120V44h16v76Z"/><path d="M24 44V32h12v12Z"/><path d="M26 32V22h8v10Z"/><path d="M29.5 22V4h1v18Z"/><path d="M52 120V44h16v76Z"/><path d="M54 44V32h12v12Z"/><path d="M56 32V22h8v10Z"/><path d="M59.5 22V4h1v18Z"/><rect x="38" y="70" width="14" height="3"/></g><g stroke="#f6f1e7" stroke-width="1" opacity=".55"><path d="M24 56h12M24 64h12M24 80h12M24 88h12M24 96h12M24 104h12M54 56h12M54 64h12M54 80h12M54 88h12M54 96h12M54 104h12"/></g><g fill="none" stroke="#2b55a6" stroke-width="2.4" stroke-linejoin="round"><rect x="74" y="86" width="80" height="26" rx="5" fill="#f6f1e7"/><path d="M80 92h10v8H80zM94 92h10v8H94zM108 92h10v8h-10zM122 92h10v8h-10zM138 92h10v12h-10z"/></g><g fill="#2b55a6"><circle cx="90" cy="113" r="5"/><circle cx="138" cy="113" r="5"/><rect x="0" y="117" width="160" height="3"/></g></svg>';
-  const MOON = '<svg class="moon" viewBox="0 0 120 90" aria-hidden="true"><path d="M70 8a32 32 0 1 0 26 52A26 26 0 1 1 70 8Z" fill="#e3bd62"/><g fill="none" stroke="#d4a84a" stroke-width="1.6" stroke-linecap="round" opacity=".85"><path d="M4 66c8-6 18-6 24 0 6-6 16-6 22 0M30 80c6-5 14-5 20 0 6-5 14-5 20 0"/><path d="M14 60c3-6 10-7 14-2"/></g><g fill="#e3bd62"><circle cx="104" cy="14" r="1.6"/><circle cx="20" cy="22" r="1.2"/><circle cx="112" cy="44" r="1"/></g></svg>';
-  function stampSeal() {
-    const id = uid();
-    return `<svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="${id}" d="M60 60m-41 0a41 41 0 1 1 82 0a41 41 0 1 1-82 0"/></defs><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="3.2"/><circle cx="60" cy="60" r="30" fill="none" stroke="currentColor" stroke-width="1.6"/><text font-family="Barlow Condensed,sans-serif" font-weight="800" font-size="15" letter-spacing="3" fill="currentColor"><textPath href="#${id}" startOffset="2%">JADUAL ★ HARIAN ★ JADUAL ★</textPath></text><path d="M60 42l5 12 13 1-10 8 3 13-11-7-11 7 3-13-10-8 13-1Z" fill="currentColor"/></svg>`;
-  }
-
-  function mastheadHTML(t) {
-    if (t === 'kuda') return `<div class="mh mh-kuda"><p class="kd-side" lang="zh">耐用<br>實用<br>天天進步</p><p class="kd-word">KALENDAR</p><div class="kd-horse">${HORSE}</div><p class="kd-sub"><span>KALENDAR KUDA</span><b lang="zh">馬牌日曆</b></p></div>`;
-    if (t === 'kopitiam') return `<div class="mh mh-kopi"><div class="kp-words"><p class="kp-small">KEDAI KOPI</p><p class="kp-big">SINAR PAGI</p><p class="kp-zh" lang="zh">新早咖啡店</p></div>${CUP}<p class="kp-tag">KOPI · ROTI · KAWAN · JADUAL HIDUP</p></div>`;
-    if (t === 'runcit') return `<div class="mh mh-runcit"><p class="rc-hari">HARI HARI</p><p class="rc-kedai">KEDAI RUNCIT <span lang="zh">杂货店</span></p><div class="rc-shelf">${GOODS.join('')}${SHELF_EXTRA.join('')}</div><p class="rc-tag">BERAS · GULA · MINYAK MASAK · TEPUNG · MINUMAN · BARANG HARIAN</p></div>`;
-    if (t === 'postcard') return `<div class="mh mh-post">${postcardScene()}<p class="pc-hello"><span>Selamat Datang</span><span>ke</span><b>MALAYSIA</b></p></div>`;
-    return '';
-  }
-  function titleArt(t) {
-    if (t === 'riso') return `<div class="t-art"><span class="riso-sun"></span>${hibiscus({ petal: '#2b55a6', centre: '#e2372b' })}</div>`;
-    if (t === 'midnight') return `<div class="t-art">${MOON}</div>`;
-    return '';
-  }
-  function summaryArt(t) {
-    if (t === 'riso') return `<div class="s-art">${SKYLINE}</div>`;
-    if (t === 'postcard') return `<div class="s-art">${hibiscus({ petal: '#e5604d', centre: '#f2c94c' })}</div>`;
-    if (t === 'midnight') return `<div class="s-art">${hibiscus({ line: '#d4a84a', sw: 1.4 })}</div>`;
-    return '';
+  /* ------------------------------------------------------ style hooks
+     Each style's themes/<id>.js registers optional hooks on window.SEHARI_THEMES[id]:
+       masthead(c), monthTitle(c), titleArt(c), summary(c), summaryArt(c),
+       sheetHead(c), dateArt(c), miniArt(c), and the flag ledger: true.
+     Hooks return HTML strings; `c` is the context built by ctx() below. */
+  const hooks = id => (window.SEHARI_THEMES || {})[id] || {};
+  const hook = (id, name, c, fallback = '') => (typeof hooks(id)[name] === 'function' ? hooks(id)[name](c) : fallback);
+  function ctx(t, p) {
+    const { y, m, d } = p;
+    const w = weekday(y, m, d), k = iso(y, m, d);
+    const h = holiday(y, m, d), l = lunar(y, m, d), hj = hijri(y, m, d);
+    return {
+      t, y, m, d, w, iso: k,
+      today: same(p, NOW), selected: same(p, padDate),
+      tone: (h || w === 0) ? 'red' : w === 6 ? 'sat' : '',
+      holiday: h,
+      hijri: hj ? `${hj.day} ${HIJRI_MONTH[hj.month - 1]} ${hj.year} H` : '',
+      lunar: l ? `${lunarYearName(y, m, d)}${lunarMonthZh(l)}${lunarDayZh(l.day)}` : '',
+      doy: dayNum(y, m, d) - dayNum(y, 0, 1) + 1,
+      left: dayNum(y, 11, 31) - dayNum(y, m, d),
+      msMonth: MS_MONTH[m], enMonth: EN_MONTH[m], zhMonth: zhMonth(m + 1), taMonth: TA_MONTH[m], mon3: MS_MON3[m],
+      msDay: MS_DAY[w], enDay: EN_DAY[w], zhDay: '星期' + ZH_DAY[w], taDay: TA_DAY[w],
+      events: () => eventsListHTML(k),
+      eventList: () => eventsFor(k),
+      miniMonth: () => miniMonthHTML(y, m, d),
+      nav: dir => `<button type="button" class="mnav ${dir < 0 ? 'prev' : 'next'}" data-nav="${dir}" aria-label="${dir < 0 ? 'Bulan lepas' : 'Bulan depan'}">${dir < 0 ? '‹' : '›'}</button>`,
+      hibiscus, uid, esc, pad2, goods: GOODS, icons: ICONS,
+    };
   }
 
   /* ------------------------------------------------------- events (Acara) */
@@ -419,28 +404,30 @@
     return `<div class="ledger">${h}</div>`;
   }
   function monthPageHTML(t, y, m) {
+    const c = ctx(t, { y, m, d: 1 });
     return `<div class="mpage" data-ym="${y}-${pad2(m + 1)}">
-      <div class="mtitle">
-        <button type="button" class="mnav prev" data-nav="-1" aria-label="Bulan lepas">‹</button>
+      <div class="mtitle">${hook(t, 'monthTitle', c, `
+        ${c.nav(-1)}
         <h2 class="mt-main"><span class="mt-month"><span class="full">${MS_MONTH[m].toUpperCase()}</span><span class="short">${MS_MON3[m]}</span></span> <span class="mt-year">${y}</span></h2>
-        <button type="button" class="mnav next" data-nav="1" aria-label="Bulan depan">›</button>
-        <p class="mt-sub"><span lang="zh">${zhMonth(m + 1)}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="ta">${TA_MONTH[m]}</span></p>
-        ${titleArt(t)}
+        ${c.nav(1)}
+        <p class="mt-sub"><span lang="zh">${zhMonth(m + 1)}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="ta">${TA_MONTH[m]}</span></p>`)}
+        ${hook(t, 'titleArt', c)}
       </div>
-      ${t === 'kopitiam' ? ledgerHTML(y, m) : gridHTML(y, m)}
+      ${hooks(t).ledger ? ledgerHTML(y, m) : gridHTML(y, m)}
     </div>`;
   }
 
   function summaryHTML(t, p) {
-    const w = weekday(p.y, p.m, p.d), h = holiday(p.y, p.m, p.d), k = iso(p.y, p.m, p.d);
-    const tone = (h || w === 0) ? 'red' : '';
+    const c = ctx(t, p);
+    const custom = hook(t, 'summary', c, null);
+    if (custom != null) return custom;
     return `<div class="sum-main">
-      <div class="sum-big"><span class="sb-num ${tone}">${p.d}</span><span class="sb-names"><b>${MS_DAY[w].toUpperCase()}</b><span>${EN_DAY[w].toUpperCase()}</span><span lang="zh">星期${ZH_DAY[w]}</span></span></div>
-      <h3 class="sum-h">${MS_DAY[w].toUpperCase()}, ${p.d} ${MS_MONTH[p.m].toUpperCase()} ${p.y}</h3>
-      ${h ? `<p class="sum-hol">★ ${esc(h.ms)}${h.approx ? '*' : ''}</p>` : ''}
-      <div class="sum-events">${eventsListHTML(k)}</div>
+      <div class="sum-big"><span class="sb-num ${c.tone}">${p.d}</span><span class="sb-names"><b>${c.msDay.toUpperCase()}</b><span>${c.enDay.toUpperCase()}</span><span lang="zh">${c.zhDay}</span></span></div>
+      <h3 class="sum-h">${c.msDay.toUpperCase()}, ${p.d} ${c.msMonth.toUpperCase()} ${p.y}</h3>
+      ${c.holiday ? `<p class="sum-hol">★ ${esc(c.holiday.ms)}${c.holiday.approx ? '*' : ''}</p>` : ''}
+      <div class="sum-events">${c.events()}</div>
       <button type="button" class="sum-more" data-goto="day">Fakta &amp; peribahasa hari ini <span aria-hidden="true">›</span></button>
-    </div>${summaryArt(t)}`;
+    </div>${hook(t, 'summaryArt', c)}`;
   }
 
   /* -------------------------------------------------------- day sheet */
@@ -475,31 +462,29 @@
     </section>`;
   }
   function sheetHTML(t, p) {
+    const c = ctx(t, p);
     const { y, m, d } = p;
-    const w = weekday(y, m, d), h = holiday(y, m, d), l = lunar(y, m, d), hj = hijri(y, m, d);
-    const tone = (h || w === 0) ? 'red' : w === 6 ? 'sat' : '';
-    const k = iso(y, m, d);
-    const doy = dayNum(y, m, d) - dayNum(y, 0, 1) + 1;
-    const left = dayNum(y, 11, 31) - dayNum(y, m, d);
-    return `
-      <div class="sh-form"><span>PELAN<br>JADUAL<br>HARIAN</span><span class="sh-no">No. ${pad2(y % 100)}${String(doy).padStart(4, '0')}</span></div>
-      <header class="sh-top"><span class="sh-my">${MS_MONTH[m].toUpperCase()} ${y}</span><span class="sh-alt"><span lang="zh">${zhMonth(m + 1)}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="ta">${TA_MONTH[m]}</span></span></header>
+    const h = c.holiday, k = c.iso;
+    const head = hook(t, 'sheetHead', c, null) ?? `
+      <div class="sh-form"><span>PELAN<br>JADUAL<br>HARIAN</span><span class="sh-no">No. ${pad2(y % 100)}${String(c.doy).padStart(4, '0')}</span></div>
+      <header class="sh-top"><span class="sh-my">${c.msMonth.toUpperCase()} ${y}</span><span class="sh-alt"><span lang="zh">${c.zhMonth}</span><span>${c.enMonth.toUpperCase()}</span><span lang="ta">${c.taMonth}</span></span></header>
       <div class="sh-date">
-        <span class="sh-stamp">${MS_DAY[w].toUpperCase()}</span>
-        <div class="sh-num ${tone}" aria-label="${d} ${MS_MONTH[m]} ${y}">${d}</div>
+        <span class="sh-stamp">${c.msDay.toUpperCase()}</span>
+        <div class="sh-num ${c.tone}" aria-label="${d} ${c.msMonth} ${y}">${d}</div>
         <div class="sh-dmy">${pad2(d)} / ${pad2(m + 1)} / ${y}</div>
-        <div class="sh-dayname ${tone}">${MS_DAY[w].toUpperCase()}</div>
-        <div class="sh-langs"><span lang="zh">星期${ZH_DAY[w]}</span><span>${EN_DAY[w].toUpperCase()}</span><span lang="ta">${TA_DAY[w]}</span></div>
-        ${t === 'midnight' ? hibiscus({ line: '#d4a84a', sw: 1.4, cls: 'sh-art' }) : ''}
+        <div class="sh-dayname ${c.tone}">${c.msDay.toUpperCase()}</div>
+        <div class="sh-langs"><span lang="zh">${c.zhDay}</span><span>${c.enDay.toUpperCase()}</span><span lang="ta">${c.taDay}</span></div>
+        ${hook(t, 'dateArt', c)}
       </div>
-      <p class="sh-meta">${hj ? `<span class="m-hij" title="Tarikh Hijrah">${hj.day} ${HIJRI_MONTH[hj.month - 1]} ${hj.year} H</span>` : ''}${l ? `<span class="m-lun" lang="zh" title="Kalendar lunar Cina">${lunarYearName(y, m, d)}${lunarMonthZh(l)}${lunarDayZh(l.day)}</span>` : ''}</p>
+      <p class="sh-meta">${c.hijri ? `<span class="m-hij" title="Tarikh Hijrah">${c.hijri}</span>` : ''}${c.lunar ? `<span class="m-lun" lang="zh" title="Kalendar lunar Cina">${c.lunar}</span>` : ''}</p>
       ${h ? `<p class="sh-hol">${esc(h.ms)}${h.approx ? '*' : ''}<small>${esc(h.en)}${h.scope === 'some' ? ' · sesetengah negeri' : ''}</small></p>` : ''}
-      <div class="sh-mini">${miniMonthHTML(y, m, d)}<div class="sh-mini-side"><span>${MS_MONTH[m].toUpperCase()}</span><span>${EN_MONTH[m].toUpperCase()}</span><span lang="zh">${zhMonth(m + 1)}</span></div>${t === 'stamp' ? stampSeal() : ''}</div>
+      <div class="sh-mini">${c.miniMonth()}<div class="sh-mini-side"><span>${c.msMonth.toUpperCase()}</span><span>${c.enMonth.toUpperCase()}</span><span lang="zh">${c.zhMonth}</span></div>${hook(t, 'miniArt', c)}</div>`;
+    return `${head}
       <section class="sh-sec sh-events"><h3 class="sh-h">Acara</h3><div class="sh-ev-list">${eventsListHTML(k)}</div></section>
       ${factCard(p)}
       ${periCard(p)}
       <label class="sh-sec sh-note"><span class="sh-h">Catatan · Nota</span><textarea data-note="${k}" rows="3" spellcheck="false" placeholder="cth: bayar bil air, kenduri Mak Long…">${esc(notes[k] || '')}</textarea></label>
-      <nav class="sh-nav" aria-label="Tukar hari"><button type="button" data-step="-1"><span aria-hidden="true">‹</span> Semalam</button><span>Hari ke-${doy} · ${left} hari lagi</span><button type="button" data-step="1">Esok <span aria-hidden="true">›</span></button></nav>`;
+      <nav class="sh-nav" aria-label="Tukar hari"><button type="button" data-step="-1"><span aria-hidden="true">‹</span> Semalam</button><span>Hari ke-${c.doy} · ${c.left} hari lagi</span><button type="button" data-step="1">Esok <span aria-hidden="true">›</span></button></nav>`;
   }
 
   /* --------------------------------------------------------- state & DOM */
@@ -529,7 +514,7 @@
   }
   function renderSummary() { summary.innerHTML = summaryHTML(theme.id, padDate); }
   function markSelection() {
-    if (theme.id === 'kopitiam') { renderBase(); return; }
+    if (hooks(theme.id).ledger) { renderBase(); return; }
     $$('.sel', pageBase).forEach(b => { b.classList.remove('sel'); b.setAttribute('aria-pressed', 'false'); });
     const b = pageBase.querySelector(`[data-date="${iso(padDate.y, padDate.m, padDate.d)}"]`);
     if (b) { b.classList.add('sel'); b.setAttribute('aria-pressed', 'true'); }
@@ -875,7 +860,7 @@
   }
   function refreshEvents(k) {
     renderSummary();
-    if (theme.id === 'kopitiam' || pageBase.querySelector(`[data-date="${k}"]`)) renderBase();
+    if (hooks(theme.id).ledger || pageBase.querySelector(`[data-date="${k}"]`)) renderBase();
     $$(`.sheet[data-date="${k}"] .sh-ev-list`, dayStack).forEach(el => { el.innerHTML = eventsListHTML(k); });
   }
   form.addEventListener('submit', e => {
@@ -932,7 +917,7 @@
     document.body.dataset.bg = theme.id;
     const meta = $('meta[name="theme-color"]');
     if (meta) meta.content = theme.color;
-    $('#masthead').innerHTML = mastheadHTML(theme.id);
+    $('#masthead').innerHTML = hook(theme.id, 'masthead', ctx(theme.id, padDate));
     renderBase();
     renderSummary();
     renderDay('none');
@@ -946,7 +931,7 @@
   function previewHTML(t) {
     const bar = '<nav class="bottombar"><div class="seg"><span class="tab"' + (t.start === 'day' ? ' aria-selected="true"' : '') + '>Hari</span><span class="tab"' + (t.start === 'month' ? ' aria-selected="true"' : '') + '>Bulan</span></div><span class="btn-acara">+ Acara</span></nav>';
     if (t.start === 'day') return `<div class="card preview" data-tab="day"><section class="pane pane-day"><div class="day-stack"><article class="sheet">${sheetHTML(t.id, padDate)}</article></div></section>${bar}</div>`;
-    return `<div class="card preview" data-tab="month"><section class="pane pane-month"><div class="masthead">${mastheadHTML(t.id)}</div><div class="pages"><div class="page-base">${monthPageHTML(t.id, view.y, view.m)}</div></div><div class="summary">${summaryHTML(t.id, padDate)}</div></section>${bar}</div>`;
+    return `<div class="card preview" data-tab="month"><section class="pane pane-month"><div class="masthead">${hook(t.id, 'masthead', ctx(t.id, padDate))}</div><div class="pages"><div class="page-base">${monthPageHTML(t.id, view.y, view.m)}</div></div><div class="summary">${summaryHTML(t.id, padDate)}</div></section>${bar}</div>`;
   }
   const fitPreviews = () => $$('.ob-prev', obGrid).forEach(el => el.style.setProperty('--s', (el.clientWidth / 400).toFixed(4)));
   function openOnboarding(first) {

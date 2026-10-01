@@ -1,0 +1,44 @@
+/* Style 4 · Kedai Runcit: everything here is scoped to [data-theme="runcit"]. */
+[data-theme="runcit"] {
+  --bd-ink: #1f3a2a;
+  --paper: #f7dc4f; --paper-back: #efcf3b;
+  --ink: #1d1a16; --num-ink: #17643a; --muted: #6b5a1c; --rule: #d9b12c;
+  --accent: #d0281f; --sun: #d0281f;
+  --sel-bg: #17643a; --sel-ink: #fff;
+  --f-title: var(--f-slab); --f-num: var(--f-cond); --f-ui: var(--f-cond);
+  --card-bg: #fffdf2; --card-line: #e0be3a;
+  --seg-line: #17643a; --seg-ink: #17643a; --seg-on-bg: #17643a; --seg-bg: #fffbe6;
+  --btn-radius: 6px;
+  --dot: #d0281f;
+  --edge-a: #ecc93a; --edge-b: #dcb72e;
+}
+[data-theme="runcit"] .card { border: 3px solid #e3b92a; --radius: 4px; padding-top: 14px; }
+[data-theme="runcit"] .mh-runcit { text-align: center; }
+[data-theme="runcit"] .mh-runcit p { margin: 0; }
+[data-theme="runcit"] .rc-hari { white-space: nowrap; font: 400 clamp(38px, 13.6cqi, 64px)/.95 var(--f-slab); color: #d0281f; letter-spacing: .02em; -webkit-text-stroke: 1px #7a140f; text-shadow: 3px 3px 0 #7a140f; }
+[data-theme="runcit"] .rc-kedai { margin-top: 2px !important; font: 400 clamp(22px, 7.6cqi, 32px)/1 var(--f-slab); color: #17643a; letter-spacing: .06em; }
+[data-theme="runcit"] .rc-kedai span { display: inline-block; margin-left: 4px; font: 900 .9em/1 var(--f-zh); color: #d0281f; transform: rotate(-6deg); }
+[data-theme="runcit"] .rc-shelf { display: flex; align-items: flex-end; justify-content: center; gap: 2.4cqi; margin: 10px 0 0; padding: 0 6px 5px; border-bottom: 7px solid #8a5a2b; box-shadow: 0 3px 0 #5b3a1a; }
+[data-theme="runcit"] .rc-shelf svg { height: 13cqi; width: auto; max-height: 56px; }
+[data-theme="runcit"] .rc-shelf svg:nth-child(2n) { height: 11cqi; }
+[data-theme="runcit"] .rc-tag { margin-top: 8px !important; font: 700 11.5px/1.35 var(--f-cond); letter-spacing: .1em; color: #1d1a16; }
+[data-theme="runcit"] .mtitle { margin-top: 10px; border-top: 2px solid #d0281f; }
+[data-theme="runcit"] .mt-main { color: #d0281f; font-weight: 400; font-size: clamp(30px, 10cqi, 44px); }
+[data-theme="runcit"] .mt-sub { color: #1d1a16; font-weight: 700; }
+[data-theme="runcit"] .mgrid { border: 2px solid #c79f22; background: #f9e682; }
+[data-theme="runcit"] .wd { background: #d0281f; color: #fff; font-size: 15px; font-weight: 800; border-right: 1px solid #f7dc4f; }
+[data-theme="runcit"] .wd.sun { color: #fff; }
+[data-theme="runcit"] .cell { border-right: 1px solid #d9b12c; border-bottom: 1px solid #d9b12c; font-weight: 800; font-size: clamp(19px, 6.8cqi, 28px); }
+[data-theme="runcit"] .cell.out { visibility: visible; }
+[data-theme="runcit"] .cell.out .num { visibility: hidden; }
+[data-theme="runcit"] .cell::before { display: none; }
+[data-theme="runcit"] .cell.sel { background: #17643a; color: #fff; }
+[data-theme="runcit"] .cell:not(.sel):not(.out):hover { background: rgba(23, 100, 58, .1); }
+[data-theme="runcit"] .summary { margin-top: 14px; padding: 12px 14px; border: 2px solid #e0be3a; border-radius: 4px; background: #fffdf2; }
+[data-theme="runcit"] .sum-h { font-weight: 800; }
+[data-theme="runcit"] .bottombar { background: linear-gradient(transparent, #f7dc4f 28%); }
+[data-theme="runcit"] .sheet { background: var(--grain), #fff8d6; background-size: 180px 180px, auto; padding: 4px 10px 10px; border-radius: 4px; }
+[data-theme="runcit"] .sh-num { font-family: var(--f-cond); font-weight: 800; color: #17643a; }
+[data-theme="runcit"] .sh-dayname { font-family: var(--f-slab); font-weight: 400; color: #17643a; }
+[data-theme="runcit"] .sh-my { font-family: var(--f-slab); font-weight: 400; color: #d0281f; }
+[data-theme="runcit"] .c-kick { font-family: var(--f-slab); font-style: normal; font-weight: 400; }

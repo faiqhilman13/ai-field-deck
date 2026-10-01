@@ -1,0 +1,31 @@
+/* Style 5 · Batik Margin: everything here is scoped to [data-theme="batik"]. */
+[data-theme="batik"] {
+  --bd-ink: #1f2a4d;
+  --paper: #f8f2e3; --paper-back: #efe7d2;
+  --ink: #1f2a4d; --muted: #6a6f84; --rule: rgba(31, 42, 77, .2);
+  --accent: #b88a2a; --sun: #c0392b;
+  --sel-bg: #c99a2e; --sel-ink: #fff;
+  --f-title: var(--f-display); --f-num: var(--f-serif); --f-ui: var(--f-serif);
+  --card-bg: #fffaf0; --card-line: rgba(201, 154, 46, .5);
+  --seg-line: #1f2a4d; --seg-ink: #1f2a4d; --seg-on-bg: #1f2a4d;
+  --btn-bg: #c99a2e; --btn-radius: 4px;
+}
+[data-theme="batik"] .card { --pad: 20px; padding-right: calc(var(--pad) + 46px); --radius: 4px; }
+[data-theme="batik"] .card::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 46px; background: var(--batik) 0 0 / 46px auto repeat-y; border-left: 3px solid #c99a2e; border-radius: 0 4px 4px 0; pointer-events: none; }
+[data-theme="batik"] .bottombar { margin-right: calc(-1 * var(--pad)); }
+[data-theme="batik"] .mtitle { grid-template-columns: 1fr auto auto; grid-template-areas: "main prev next" "sub sub sub"; text-align: left; padding-top: 4px; }
+[data-theme="batik"] .mt-main { font-weight: 900; font-size: clamp(38px, 15cqi, 60px); line-height: .95; }
+[data-theme="batik"] .mt-year { display: block; }
+[data-theme="batik"] .mt-sub { justify-content: flex-start; font-size: 13px; letter-spacing: .14em; margin-top: 10px; }
+[data-theme="batik"] .mnav { align-self: start; color: #1f2a4d; }
+[data-theme="batik"] .mgrid { border-top: 1px solid var(--rule); padding-top: 4px; }
+[data-theme="batik"] .wd { font: 600 14px/1 var(--f-serif); color: #1f2a4d; }
+[data-theme="batik"] .cell { font-weight: 500; font-size: clamp(17px, 6cqi, 24px); }
+[data-theme="batik"] .summary { border-top: 1px solid var(--rule); }
+[data-theme="batik"] .sum-h { font: 600 14px/1.2 var(--f-serif); letter-spacing: .1em; }
+[data-theme="batik"] .sum-events { padding: 4px 12px; border: 1px solid var(--rule); background: #fffaf0; }
+[data-theme="batik"] .ev:last-child { border-bottom: 0; }
+[data-theme="batik"] .sh-my { font-family: var(--f-display); font-weight: 900; font-size: 24px; }
+[data-theme="batik"] .sh-num { color: #1f2a4d; }
+[data-theme="batik"] .sh-langs, [data-theme="batik"] .sh-meta { font-family: var(--f-serif); }
+[data-theme="batik"] .c-card { border-left: 4px solid #c99a2e; }
